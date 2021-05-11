@@ -4,6 +4,8 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="eventaw.entity.Evento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +14,28 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <%
+            List<Evento> eventos;
+            
+            eventos = (List<Evento>) request.getAttribute("eventos");
+        %>
+        <h1>Bienvenido a TAW</h1>
+        <input type="text" name="buscador" value="Buscar Eventos" /> <input type="submit" value="Buscar" name="BuscarBoton" />
+        <a href="perfil.jsp">Mi Perfil</a>
+        <a href="login.jsp">Cerrar Sesión</a>
+        <br/>
+        
+        Eventos Disponibles: <br/>
+        <%
+            for(Evento ev : eventos){
+        %>
+        <a href="ServletEvento"><%= ev.getTitulo() %></a><br/>
+        <%
+            }
+        %>
+            
+        <input type="date" id="start" name="trip-start" value="2018-07-22" accept="" min="2018-01-01" max="2018-12-31">
+        <input type="submit" value="Ayuda" name="ayuda" />
+            
     </body>
 </html>
