@@ -20,7 +20,7 @@
                 <form class="login-form" action="ServletLogin">
 
                     <span class="login-form-title p-b-35">
-                        <img class="img-zoom" src="images/Eventaw.png" alt="Logo" style="width: 50%;"><br>
+                        <img class="img-zoom" src="images/Eventaw.png" alt="Logo" style="width: 60%;"><br>
                         Inicia sesión
                     </span>
 
