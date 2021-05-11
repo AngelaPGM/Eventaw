@@ -17,6 +17,12 @@
     <div class="fondo-login">
         <div class="container-login">
             <div class="wrap-login">
+                <%
+                    String errorLog;
+                    
+                    errorLog = (String)request.getAttribute("errorLog");
+                    if(errorLog == null) errorLog = "";
+                %>
                 <form class="login-form" action="ServletLogin">
 
                     <span class="login-form-title p-b-35">
@@ -33,7 +39,9 @@
                         Contraseña:<br>
                         <input class="input100" type="password" name="pass" required>
                     </div>
-
+                    
+                    <%= errorLog %>
+                    
                     <div class="container-login100-form-btn p-b-10">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
