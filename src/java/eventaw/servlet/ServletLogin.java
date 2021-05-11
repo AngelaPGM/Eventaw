@@ -5,10 +5,13 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
 public class ServletLogin extends HttpServlet {
+
+    @EJB
+    private EventoFacade eventoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -43,12 +50,16 @@ public class ServletLogin extends HttpServlet {
         Usuario myusuario;
         String jsp = "";
         String errorLog = "";
+        List<Evento> eventos;
         
         myusuario = this.usuarioFacade.findByEmail(email);
+        eventos = this.eventoFacade.findAll();
         
         if(myusuario != null){
             if(myusuario.getContrasenya().equals(password)){
                 jsp = "inicio.jsp";
+                HttpSession session = request.getSession();
+                session.setAttribute("user", myusuario);
             } else {
                 jsp = "login.jsp";
                 errorLog = "Contraseña incorrecta!";
@@ -58,8 +69,8 @@ public class ServletLogin extends HttpServlet {
             errorLog = "Email incorrecto!";
         }
         
-        request.setAttribute("myusuario", myusuario);
         request.setAttribute("errorLog", errorLog);
+        request.setAttribute("eventos", eventos);
         
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         rd.forward(request, response);
