@@ -5,8 +5,12 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
 public class ServletLogin extends HttpServlet {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,19 +38,31 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ServletLogin</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServletLogin at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String email = request.getParameter("email");
+        String password = request.getParameter("pass");
+        Usuario myusuario;
+        String jsp = "";
+        String errorLog = "";
+        
+        myusuario = this.usuarioFacade.findByEmail(email);
+        
+        if(myusuario != null){
+            if(myusuario.getContrasenya().equals(password)){
+                jsp = "inicio.jsp";
+            } else {
+                jsp = "login.jsp";
+                errorLog = "Contraseña incorrecta!";
+            }
+        } else {
+            jsp = "login.jsp";
+            errorLog = "Email incorrecto!";
         }
+        
+        request.setAttribute("myusuario", myusuario);
+        request.setAttribute("errorLog", errorLog);
+        
+        RequestDispatcher rd = request.getRequestDispatcher(jsp);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
