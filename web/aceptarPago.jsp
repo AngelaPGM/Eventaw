@@ -4,6 +4,16 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="eventaw.entity.Etiqueta"%>
+<%@page import="java.util.TreeMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.lang.Integer"%>
+<%@page import="java.util.SortedMap"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="eventaw.entity.Entrada"%>
 <%@page import="eventaw.entity.Evento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -16,35 +26,40 @@
         <%
             Evento evento;
             Double numEntradas;
+            Map<Integer, List<Integer>> asientos = new TreeMap();
             
             evento = (Evento)request.getAttribute("evento");
             numEntradas = (Double)request.getAttribute("numEntradas");
+            
+            for(int i = 1; i <= evento.getNumfilas();i++){
+                List<Integer> aux = new ArrayList();
+                for(int j = 1; j <= evento.getAsientosfila();j++){
+                    aux.add(j);
+                }
+                asientos.put(i, aux);
+            }
+            
+            for(Entrada e : evento.getEntradaList()){
+                asientos.get(e.getNumfila()).remove(e.getAsientofila());
+            }
         %>
-        <h1>Se le realizará un cobro de <%= evento.getPrecio() * numEntradas %> por su inscripción en el evento: <%= evento.getTitulo() %></h1>
+        <h1>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas) %> por su inscripción en el evento: <%= evento.getTitulo() %></h1>
         <%
             if(numEntradas == 1.0){
         %>
         <form action="ServletInscribir">
             <input type="hidden" name="idEvento" value="<%= evento.getId() %>" />
-            Seleccione su asiento: <br/>
-            Fila: <select name="fila">
+            Seleccione su asiento: : <select name="asiento">
                 <%
-                    for(int i = 1; i <= evento.getNumfilas();i++){
+                    for(Integer i : asientos.keySet()){
+                        for(Integer j : asientos.get(i)){                    
                 %>
-                <option><%= i %></option>
-                <%
+                <option>Fila: <%= i %> Asiento: <%= j %></option>
+                <%  
+                        }
                     }
                 %>
             </select>
-            Asiento: <select name="asiento">
-                <%
-                    for(int i = 1; i <= evento.getAsientosfila();i++){
-                %>
-                <option><%= i %></option>
-                <%
-                    }
-                %>
-            </select> <br/>
             <input type="submit" value="Aceptar" name="aceptar" />
         </form>
         <%
@@ -56,24 +71,17 @@
             <%
                 for(int i = 0; i < numEntradas;i++){
             %>
-            Fila: <select name="fila">
+            <select name="fila">
                 <%
-                    for(int j = 1; j <= evento.getNumfilas();j++){
+                    for(Integer j : asientos.keySet()){
+                        for(Integer k : asientos.get(j)){                    
                 %>
-                <option><%= j %></option>
-                <%
+                <option>Fila: <%= j %> Asiento: <%= k %></option>
+                <%  
+                        }
                     }
                 %>
-            </select>
-            Asiento: <select name="asiento">
-                <%
-                    for(int j = 1; j <= evento.getAsientosfila();j++){
-                %>
-                <option><%= j %></option>
-                <%
-                    }
-                %>
-            </select> <br/>
+            </select><br/>
             <%
                 }
             %>
