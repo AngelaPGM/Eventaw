@@ -52,10 +52,14 @@ public class ServletInscribir extends HttpServlet {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario)session.getAttribute("user");
         String idevento = request.getParameter("idEvento");
-        String fila = request.getParameter("fila");
-        String asiento = request.getParameter("asiento");
+        String asientoSeleccionado = request.getParameter("asiento");
         Evento evento;
         Entrada entrada = new Entrada();
+        
+        String[] partes = asientoSeleccionado.split(" ");
+        String fila = partes[1];
+        String asiento = partes[3];
+        
         
         evento = this.eventoFacade.find(new Integer(idevento));
         entrada.setId(0);
