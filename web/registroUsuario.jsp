@@ -25,43 +25,43 @@
             <fieldset style="width:400px">
                 <legend>Datos personales</legend>
                 ​<label for="nombre"><b>Nombre:</b></label>
-                <input type="text" name="nombre" ><br/><br/>
+                <input type="text" name="nombre" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
                 ​<label for="nombre"><b>Primer apellido:</b></label>
-                <input type="text" name="ape1"><br/><br/>
+                <input type="text" name="ape1" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
                 ​<label for="nombre"><b>Segundo apellido:</b></label>
-                <input type="text" name="ape2" ><br/><br/>
+                <input type="text" name="ape2"><br/><br/> 
 
 
 
                 <label for="domicilio"><b>Domicilio:</b></label>
-                <input type="text" name="domicilio" ><br/><br/>
+                <input type="text" name="domicilio" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
                 <label for="ciudad"><b>Ciudad:</b></label>
-                <input type="text" name="ciudad" ><br/><br/>
+                <input type="text" name="ciudad" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
 
                 <label for="fNac"><b>Fecha Nacimiento:</b></label>
-                <input type="date" name="fNac" ><br/><br/>
+                <input type="date" name="fNac" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
                 <label for="sexo"><b>Sexo</b></label>
                 <select name="sexo" required>
                     <option value="M">Mujer</option>
                     <option value="H">Hombre</option>
-                </select><br/>
+                </select><FONT COLOR="red"> &nbsp(*)</FONT><br/>
 
             </fieldset>
             <br/>
             <fieldset style="width:400px">
                 <legend>Datos de la cuenta</legend>
                 ​<label for="email"><b>Email</b></label>
-                <input type="email" name="email" ><br/><br/>
+                <input type="email" name="email" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
                 <label for="contra1"><b>Contraseña:</b></label>
-                <input type="password" name="pass1" ><br/><br/>
+                <input type="password" name="pass1" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
 
                 <label for="contra2"><b>Repita contraseña:</b></label>
-                <input type="password" name="pass2" ><br/><br/>
+                <input type="password" name="pass2" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
             </fieldset><br/>
 
             <input type="submit" value="Crear cuenta" /><br/><br/>
