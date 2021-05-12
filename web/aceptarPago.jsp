@@ -49,7 +49,8 @@
         %>
         <form action="ServletInscribir">
             <input type="hidden" name="idEvento" value="<%= evento.getId() %>" />
-            Seleccione su asiento: : <select name="asiento">
+            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas) %>" />
+            Seleccione su asiento: : <select name="asiento0">
                 <%
                     for(Integer i : asientos.keySet()){
                         for(Integer j : asientos.get(i)){                    
@@ -67,11 +68,13 @@
         %>
         <form action="ServletInscribir">
             <input type="hidden" name="idEvento" value="<%= evento.getId() %>" />
+            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas) %>" />
+            
             Seleccione sus asientos: <br/>
             <%
                 for(int i = 0; i < numEntradas;i++){
             %>
-            <select name="fila">
+            <select name="asiento<%= i %>">
                 <%
                     for(Integer j : asientos.keySet()){
                         for(Integer k : asientos.get(j)){                    

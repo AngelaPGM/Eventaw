@@ -26,17 +26,17 @@ import javax.servlet.http.HttpSession;
  *
  * @author Pepe
  */
-@WebServlet(name = "ServletInscribir", urlPatterns = {"/ServletInscribir"})
-public class ServletInscribir extends HttpServlet {
+@WebServlet(name = "ServletCancelarEntrada", urlPatterns = {"/ServletCancelarEntrada"})
+public class ServletCancelarEntrada extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
 
     @EJB
-    private EntradaFacade entradaFacade;
+    private EventoFacade eventoFacade;
 
     @EJB
-    private EventoFacade eventoFacade;
+    private EntradaFacade entradaFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,41 +49,28 @@ public class ServletInscribir extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario)session.getAttribute("user");
-        String idevento = request.getParameter("idEvento");
-        Integer numEntradas = new Integer(request.getParameter("numEntradas"));
+        String idEntrada = request.getParameter("idEntrada");
+        Entrada entrada;
+        Usuario usuario;
         Evento evento;
         
-        evento = this.eventoFacade.find(new Integer(idevento));
+        entrada = this.entradaFacade.find(new Integer(idEntrada));
+        usuario = entrada.getUsuario();
+        evento = entrada.getEvento();
         
-        for(int i=0; i<numEntradas; i++){
-            Entrada entrada = new Entrada();
-            
-            String asientoSeleccionado = request.getParameter("asiento" + i);
-            String[] partes = asientoSeleccionado.split(" ");
-            String fila = partes[1];
-            String asiento = partes[3];
-            
-            entrada.setId(0);
-            entrada.setUsuario(usuario);
-            entrada.setEvento(evento);
-            entrada.setNumfila(new Integer(fila));
-            entrada.setAsientofila(new Integer(asiento));
-            
-            this.entradaFacade.create(entrada);
+        usuario.getEntradaList().remove(entrada);
+        evento.getEntradaList().remove(entrada);
         
-            usuario.getEntradaList().add(entrada);
-            evento.getEntradaList().add(entrada);
-        }
-        
+        this.entradaFacade.remove(entrada);
         this.eventoFacade.edit(evento);
         this.usuarioFacade.edit(usuario);
         
-        request.setAttribute("eventos", this.eventoFacade.findAll());
+        HttpSession session = request.getSession();
+        session.setAttribute("user", usuario);
         
-        RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("misEntradas.jsp");
+        //RequestDispatcher rd = request.getRequestDispatcher("misEntradas.jsp");
+        //rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
