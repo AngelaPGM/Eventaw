@@ -54,9 +54,9 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
             throws ServletException, IOException {
         String errorLog = "";
         String url = "";
-        String email = request.getParameter("email");
-        String pass1 = request.getParameter("pass1");
-        String pass2 = request.getParameter("pass2");
+        String email = new String(request.getParameter("email").getBytes("ISO-8859-1"), "UTF8");
+        String pass1 = new String(request.getParameter("pass1").getBytes("ISO-8859-1"), "UTF8");
+        String pass2 = new String(request.getParameter("pass2").getBytes("ISO-8859-1"), "UTF8");
 
         if (this.usuarioFacade.findByEmail(email) != null) {
             errorLog = "Este email ya ha sido registrado. Inicie sesion.";
@@ -79,18 +79,18 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
 
             //CREACION USUARIO EVENTO
             Usuarioevento uEvento = new Usuarioevento();
-            uEvento.setNombre(request.getParameter("nombre"));
-            uEvento.setApellido1(request.getParameter("ape1"));
+            uEvento.setNombre(new String(request.getParameter("email").getBytes("ISO-8859-1"), "UTF8"));
+            uEvento.setApellido1(new String(request.getParameter("ape1").getBytes("ISO-8859-1"), "UTF8"));
 
-            String ape2 = request.getParameter("ape2");
+            String ape2 = new String(request.getParameter("ape2").getBytes("ISO-8859-1"), "UTF8");
             if (!("".equals(ape2))) {
                 uEvento.setApellido2(ape2);
             } else {
                 uEvento.setApellido2("");
             }
             
-            uEvento.setDomicilio(request.getParameter("domicilio"));
-            uEvento.setCiudad(request.getParameter("ciudad"));
+            uEvento.setDomicilio(new String(request.getParameter("domicilio").getBytes("ISO-8859-1"), "UTF8"));
+            uEvento.setCiudad(new String(request.getParameter("ciudad").getBytes("ISO-8859-1"), "UTF8"));
             String fecha = request.getParameter("fNac");
             
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -103,8 +103,6 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
 
            
             uEvento.setSexo(request.getParameter("sexo"));
-
-
             uEvento.setIdusuario(user.getId());
             uEvento.setUsuario(user);
             this.usuarioeventoFacade.create(uEvento);

@@ -294,3 +294,70 @@ button:hover {
   
 }
 
+.container-registro {
+    width: 100%;  
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+ }   
+    .wrap-registro {
+    width: 750px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wrap-input2{
+    background-color: #d9d9d9;
+    border-radius: 25px;
+    
+}
+
+.input2 {
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.2;
+
+    display: block;
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    padding: 0 5px 0 5px;
+}
+
+/* SELECTOR SEXO */
+/* The container must be positioned relative: */
+.custom-select {
+    position: relative;
+    font-family: Poppins-Medium;
+    font-size: 16px;
+    background-color: #d9d9d9;
+    border-radius: 40px;
+    width:100%;
+    height: 100%;
+    padding-left:15px;
+  }
+ 
+  .register-form-title {
+    display: block;
+    font-family: Poppins-Bold;
+    font-size: 20px;
+    color: #333333;
+    text-align: left;
+}
+
+.register-form {
+    width: 100%;
+    padding: 30px 40px 40px;
+}
+
+.alert {
+  margin-bottom: 10px;
+  height: 30px;
+  line-height:30px;
+  padding:0px 15px;
+}

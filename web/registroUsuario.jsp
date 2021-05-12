@@ -4,71 +4,146 @@
     Author     : angep
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Nuevo usuario</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/util.css">
     </head>
     <%
         String errorLog = (String) request.getAttribute("errorLog");
-        if (errorLog == null) {
-            errorLog = "";
-        }
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     %>
     <body>
-        <h1>Registro nuevo usuario</h1>
-        <p style="color:red"><%= errorLog%></p>
-        <form method="POST" action="ServletRegistroUsuarioEvento">
+        <div class="fondo-login">
+            <div class="container-registro">
+                <div class="wrap-registro">
+                    <form class="register-form" method="POST" action="ServletRegistroUsuarioEvento">
+                        <span class="login-form-title">                       
 
-            <fieldset style="width:400px">
-                <legend>Datos personales</legend>
-                ​<label for="nombre"><b>Nombre:</b></label>
-                <input type="text" name="nombre" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
+                            <img class="img-zoom" src="images/Eventaw.png" alt="Logo" style="width: 30%;"><br/>
+                            Nueva cuenta
+                        </span>
 
-                ​<label for="nombre"><b>Primer apellido:</b></label>
-                <input type="text" name="ape1" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-                ​<label for="nombre"><b>Segundo apellido:</b></label>
-                <input type="text" name="ape2"><br/><br/> 
+                        <%
+                            if (errorLog != null) {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>Error:</strong> <%= errorLog%> </a>
+                        </div>
+                        <% }
+                        %>
+
+                        <hr/>
+
+                        <div class="row justify-content-around p-t-5">
+                            <div class="col-3 text-center">Nombre: <span style="color:#a64bf4">(*)</span></div>
+                            <div class="col-4 text-center">Primer apellido: <span style="color:#a64bf4">(*)</span></div>
+                            <div class="col-4  text-center">Segundo apellido: </div>
+                        </div>
+                        <div class="row p-b-20 justify-content-around">
+                            <div class="col-3 wrap-input2">
+                                <input class="input2" type="text" name="nombre" required>
+                            </div>
+                            <div class="col-4 wrap-input2  ">
+                                <input class="input2" type="text" name="ape1" required>
+                            </div>
+                            <div class="col-4 wrap-input2 ">
+                                <input class="input2" type="text" name="ape2">
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-around">
+                            <div class="col-8 ">Domicilio: <span style="color:#a64bf4">(*)</span></div>
+                            <div class="col-3 ">Ciudad: <span style="color:#a64bf4">(*)</span></div>
+                        </div>
+                        <div class="row justify-content-around p-b-20">
+                            <div class="col-8 wrap-input2">
+                                <input class="input2" type="text" name="domicilio" required>
+                            </div>
+                            <div class="col-3 wrap-input2">
+                                <input class="input2" type="text" name="ciudad" required>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-around">
+                            <div class="col-4 text-center">Fecha de nacimiento: <span style="color:#a64bf4">(*)</span></div>
+                            <div class="col-3 text-center">Sexo:<span style="color:#a64bf4"> (*)</span></div>
+                        </div>
+                        <div class="row justify-content-around">
+
+                            <div class="col-4 wrap-input2 ">
+                                <input class="input2" type="date" name="fNac" max="<%= formato.format(new Date())%>" required>
+                            </div>
+
+                            <div class="col-3">
+                                <select class="custom-select" name="sexo" required>
+                                    <option disabled selected value>  </option>
+                                    <option value="M">Mujer</option>
+                                    <option value="H">Hombre</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div class="row justify-content-around">
+                            <div class="col-11">
+                                Email: <span style="color:#a64bf4">(*)</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around">
+                            <div class="col-11 wrap-input2">
+                                <input class="input2" type="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around m-t-20">
+                            <div class="col-5">
+                                Contraseña: <span style="color:#a64bf4">(*)</span>
+                            </div>
+                            <div class="col-5">
+                                Repita contraseña: <span style="color:#a64bf4">(*)</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around">
+                            <div class="col-6  wrap-input2" style="width: 45%;">
+                                <input class="input2" type="password" name="pass1" required>
+                            </div>
+                            <div class="col-6  wrap-input2" style="width: 45%;">
+                                <input class="input2" type="password" name="pass2" required>
+                            </div>
+                        </div>
 
 
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <div class="container-login100-form-btn p-t-30 justify-content-center">
+                                    <div class="wrap-login100-form-btn">
+                                        <div class="login100-form-bgbtn"></div>
+                                        <button class="login100-form-btn">
+                                            Registrarse
+                                        </button>
+                                    </div>
+                                </div>
 
-                <label for="domicilio"><b>Domicilio:</b></label>
-                <input type="text" name="domicilio" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-
-                <label for="ciudad"><b>Ciudad:</b></label>
-                <input type="text" name="ciudad" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-
-
-                <label for="fNac"><b>Fecha Nacimiento:</b></label>
-                <input type="date" name="fNac" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-
-                <label for="sexo"><b>Sexo</b></label>
-                <select name="sexo" required>
-                    <option value="M">Mujer</option>
-                    <option value="H">Hombre</option>
-                </select><FONT COLOR="red"> &nbsp(*)</FONT><br/>
-
-            </fieldset>
-            <br/>
-            <fieldset style="width:400px">
-                <legend>Datos de la cuenta</legend>
-                ​<label for="email"><b>Email</b></label>
-                <input type="email" name="email" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-
-                <label for="contra1"><b>Contraseña:</b></label>
-                <input type="password" name="pass1" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-
-                <label for="contra2"><b>Repita contraseña:</b></label>
-                <input type="password" name="pass2" required><FONT COLOR="red"> &nbsp(*)</FONT><br/><br/> 
-            </fieldset><br/>
-
-            <input type="submit" value="Crear cuenta" /><br/><br/>
-
-        </form>
-
-        ¿Ya tienes cuenta?
-        <a href="login.jsp">Inicia sesi&oacute;n aqu&iacute;</a>
+                                <div class="text-center p-t-8">
+                                    ¿Ya tienes cuenta?
+                                    <a href="login.jsp">INICIA SESIÓN AQUÍ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
+
 </html>
