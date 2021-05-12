@@ -14,20 +14,34 @@
         <title>PaginaAdministrador</title>
     </head>
     <body>
-        <form method="POST" action="ServletCrudUsuario">
-        
         <h1>Lista de Usuarios.</h1>
         <% List<Usuario> ListaUsuario = (List)request.getAttribute("listaUsuario");
            String borrar = "borrado";
-           
-           for(Usuario u : ListaUsuario){
-           
         %>
-        Id:<%= u.getId()%> Email: <%= u.getCorreo()%> Contraseña: <%= u.getContrasenya()%> Rol: <%= u.getRol().getTipo() %> <a href ="ServletCrudUsuario?id=<%=u.getId()%>"> Editar </a>&nbsp; <a href ="ServletCrudUsuario?id=<%=u.getId()%>&borrar=<%=borrar%>"> Borrar </a> <br/>
-        <% 
-           }
-        
-        %>
-        </form>
+        <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>EMAIL</th>
+            <th>PASSWORD</th>
+            <th>ROL</th>            
+            <th></th>            
+            <th></th>                        
+        </tr>        
+            
+        <%
+            for (Usuario u : ListaUsuario) {
+        %>   
+        <tr>
+            <td><%= u.getId() %></td>
+            <td><%= u.getCorreo() %></td>
+            <td><%= u.getContrasenya() %></td>            
+            <td><%= u.getRol().getTipo() %></td>      
+            <td><a href="ServletCrudUsuario?id=<%= u.getId()%>">Editar</a></td>
+            <td><a href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">Borrar</a></td>            
+        </tr>        
+        <%
+            }
+        %>    
+        </table>
     </body>
 </html>
