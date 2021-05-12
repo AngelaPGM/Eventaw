@@ -38,13 +38,13 @@ public class ServletCrudUsuario extends HttpServlet {
         String id = request.getParameter("id");
         Usuario u = null;
         
-        if(borrar.equals("borrado")){ //Borrar
+        if(borrar!=null && borrar.equals("borrado")){ //Borrar
                 
             u = this.usuarioFacade.find(new Integer(id));
             usuarioFacade.remove(u);
             response.sendRedirect("ServletListadoAdmin");
         
-        }else if(id != null){ //Editar
+        }else if(!id.equals("")){ //Editar
             u = this.usuarioFacade.find(new Integer(id));
             request.setAttribute("u",u);
             RequestDispatcher rd = request.getRequestDispatcher("crearEditarUsuario.jsp");
