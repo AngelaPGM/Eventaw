@@ -47,26 +47,26 @@ public class ServletLogin extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("pass");
-        Usuario myusuario;
+        Usuario usuario;
         String jsp = "";
         String errorLog = "";
         List<Evento> eventos;
         
-        myusuario = this.usuarioFacade.findByEmail(email);
+        usuario = this.usuarioFacade.findByEmail(email);
         eventos = this.eventoFacade.findAll();
         
-        if(myusuario != null){
-            if(myusuario.getContrasenya().equals(password)){
+        if(usuario != null){
+            if(usuario.getContrasenya().equals(password)){
                 jsp = "inicio.jsp";
                 HttpSession session = request.getSession();
-                session.setAttribute("user", myusuario);
+                session.setAttribute("user", usuario);
             } else {
                 jsp = "login.jsp";
-                errorLog = "Contraseña incorrecta!";
+                errorLog = "¡Contraseña incorrecta!";
             }
         } else {
             jsp = "login.jsp";
-            errorLog = "Email incorrecto!";
+            errorLog = "¡Email incorrecto!";
         }
         
         request.setAttribute("errorLog", errorLog);
