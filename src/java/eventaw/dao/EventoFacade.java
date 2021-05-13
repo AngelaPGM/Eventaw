@@ -43,4 +43,18 @@ public class EventoFacade extends AbstractFacade<Evento> {
             return q.getResultList();
         }
     }
+    
+    public List<Evento> filterByName(String nombreEvento){
+        Query q;
+        List<Evento> aux;
+
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.titulo LIKE :titulo");
+        q.setParameter("titulo", '%' + nombreEvento + '%');
+        aux = q.getResultList();
+        if(aux.isEmpty()){
+            return aux;
+        } else {
+            return q.getResultList();
+        }
+    }
 }
