@@ -26,14 +26,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Pepe
+ * @author angep
  */
 @Entity
 @Table(name = "USUARIOEVENTO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuarioevento.findAll", query = "SELECT u FROM Usuarioevento u")
-    , @NamedQuery(name = "Usuarioevento.findByIdusuario", query = "SELECT u FROM Usuarioevento u WHERE u.idusuario = :idusuario")
+    , @NamedQuery(name = "Usuarioevento.findById", query = "SELECT u FROM Usuarioevento u WHERE u.id = :id")
     , @NamedQuery(name = "Usuarioevento.findByNombre", query = "SELECT u FROM Usuarioevento u WHERE u.nombre = :nombre")
     , @NamedQuery(name = "Usuarioevento.findByApellido1", query = "SELECT u FROM Usuarioevento u WHERE u.apellido1 = :apellido1")
     , @NamedQuery(name = "Usuarioevento.findByApellido2", query = "SELECT u FROM Usuarioevento u WHERE u.apellido2 = :apellido2")
@@ -47,8 +47,8 @@ public class Usuarioevento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "IDUSUARIO")
-    private Integer idusuario;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -82,19 +82,19 @@ public class Usuarioevento implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "SEXO")
     private String sexo;
-    @JoinColumn(name = "IDUSUARIO", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "IDUSUARIO", referencedColumnName = "ID")
     @OneToOne(optional = false)
-    private Usuario usuario;
+    private Usuario idusuario;
 
     public Usuarioevento() {
     }
 
-    public Usuarioevento(Integer idusuario) {
-        this.idusuario = idusuario;
+    public Usuarioevento(Integer id) {
+        this.id = id;
     }
 
-    public Usuarioevento(Integer idusuario, String nombre, String apellido1, String domicilio, String ciudad, Date fechanacimiento, String sexo) {
-        this.idusuario = idusuario;
+    public Usuarioevento(Integer id, String nombre, String apellido1, String domicilio, String ciudad, Date fechanacimiento, String sexo) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.domicilio = domicilio;
@@ -103,12 +103,12 @@ public class Usuarioevento implements Serializable {
         this.sexo = sexo;
     }
 
-    public Integer getIdusuario() {
-        return idusuario;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdusuario(Integer idusuario) {
-        this.idusuario = idusuario;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -167,18 +167,18 @@ public class Usuarioevento implements Serializable {
         this.sexo = sexo;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getIdusuario() {
+        return idusuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdusuario(Usuario idusuario) {
+        this.idusuario = idusuario;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idusuario != null ? idusuario.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -189,7 +189,7 @@ public class Usuarioevento implements Serializable {
             return false;
         }
         Usuarioevento other = (Usuarioevento) object;
-        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -197,7 +197,7 @@ public class Usuarioevento implements Serializable {
 
     @Override
     public String toString() {
-        return "eventaw.entity.Usuarioevento[ idusuario=" + idusuario + " ]";
+        return "eventaw.entity.Usuarioevento[ id=" + id + " ]";
     }
     
 }

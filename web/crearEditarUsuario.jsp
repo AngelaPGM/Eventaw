@@ -10,12 +10,16 @@
     </head>
     <body>
         <% String errorCrear = (String) request.getAttribute("errorCrear");
+           String errorEditar = (String) request.getAttribute("errorEditar");
            Usuario u = (Usuario) request.getAttribute("u");
-           if(errorCrear ==null){
+           
+           if(errorCrear == null){
                 errorCrear ="";
             } 
-           
-           if(u == null){
+           if(errorEditar == null){
+               errorEditar ="";
+           }
+           if(u == null && errorEditar == ""){
                
              
         %>
@@ -35,7 +39,7 @@
        
         
            <%
-           } else{
+           } else {
                 Integer idU = u.getId();
                 String correoU = u.getCorreo();
                 String contrasenia = u.getContrasenya();
@@ -46,7 +50,7 @@
            <form method="POST" action="ServletGuardarUsuario">
            Id : <input type="text" name="id" value="<%= idU%>" readonly="readonly" /> <br/>
            Correo Electronico : <input type="text" name="correo" value="<%= correoU%>" /> <br/>
-           Contraseña: <input type="password" name="contrasenia" value="<%= contrasenia%>" /> <br/>
+           Contraseña: <input type="password" name="contrasenia" value="" /> <br/>
            Repetir Contraseña:  <input type="password" name="contrasenia1" value="" /> <br/>
            Rol: <br/> 
            <% if(idRolU == 3){
@@ -84,7 +88,7 @@
            <%
                }
            %>
-           <%= errorCrear %>
+           <%= errorEditar %>
         </form>
 
             <%

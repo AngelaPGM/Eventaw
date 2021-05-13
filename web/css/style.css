@@ -419,3 +419,20 @@ button:hover {
   font-weight: 700;
   letter-spacing: 0.1rem;
 }
+
+.fondo-pagina {
+    min-height: 100%;
+    background-image: url("../images/conciertofondo.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;   
+}
+
+.container-perfil {
+    width: 100%;  
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}   

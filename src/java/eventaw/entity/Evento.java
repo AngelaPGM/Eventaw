@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Pepe
+ * @author angep
  */
 @Entity
 @Table(name = "EVENTO")
@@ -58,27 +58,36 @@ public class Evento implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "TITULO", length = 30, nullable = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "TITULO")
     private String titulo;
     @Basic(optional = false)
-    @Column(name = "DESCRIPCION", length = 500, nullable = false)
+    @NotNull
+    @Size(min = 1, max = 500)
+    @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
-    @Column(name = "FECHA", nullable = false)
+    @NotNull
+    @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Basic(optional = false)
-    @Column(name = "FECHACOMPRA", nullable = false)
+    @NotNull
+    @Column(name = "FECHACOMPRA")
     @Temporal(TemporalType.DATE)
     private Date fechacompra;
     @Basic(optional = false)
-    @Column(name = "PRECIO", nullable = false)
+    @NotNull
+    @Column(name = "PRECIO")
     private double precio;
     @Basic(optional = false)
-    @Column(name = "AFORO", nullable = false)
+    @NotNull
+    @Column(name = "AFORO")
     private int aforo;
     @Basic(optional = false)
-    @Column(name = "MAXENTRADASUSUARIO", nullable = false)
+    @NotNull
+    @Column(name = "MAXENTRADASUSUARIO")
     private int maxentradasusuario;
     @Column(name = "NUMFILAS")
     private Integer numfilas;

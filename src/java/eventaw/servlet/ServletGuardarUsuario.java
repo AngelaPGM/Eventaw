@@ -45,6 +45,7 @@ public class ServletGuardarUsuario extends HttpServlet {
         String repcontrasena = request.getParameter("contrasenia1");
         String rol = request.getParameter("rol");
         String errorCrear = "";
+        String errorEditar = "";
         String jsp = "";
         
         if((email !="") && (!email.equals(null))){
@@ -53,17 +54,33 @@ public class ServletGuardarUsuario extends HttpServlet {
         if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){
             
             jsp = "crearEditarUsuario.jsp";
-            errorCrear = "Por favor, completa todos los campos.";
+            if(id !=null && !id.isEmpty()){
+                u = this.usuarioFacade.find(new Integer(id));
+                errorEditar = "Por favor, completa todos los campos.";
+            }else{
+                errorCrear = "Por favor, completa todos los campos.";
+            }
             
         }else if (!(contrasena.equals(repcontrasena))){
             
+            if(id !=null && !id.isEmpty()){
+                u = this.usuarioFacade.find(new Integer(id));
+                errorEditar = "Las contraseñas deben ser iguales.";
+            }else{
+                errorCrear = "Las contraseñas deben ser iguales.";
+            }
             jsp = "crearEditarUsuario.jsp";
-            errorCrear = "Las contraseñas deben ser iguales.";
             
         }else if(usuarioEncontrado != null){
             
+            if(id !=null && !id.isEmpty()){
+                u = this.usuarioFacade.find(new Integer(id));
+                errorEditar = "Este correo ya ha sido utilizado.";
+            }else{
+                errorCrear = "Este correo ya ha sido utilizado.";
+            }
+            
             jsp = "crearEditarUsuario.jsp";
-            errorCrear = "Este correo ya ha sido utilizado.";
         
         }else{
             
@@ -88,6 +105,7 @@ public class ServletGuardarUsuario extends HttpServlet {
             
             request.setAttribute("u", u);
             request.setAttribute("errorCrear", errorCrear);
+            request.setAttribute("errorEditar", errorEditar);
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
             rd.forward(request, response);
             

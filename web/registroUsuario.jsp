@@ -30,8 +30,7 @@
                 <div class="wrap-registro">
                     <form class="register-form" method="POST" action="ServletRegistroUsuarioEvento">
                         <span class="login-form-title">                       
-
-                            <img class="img-zoom" src="images/Eventaw.png" alt="Logo" style="width: 30%;"><br/>
+                           <img class="img-zoom" src="images/Eventaw.png" alt="Logo" style="width: 30%;"><br/>
                             Nueva cuenta
                         </span>
 
