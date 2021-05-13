@@ -59,27 +59,27 @@ public class ServletLogin extends HttpServlet {
         
         if(usuario != null){
             if(usuario.getContrasenya().equals(password)){
-                if(usuario.getRol().getId() == 2){
-                    jsp = "inicio.jsp";
-                    session.setAttribute("user", usuario);
-                        
-                    eventos = this.eventoFacade.findAll();
-            
-                    for(Evento e : eventos){
-                        if(!e.getFecha().after(today)) eventos.remove(e);
-                    }
-                    
-                    session.setAttribute("eventos", eventos);
-                    
-                } else if (usuario.getRol().getId() == 3) {
-                    jsp = "inicioCreador.jsp";
-                    session.setAttribute("user", usuario);
-                        
-                    eventos = this.eventoFacade.findByCreator(usuario.getId());
-                    session.setAttribute("eventos", eventos);
-                } else if (usuario.getId() == 1){
-                    jsp = "ServletListadoAdmin";
-                    session.setAttribute("user", usuario);
+                if(null != usuario.getRol().getId()) switch (usuario.getRol().getId()) {
+                    case 2:
+                        jsp = "inicio.jsp";
+                        session.setAttribute("user", usuario);
+                        eventos = this.eventoFacade.findAll();
+                        for(Evento e : eventos){
+                            if(!e.getFecha().after(today)) eventos.remove(e);
+                        }   
+                        session.setAttribute("eventos", eventos);
+                        break;
+                    case 3:
+                        jsp = "inicioCreador.jsp";
+                        session.setAttribute("user", usuario);
+                        request.setAttribute("eventos", usuario.getEventoList());
+                        break;
+                    case 1:
+                        jsp = "ServletListadoAdmin";
+                        session.setAttribute("user", usuario);
+                        break;
+                    default:
+                        break;
                 } 
             } else {
                 jsp = "login.jsp";
