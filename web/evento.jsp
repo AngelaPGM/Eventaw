@@ -20,6 +20,7 @@
         %>
         <h1><%= evento.getTitulo() %></h1>
         <%= evento.getDescripcion() %> <br/>
+        <br/>
         <form action="ServletAceptaPago">
             <input type="hidden" name="idEvento" value="<%= evento.getId() %>" />
             ¿Desea comprar entradas? <select name="numEntradas">

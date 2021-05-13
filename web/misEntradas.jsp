@@ -48,6 +48,9 @@
             }
         %>
       <br/><br/>   <h1>Mis Entradas</h1>
+      <input type="text" name="buscador" value="Buscar Entradas" /> <input type="submit" value="Buscar" name="buscarButton" /> 
+      <br/>
+      <br/>
         <%
             if(!entradasFuturas.isEmpty()){
         %>

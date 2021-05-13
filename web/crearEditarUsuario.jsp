@@ -1,9 +1,3 @@
-<%-- 
-    Document   : CrearUsuario
-    Created on : 12-may-2021, 9:28:00
-    Author     : Fran
---%>
-
 
 <%@page import="eventaw.entity.Rol"%>
 <%@page import="eventaw.entity.Usuario"%>

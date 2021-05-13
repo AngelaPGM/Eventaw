@@ -8,11 +8,8 @@ package eventaw.servlet;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
 import eventaw.entity.Evento;
-import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,20 +17,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author angep
+ * @author Gonzalo
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletCrearEvento", urlPatterns = {"/ServletCrearEvento"})
+public class ServletCRUDEvento extends HttpServlet {
+
 
     @EJB
     private EventoFacade eventoFacade;
 
-    @EJB
-    private UsuarioFacade usuarioFacade;
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,60 +42,31 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("pass");
-        Usuario usuario;
-        String jsp = "";
-        String errorLog = "";
-        List<Evento> eventos;
-        Date today = new Date();
-        HttpSession session = request.getSession();
         
-        usuario = this.usuarioFacade.findByEmail(email);
+        Evento evento = null;
+        String error = "";
         
-        if(usuario.getRol().getId() == 2){
-            if(usuario != null){
-                if(usuario.getContrasenya().equals(password)){
-                    jsp = "inicio.jsp";
-                    session.setAttribute("user", usuario);
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Contraseña incorrecta!";
-                    }
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Email incorrecto!";
-                }
-            
-            eventos = this.eventoFacade.findAll();
-            
-            for(Evento e : eventos){
-                if(!e.getFecha().after(today)) eventos.remove(e);
+        String borrar = request.getParameter("borrar");
+        String id = request.getParameter("id");
+        
+        if(borrar!=null){
+            if(borrar.equals("borrado")){
+                Integer eID = new Integer(id);
+                evento = this.eventoFacade.find(eID);
+                this.eventoFacade.remove(evento);
+                response.sendRedirect("ServletListadoAdmin");
             }
-            
-        } else if (usuario.getRol().getId() == 3) {
-            if(usuario != null){
-                if(usuario.getContrasenya().equals(password)){
-                    jsp = "inicioCreador.jsp";
-                    session.setAttribute("user", usuario);
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Contraseña incorrecta!";
-                }
-            } else {
-                jsp = "login.jsp";
-                errorLog = "¡Email incorrecto!";
+        }else{
+            if(id != null){
+                Integer eID = new Integer(id);
+                evento = this.eventoFacade.find(eID);
             }
-            
-            eventos = this.eventoFacade.findAll();
-            session.setAttribute("eventos", eventos);
+            request.setAttribute("evento", evento);
+            request.setAttribute("error", error);
+
+            RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
+            rd.forward(request, response);
         }
-        
-        
-        request.setAttribute("errorLog", errorLog);
-        
-        RequestDispatcher rd = request.getRequestDispatcher(jsp);
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

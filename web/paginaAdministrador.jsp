@@ -17,7 +17,18 @@
         <h1>Lista de Usuarios.</h1>
         <% List<Usuario> ListaUsuario = (List)request.getAttribute("listaUsuario");
            String borrar = "borrado";
+           if(ListaUsuario!= null){
         %>
+        <form action="ServletListadoAdmin">
+        
+         Filtrado:<input type="text" name="filtradoUsuario" />
+            <select name="tipofiltrado">
+                <option>ID</option>
+                <option>EMAIL</option>
+                <option>ROL</option>
+            </select>
+            <input type="submit" value="FiltrarUsuario" />
+        <form/>
         <table border="1">
         <tr>
             <th>ID</th>
@@ -29,7 +40,7 @@
         </tr>        
             
         <%
-            for (Usuario u : ListaUsuario) {
+                for (Usuario u : ListaUsuario) {
         %>   
         <tr>
             <td><%= u.getId() %></td>
@@ -40,8 +51,35 @@
             <td><a href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">Borrar</a></td>            
         </tr>        
         <%
-            }
-        %>    
+                } 
+        %>
         </table>
+        <%
+            }else{
+        %>    
+        <form action="ServletListadoAdmin">
+        
+         Filtrado:<input type="text" name="filtradoUsuario" />
+            <select name="tipofiltrado">
+                <option>ID</option>
+                <option>EMAIL</option>
+                <option>ROL</option>
+            </select>
+            <input type="submit" value="FiltrarUsuario" />
+        <form/>
+        <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>EMAIL</th>
+            <th>PASSWORD</th>
+            <th>ROL</th>                                   
+        </tr> 
+        
+        <%
+                    }
+        %>
+        </table>
+        <a href="ServletCrudUsuario">Crear</a> <br/>
+        
     </body>
 </html>
