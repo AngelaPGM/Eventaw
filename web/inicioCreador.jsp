@@ -57,12 +57,14 @@
                     <td><%= e.getMaxentradasusuario() %></td>
                     <td><%= e.getNumfilas() %></td>
                     <td><%= e.getAsientosfila() %></td>
+                    <td><a href="ServletEditarEvento">Editar</a></td>
                 </tr>
                 <%
                     }
                 %>
             </tbody>
         </table>
-
+        
+            <h2><a href="ServletCRUDEvento">Publicar Nuevo Evento</a></h2>
     </body>
 </html>
