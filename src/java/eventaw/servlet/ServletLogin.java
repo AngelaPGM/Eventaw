@@ -11,6 +11,7 @@ import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -51,6 +52,8 @@ public class ServletLogin extends HttpServlet {
         String jsp = "";
         String errorLog = "";
         List<Evento> eventos;
+        Date today = new Date();
+        HttpSession session = request.getSession();
         
         usuario = this.usuarioFacade.findByEmail(email);
         eventos = this.eventoFacade.findAll();
@@ -58,7 +61,6 @@ public class ServletLogin extends HttpServlet {
         if(usuario != null){
             if(usuario.getContrasenya().equals(password)){
                 jsp = "inicio.jsp";
-                HttpSession session = request.getSession();
                 session.setAttribute("user", usuario);
             } else {
                 jsp = "login.jsp";
@@ -69,8 +71,12 @@ public class ServletLogin extends HttpServlet {
             errorLog = "¡Email incorrecto!";
         }
         
+        for(Evento e : eventos){
+            if(!e.getFecha().after(today)) eventos.remove(e);
+        }
+        
         request.setAttribute("errorLog", errorLog);
-        request.setAttribute("eventos", eventos);
+        session.setAttribute("eventos", eventos);
         
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         rd.forward(request, response);
