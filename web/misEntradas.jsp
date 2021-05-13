@@ -89,7 +89,7 @@
                 <%
                     if (!entradasFuturas.isEmpty()) {
                 %>
-                <table class="center table table-striped align-middle" id="entradas">
+                <table class="center table table-striped align-middle" id="tabla-custom">
                     <thead>
                         <tr>
                             <th>EVENTO</th>

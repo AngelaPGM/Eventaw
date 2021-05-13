@@ -246,6 +246,22 @@ button:hover {
     transition: all 0.4s;
 }
 
+.botones-pag {
+    position: absolute;
+    z-index: -1;
+    width: 300%;
+    height: 100%;
+    color: #fff;
+    background-color: #b997f6;
+    top: 0;
+    left: -100%;
+    transition-duration: 0.4s;  
+}
+
+.botones-pag:hover {
+    background-color: #008CBA;
+}
+
 .login100-form-btn {
     font-family: Poppins-Medium;
     font-size: 16px;
@@ -412,6 +428,10 @@ button:hover {
     border-color: #fc00ff;
 }
 
+
+
+
+
 .btn-xl {
     text-transform: uppercase;
     padding: 1.2rem 3rem;
@@ -437,15 +457,17 @@ button:hover {
     align-items: center;
 }   
 
-/* TABLA ENTRADAS */
-#entradas {
+/* TABLA */
+#tabla-custom {
     font-family: Poppins-Regular;
     border-collapse: collapse;
     text-align: center;
 }
 
-#entradas td, #entradas th {
-  padding: 5px;
-  background-color: #b997f6;
-  color:white;
+#tabla-custom td, #tabla-custom th {
+    padding: 5px;
+    background-color: #b997f6;
+    color:white;
 }
+
+

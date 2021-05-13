@@ -8,14 +8,21 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Administrador</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/util.css">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Pagina Administrador</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/util.css">
+
+
+    </head>
     <body>
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
@@ -37,28 +44,61 @@
                 </div>
             </div>
         </header>
-        <h1>Lista de Usuarios</h1>
+
+        <!-- USUARIOS  -->
+        <section>
+            <div class="container m-t-30">
+                <div class="row">
+                    <div class="col-sm-10 col-md-7">
+                        <h1 class="bg-text" style=" color:#b997f6;"> Usuarios: </h1>
+                    </div>
+                </div>
+                <form action="ServletListadoAdmin">
+                    <div class="row m-t-10">
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="botones-pag"></div>
+                                <button class="login100-form-btn" value="FiltrarUsuario" >
+                                    Nuevo usuario
+                                </button>
+                            </div>                    
+                        </div>
+                        <div class="col-5 wrap-input2 offset-2">
+                            <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoUsuario"/> 
+                        </div>
+                        <div class="col-1">
+                            <select name="tipofiltrado" class="custom-select">
+                                <option value="id">ID</option> 
+                                <option value="email">EMAIL</option>
+                                <option value="rol">ROL</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="botones-pag"></div>
+                                <button class="login100-form-btn" value="FiltrarUsuario" >
+                                    FILTRAR
+                                </button>
+                            </div>                    
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>   
+
         <% List<Usuario> ListaUsuario = (List) request.getAttribute("listaUsuario");
             String errores = (String) request.getAttribute("errores");
             String borrar = "borrado";
 
             if (!ListaUsuario.isEmpty() || (errores != "")) {
         %>
-        <form action="ServletListadoAdmin">
 
-            Filtrado:<input type="text" name="filtradoUsuario" />
-            <select name="tipofiltrado">
-                <option value="id">ID</option> 
-                <option value="email">EMAIL</option>
-                <option value="rol">ROL</option>
-            </select>
-            <input type="submit" value="FiltrarUsuario" />
-            <form/>
-            <table border="1">
+        <div class="container m-t-20">
+            <table class="center table table-striped align-middle" id="tabla-custom">
                 <tr>
                     <th>ID</th>
                     <th>EMAIL</th>
-                    <th>PASSWORD</th>
+                    <th>CONTRASEÑA</th>
                     <th>ROL</th>            
                     <th></th>            
                     <th></th>                        
@@ -72,41 +112,41 @@
                     <td><%= u.getCorreo()%></td>
                     <td><%= u.getContrasenya()%></td>            
                     <td><%= u.getRol().getTipo()%></td>      
-                    <td><a href="ServletCrudUsuario?id=<%= u.getId()%>">Editar</a></td>
-                    <td><a href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">Borrar</a></td>            
+                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>">EDITAR</a></td>
+                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">BORRAR</a></td>            
                 </tr>        
                 <%
                     }
                 %>
             </table>
+        </div>
+        <%
+        } else {
+        %>    
+        <form action="ServletListadoAdmin">
+
+            Filtrado:<input type="text" name="filtradoUsuario" />
+            <select name="tipofiltrado">
+                <option>ID</option>
+                <option>EMAIL</option>
+                <option>ROL</option>
+            </select>
+            <input type="submit" value="FiltrarUsuario" />
+        </form>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>EMAIL</th>
+                <th>PASSWORD</th>
+                <th>ROL</th>                                   
+            </tr> 
+
             <%
-            } else {
-            %>    
-            <form action="ServletListadoAdmin">
+                }
+            %>
+        </table>
 
-                Filtrado:<input type="text" name="filtradoUsuario" />
-                <select name="tipofiltrado">
-                    <option>ID</option>
-                    <option>EMAIL</option>
-                    <option>ROL</option>
-                </select>
-                <input type="submit" value="FiltrarUsuario" />
-                <form/>
-                <table border="1">
-                    <tr>
-                        <th>ID</th>
-                        <th>EMAIL</th>
-                        <th>PASSWORD</th>
-                        <th>ROL</th>                                   
-                    </tr> 
+        <%= errores%> <br/>
 
-                    <%
-                        }
-                    %>
-                </table>
-
-                <%= errores%> <br/>
-                <a href="ServletCrudUsuario">Crear</a> <br/>
-
-                </body>
-                </html>
+    </body>
+</html>
