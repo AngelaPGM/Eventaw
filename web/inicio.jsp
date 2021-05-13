@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
@@ -20,22 +21,54 @@
     <link rel="stylesheet" href="css/util.css">
     <body>
         <%
-            List<Evento> eventos;
-
-            eventos = (List<Evento>) request.getAttribute("eventos");
+            List<Evento> eventos = (List<Evento>) request.getAttribute("eventos");
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Usuario user = (Usuario) session.getAttribute("user");
+            String cabecera = "", subcabecera = "";
+
         %>
 
-
-        <div class="topnav">
+        <!-- Barra navegacion -->
+        <div class="topnav fixed-top">
             <ul>
                 <li><a class="active">Inicio</a></li>
 
-                <li style="float:right"><a <a href="ServletCierreSesion">Cerrar sesión</a></li>
-                <li style="float:right"><a <a href="perfil.jsp">Mi perfil</a></li>
-                <li style="float:right"><a href="misEntradas.jsp">Mis entradas</a></li>
+                <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a href="perfil.jsp">Mi perfil</a></li>
+                    <% if (user.getRol().getId() == 1) { //admin 
+                    cabecera = "Hola de nuevo";
+                    subcabecera = "Administrador";
+                    %>
+                <li style="float:right"><a href="ServletListadoAdmin">VER USUARIOS</a></li>
+                    <%} else if (user.getRol().getId() == 2) { //usuario evento 
+                                        cabecera = "Reserva ya tus entradas";
+                    subcabecera = "Y no te pierdas nada";
+                    %>
+                <li style="float:right"><a href="misEntradas.jsp">MIS ENTRADAS</a></li>
+                    <% } else if (user.getRol().getId() == 3) { //creador eventos 
+                    cabecera = "Un espacio para";
+                    subcabecera = "tus mejores eventos";
+                    %>
+                <li style="float:right"><a href="LlistaEventos.jsp">MIS EVENTOS</a></li>
+                    <%
+                        }
+                    %>
+
             </ul> 
         </div>
+
+
+
+        <!-- Imagen fondo -->
+        <header class="header-inicio text-center text-white">
+            <div class="bg-text">
+                <div class="container">
+                    <h1 class="masthead-heading mb-0"> <%= cabecera %> </h1>
+                    <h2 class="masthead-subheading mb-0"><%= subcabecera %> </h2>
+
+                </div>
+            </div>
+        </header>
 
 
 

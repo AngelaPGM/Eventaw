@@ -13,11 +13,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis entradas</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/util.css">
     <body>
+                <!-- Barra navegacion -->
+        <div class="topnav fixed-top">
+            <ul>
+                <li><a href="inicio.jsp">Inicio</a></li>
+
+                <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a href="perfil.jsp">Mi perfil</a></li>
+                <li style="float:right"><a  class="active" href="misEntradas.jsp">Mis entradas</a></li>
+            </ul> 
+        </div>
         <%
             Usuario usuario;
             List<Entrada> entradasFuturas = new ArrayList();
@@ -34,7 +47,7 @@
                 }
             }
         %>
-        <h1>Mis Entradas</h1>
+      <br/><br/>   <h1>Mis Entradas</h1>
         <%
             if(!entradasFuturas.isEmpty()){
         %>
