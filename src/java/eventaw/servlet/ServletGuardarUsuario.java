@@ -38,6 +38,7 @@ public class ServletGuardarUsuario extends HttpServlet {
         
         Usuario u, usuarioEncontrado;
         usuarioEncontrado = null;
+        u= null;
         String id = request.getParameter("id");
         String email = request.getParameter("correo");
         String contrasena = request.getParameter("contrasenia");
@@ -59,7 +60,7 @@ public class ServletGuardarUsuario extends HttpServlet {
             jsp = "crearEditarUsuario.jsp";
             errorCrear = "Las contraseñas deben ser iguales.";
             
-        }else if(!usuarioEncontrado.equals(null)){
+        }else if(usuarioEncontrado != null){
             
             jsp = "crearEditarUsuario.jsp";
             errorCrear = "Este correo ya ha sido utilizado.";
@@ -84,7 +85,8 @@ public class ServletGuardarUsuario extends HttpServlet {
         }
         
         if(jsp != ""){
-        
+            
+            request.setAttribute("u", u);
             request.setAttribute("errorCrear", errorCrear);
             RequestDispatcher rd = request.getRequestDispatcher(jsp);
             rd.forward(request, response);

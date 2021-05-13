@@ -9,6 +9,7 @@ import eventaw.dao.UsuarioFacade;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -33,16 +34,31 @@ public class ServletListadoAdmin extends HttpServlet {
        String filtrado = request.getParameter("filtradoUsuario");
        String tipoFiltrado = request.getParameter("tipofiltrado");
        
-       List <Usuario> listaUsuario = null;
-       String prueba ="";
+       List <Usuario> listaUsuario = new ArrayList<>();
+       String Errores ="";
+       List <Usuario> listaU;
        
        if(filtrado !=null && filtrado.length()>0){//Filtrado
-           if(tipoFiltrado.equals("ID")){
-           prueba ="Ha entrado a filtrado";
-           }else if (tipoFiltrado.equals("EMAIL")){
-           prueba ="Ha entrado a filtrado";
+           try{
+           if(tipoFiltrado.equals("id")){
+           
+           listaUsuario.add(this.usuarioFacade.find(new Integer(filtrado)));
+               
+           }else if (tipoFiltrado.equals("email")){
+                listaU = this.usuarioFacade.findFiltradoByEmail(filtrado);
+           if(listaU != null && !listaU.isEmpty()){
+                listaUsuario = listaU;
+                   }
            }else{//ROL
-           prueba ="Ha entrado a filtrado";
+               
+                listaU = this.usuarioFacade.findFiltradoByRol(filtrado);
+                if(listaU != null && !listaU.isEmpty()){
+                    listaUsuario = listaU;
+                }
+           }
+           }catch(Exception e){
+               Errores = "ID ERRONEO";
+               listaUsuario = this.usuarioFacade.findAll();
            }
        }else{// Quiero mostrar todos
             listaUsuario = this.usuarioFacade.findAll();
@@ -50,7 +66,7 @@ public class ServletListadoAdmin extends HttpServlet {
        }
        
        request.setAttribute("listaUsuario", listaUsuario);
-       request.setAttribute("prueba",prueba);
+       request.setAttribute("errores",Errores);
        
        RequestDispatcher rd = request.getRequestDispatcher("paginaAdministrador.jsp");
        rd.forward(request, response);
