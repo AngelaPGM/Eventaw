@@ -64,7 +64,7 @@ public class ServletLogin extends HttpServlet {
                         jsp = "inicio.jsp";
                         session.setAttribute("user", usuario);
                         eventos = this.eventoFacade.findAll();
-                        for(Evento e : eventos){
+                        for(Evento e : this.eventoFacade.findAll()){
                             if(!e.getFecha().after(today)) eventos.remove(e);
                         }   
                         request.setAttribute("eventos", eventos);
