@@ -305,11 +305,11 @@ button:hover {
 }
 
 .fixed-top {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1030;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
 }
 
 .container-registro {
@@ -402,22 +402,22 @@ button:hover {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #a64bf4;
-  border-color: #a64bf4;
+    color: #fff;
+    background-color: #a64bf4;
+    border-color: #a64bf4;
 }
 .btn-primary:hover {
-  color: #fff;
-  background-color: #fc00ff;
-  border-color: #fc00ff;
+    color: #fff;
+    background-color: #fc00ff;
+    border-color: #fc00ff;
 }
 
 .btn-xl {
-  text-transform: uppercase;
-  padding: 1.2rem 3rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    padding: 1.2rem 3rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
 }
 
 .fondo-pagina {
@@ -436,3 +436,16 @@ button:hover {
     justify-content: center;
     align-items: center;
 }   
+
+/* TABLA ENTRADAS */
+#entradas {
+    font-family: Poppins-Regular;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+#entradas td, #entradas th {
+  padding: 5px;
+  background-color: #b997f6;
+  color:white;
+}

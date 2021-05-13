@@ -84,73 +84,77 @@
         %>
 
         <div class="container m-t-30">
-            <%
-                if (!entradasFuturas.isEmpty()) {
-            %>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>EVENTO</th>
-                        <th>FECHA</th>
-                        <th>FILA</th>
-                        <th>ASIENTO</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        for (Entrada e : entradasFuturas) {
-                    %>
-                    <tr>
-                        <td><%= e.getEvento().getTitulo()%></td>
-                        <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
-                        <td><%= e.getNumfila()%></td>
-                        <td><%= e.getAsientofila()%></td>
-                        <td><a href="ServletCancelarEntrada?idEntrada=<%= e.getId()%>">Cancelar</a></td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table> <br/>
-            <%
-            } else {
-            %>
+            <div class="table-responsive">
 
-            <div class="bg-text text-center" style="margin-top: 10%">
-                <h1 style="color: #9e9e9e"> Vaya, a&uacute;n no tienes ninguna entrada :(</h1>
-                <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
+                <%
+                    if (!entradasFuturas.isEmpty()) {
+                %>
+                <table class="center table table-striped align-middle" id="entradas">
+                    <thead>
+                        <tr>
+                            <th>EVENTO</th>
+                            <th>FECHA</th>
+                            <th>FILA</th>
+                            <th>ASIENTO</th>
+                            <th>PRECIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            for (Entrada e : entradasFuturas) {
+                        %>
+                        <tr>
+                            <td><%= e.getEvento().getTitulo()%></td>
+                            <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
+                            <td><%= e.getNumfila()%></td>
+                            <td><%= e.getAsientofila()%></td>
+                            <td><%= e.getEvento().getPrecio() %> €</td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
+                </table> <br/>
+                <%
+                } else {
+                %>
+
+                <div class="bg-text text-center" style="margin-top: 10%">
+                    <h1 style="color: #9e9e9e"> Vaya, a&uacute;n no tienes ninguna entrada :(</h1>
+                    <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
                 </div>
-            <%
-                }
+                <%
+                    }
 
-                if (!entradasPasadas.isEmpty()) {
-            %>
-            <h1>Eventos a los que he asistido</h1>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>EVENTO</th>
-                        <th>DESCRIPCION</th>
-                        <th>FECHA</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        for (Entrada e : entradasPasadas) {
-                    %>
-                    <tr>
-                        <td><%= e.getEvento().getTitulo()%></td>
-                        <td><%= e.getEvento().getDescripcion()%></td>
-                        <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
-            <%
-                }
-            %>
+                    if (!entradasPasadas.isEmpty()) {
+                %>
+                <h1>Eventos a los que he asistido</h1>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>EVENTO</th>
+                            <th>DESCRIPCION</th>
+                            <th>FECHA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            for (Entrada e : entradasPasadas) {
+                        %>
+                        <tr>
+                            <td><%= e.getEvento().getTitulo()%></td>
+                            <td><%= e.getEvento().getDescripcion()%></td>
+                            <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
+                </table>
+                <%
+                    }
+                %>
+            </div>
         </div>
     </body>
 </html>
