@@ -74,7 +74,7 @@
 
         <h1>Bienvenido a EvenTAW</h1>
         <input type="text" name="buscador" value="Buscar Eventos" /> <input type="submit" value="Buscar" name="BuscarBoton" />
-
+        <br/>
 
         Eventos Disponibles: <br/>
         <%
