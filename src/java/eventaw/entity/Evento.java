@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id")
     , @NamedQuery(name = "Evento.findByTitulo", query = "SELECT e FROM Evento e WHERE e.titulo = :titulo")
     , @NamedQuery(name = "Evento.findByDescripcion", query = "SELECT e FROM Evento e WHERE e.descripcion = :descripcion")
+    , @NamedQuery(name = "Evento.findByCiudad", query = "SELECT e FROM Evento e WHERE e.ciudad = :ciudad")
     , @NamedQuery(name = "Evento.findByFecha", query = "SELECT e FROM Evento e WHERE e.fecha = :fecha")
     , @NamedQuery(name = "Evento.findByFechacompra", query = "SELECT e FROM Evento e WHERE e.fechacompra = :fechacompra")
     , @NamedQuery(name = "Evento.findByPrecio", query = "SELECT e FROM Evento e WHERE e.precio = :precio")
@@ -67,6 +68,9 @@ public class Evento implements Serializable {
     @Size(min = 1, max = 500)
     @Column(name = "DESCRIPCION")
     private String descripcion;
+    @Size(max = 45)
+    @Column(name = "CIUDAD")
+    private String ciudad;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA")
@@ -144,6 +148,14 @@ public class Evento implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     public Date getFecha() {
