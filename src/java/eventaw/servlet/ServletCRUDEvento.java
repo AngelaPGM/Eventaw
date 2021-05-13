@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Gonzalo
  */
-@WebServlet(name = "ServletCrearEvento", urlPatterns = {"/ServletCrearEvento"})
+@WebServlet(name = "ServletCRUDEvento", urlPatterns = {"/ServletCRUDEvento"})
 public class ServletCRUDEvento extends HttpServlet {
 
 
