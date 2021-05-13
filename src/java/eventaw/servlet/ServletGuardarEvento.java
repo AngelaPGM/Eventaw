@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -47,6 +49,10 @@ public class ServletGuardarEvento extends HttpServlet {
             throws ServletException, IOException {
         
         Evento e = null;
+        Usuario usuario;
+        HttpSession session = request.getSession();
+        
+        usuario = (Usuario)session.getAttribute("user");
         
         String error = "";
         String id = request.getParameter("id");
@@ -83,10 +89,16 @@ public class ServletGuardarEvento extends HttpServlet {
                     if(!asientos.equals("")) e.setAsientosfila(new Integer(asientos));
                     Usuario creador = this.usuarioFacade.find(new Integer(idCreador));
                     e.setCreador(creador);
+                    
+                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().add(e);
+                    
                     this.eventoFacade.create(e);
+                    this.usuarioFacade.edit(usuario);
                 }else{
                     e = this.eventoFacade.find(new Integer(id));
-
+                    
+                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().remove(e);
+                    
                     e.setTitulo(titulo);
                     e.setDescripcion(desc);
                     e.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
@@ -96,17 +108,27 @@ public class ServletGuardarEvento extends HttpServlet {
                     e.setMaxentradasusuario(new Integer(max));
                     if(!numFilas.equals("")) e.setNumfilas(new Integer(numFilas));
                     if(!asientos.equals("")) e.setAsientosfila(new Integer(asientos));
-
+                    
+                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().add(e);
+                    
                     this.eventoFacade.edit(e);
+                    this.usuarioFacade.edit(usuario);
                 }
             }catch(Exception exception){
                 log("Excepcion");
             }
 
             request.setAttribute("evento", e);
+            session.setAttribute("user", usuario);
 
-            RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
-            rd.forward(request, response);
+            if(usuario.getRol().getId() == 1){
+                RequestDispatcher rd = request.getRequestDispatcher("ServletListadoAdmin");
+                rd.forward(request, response);
+            } else if(usuario.getRol().getId() == 3) {
+                request.setAttribute("eventos", usuario.getEventoList());
+                RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
+                rd.forward(request, response);
+            }
         }
     }
 

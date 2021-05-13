@@ -8,8 +8,10 @@ package eventaw.servlet;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
 import eventaw.entity.Evento;
+import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletCRUDEvento", urlPatterns = {"/ServletCRUDEvento"})
 public class ServletCRUDEvento extends HttpServlet {
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
 
 
     @EJB
@@ -45,16 +51,37 @@ public class ServletCRUDEvento extends HttpServlet {
         
         Evento evento = null;
         String error = "";
+        Usuario usuario;
+        HttpSession session= request.getSession();
         
         String borrar = request.getParameter("borrar");
         String id = request.getParameter("id");
+        usuario = (Usuario) session.getAttribute("user");
         
         if(borrar!=null){
             if(borrar.equals("borrado")){
                 Integer eID = new Integer(id);
                 evento = this.eventoFacade.find(eID);
                 this.eventoFacade.remove(evento);
-                response.sendRedirect("ServletListadoAdmin");
+                
+                if(usuario.getRol().getId() == 1){
+                    
+                    evento.getCreador().getEventoList().remove(evento);
+                    this.usuarioFacade.edit(evento.getCreador());
+                    
+                    if(evento.getCreador().getId() == usuario.getId()) session.setAttribute("user", usuario);
+                    
+                    response.sendRedirect("ServletListadoAdmin");
+                } else if(usuario.getRol().getId() == 3){
+                    
+                    usuario.getEventoList().remove(evento);
+                    this.usuarioFacade.edit(usuario);
+                    session.setAttribute("user", usuario);
+                    
+                    request.setAttribute("eventos", usuario.getEventoList());
+                    RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
+                    rd.forward(request, response);
+                }
             }
         }else{
             if(id != null){

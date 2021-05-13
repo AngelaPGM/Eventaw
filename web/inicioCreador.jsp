@@ -17,11 +17,10 @@
     </head>
     <body>
         <%
-            Usuario usuario;
-            usuario = (Usuario) session.getAttribute("user");
+            String borrado = "borrado";
             
             List<Evento> misEventos;
-            misEventos = (List<Evento>) session.getAttribute("eventos");
+            misEventos = (List<Evento>) request.getAttribute("eventos");
         %>
         <h1>Mis Eventos</h1>
         
@@ -57,7 +56,8 @@
                     <td><%= e.getMaxentradasusuario() %></td>
                     <td><%= e.getNumfilas() %></td>
                     <td><%= e.getAsientosfila() %></td>
-                    <td><a href="ServletEditarEvento">Editar</a></td>
+                    <td><a href="ServletCRUDEvento?id=<%= e.getId() %>">Editar</a></td>
+                    <td><a href="ServletCRUDEvento?id=<%= e.getId() %>&borrar=<%= borrado %>">Borrar</a></td>
                 </tr>
                 <%
                     }

@@ -4,6 +4,7 @@
     Author     : Gonzalo
 --%>
 
+<%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Evento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,6 +17,9 @@
     <%
         Evento evento = (Evento)request.getAttribute("evento");
         String error = (String)request.getAttribute("error");
+        Usuario usuario;
+        
+        usuario = (Usuario)session.getAttribute("user");
         
         String id = "", titulo = "", desc = "", fecha = "", fechaCompra = "", precio = "",
                     aforo = "", max = "", numFilas = "", asientos = "";
@@ -82,7 +86,7 @@
                         <td><input type="text" name="asientos" value="<%= asientos %>"/></td>
                     </tr>
                 </tbody>
-                <!--<input type="hidden" name="creador" value=""/>-->
+                <input type="hidden" name="creador" value="<%= usuario.getId() %>"/>
             </table></br>
             Los campos marcados con * son obligatorios.</br>
             <input type="submit" value="Guardar"/></br>
