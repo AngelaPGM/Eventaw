@@ -37,7 +37,7 @@
                 <li><a class="active">Inicio</a></li>
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="perfilUsuario.jsp">Mi perfil</a></li>
-                <li style="float:right"><a href="misEntradas.jsp">MIS ENTRADAS</a></li>
+                <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
             </ul> 
         </div>
 

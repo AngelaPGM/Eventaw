@@ -48,25 +48,27 @@
                 <div class="bg-text">
                     <h1 style="font-size: 4rem"> Mis entradas</h1>
                 </div>
-                <div class="row justify-content-center m-t-30">
-                    <div class="col-4 wrap-input2 ">
-                        <input class="input2" type="text" name="buscador" placeholder="Buscar entradas por nombre y/o fecha"/> 
+                <form action="ServletListadoEntradas">
+                    <div class="row justify-content-center m-t-30">
+                        <div class="col-4 wrap-input2 ">
+                            <input class="input2" type="text" name="buscador" placeholder="Buscar entradas por nombre y/o fecha"/> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        </div>
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn" value="Buscar">
+                                    Buscar
+                                </button>
+                            </div>                    
+                        </div>
                     </div>
-                    <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
-                    </div>
-                    <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
-                    </div>
-                    <div class="col-2">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn" value="Buscar">
-                                Buscar
-                            </button>
-                        </div>                    
-                    </div>
-                </div>
+                </form>
             </div>
         </header>
 
@@ -74,11 +76,23 @@
             List<Entrada> entradasFuturas = new ArrayList();
             List<Entrada> entradasPasadas = new ArrayList();
 
-            for (Entrada e : usuario.getEntradaList()) {
-                if (e.getEvento().getFecha().after(new Date())) {
-                    entradasFuturas.add(e);
-                } else {
-                    entradasPasadas.add(e);
+            if (request.getParameter("filtrado").equals("1")) {
+
+                entradasFuturas = (List<Entrada>) request.getAttribute("entradas");
+
+                for (Entrada e : usuario.getEntradaList()) {
+                    if (e.getEvento().getFecha().before(new Date())) {
+                        entradasPasadas.add(e);
+                    }
+                }
+            } else {
+
+                for (Entrada e : usuario.getEntradaList()) {
+                    if (e.getEvento().getFecha().after(new Date())) {
+                        entradasFuturas.add(e);
+                    } else {
+                        entradasPasadas.add(e);
+                    }
                 }
             }
         %>
@@ -108,7 +122,7 @@
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
                             <td><%= e.getNumfila()%></td>
                             <td><%= e.getAsientofila()%></td>
-                            <td><%= e.getEvento().getPrecio() %> €</td>
+                            <td><%= e.getEvento().getPrecio()%> €</td>
                         </tr>
                         <%
                             }
