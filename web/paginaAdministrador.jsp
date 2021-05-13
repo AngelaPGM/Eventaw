@@ -16,16 +16,18 @@
     <body>
         <h1>Lista de Usuarios.</h1>
         <% List<Usuario> ListaUsuario = (List)request.getAttribute("listaUsuario");
-           String borrar = "borrado";
-           if(ListaUsuario!= null){
+            String errores = (String)request.getAttribute("errores");
+            String borrar = "borrado";
+           
+           if(!ListaUsuario.isEmpty() || (errores != "")){
         %>
         <form action="ServletListadoAdmin">
         
          Filtrado:<input type="text" name="filtradoUsuario" />
             <select name="tipofiltrado">
-                <option>ID</option>
-                <option>EMAIL</option>
-                <option>ROL</option>
+                <option value="id">ID</option> 
+                <option value="email">EMAIL</option>
+                <option value="rol">ROL</option>
             </select>
             <input type="submit" value="FiltrarUsuario" />
         <form/>
@@ -79,6 +81,8 @@
                     }
         %>
         </table>
+        
+        <%= errores%> <br/>
         <a href="ServletCrudUsuario">Crear</a> <br/>
         
     </body>

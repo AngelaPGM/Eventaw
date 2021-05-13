@@ -5,6 +5,7 @@
  */
 package eventaw.dao;
 
+import eventaw.entity.Rol;
 import eventaw.entity.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -45,4 +46,35 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return aux.get(0);
         }
     }
+    
+    public List<Usuario> findFiltradoByRol(String rol){
+        Query q;
+        List<Usuario> res;
+
+        q = this.em.createQuery("SELECT u FROM Usuario u WHERE u.rol.tipo LIKE :rol");
+        q.setParameter("rol", '%' + rol + '%');
+        res = q.getResultList();
+
+        if(res.isEmpty()){
+            return null;
+        } else {
+            return res;
+        }
+    }
+    
+    public List<Usuario> findFiltradoByEmail(String email){
+        Query q;
+        List<Usuario> res;
+
+        q = this.em.createQuery("SELECT u FROM Usuario u WHERE u.correo LIKE :correo ");
+        q.setParameter("correo", '%' + email + '%');
+        res = q.getResultList();
+
+        if(res.isEmpty()){
+            return null;
+        } else {
+            return res;
+        }
+    }
+    
 }
