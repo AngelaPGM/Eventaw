@@ -4,6 +4,8 @@
     Author     : angep
 --%>
 
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Usuarioevento"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -24,6 +26,9 @@
     <%
         Usuario user = (Usuario) session.getAttribute("user");
         Usuarioevento uEvento = (Usuarioevento) user.getUsuarioevento();
+
+        String errorLog = (String) request.getAttribute("errorLog");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     %>
     <body>
         <!-- Barra navegacion -->
@@ -36,8 +41,8 @@
             </ul> 
         </div>
         <div class="fondo-pagina">
-            <div class="container-registro">
-                <div class="wrap-registro">
+            <div class="container-perfil">
+                <div class="wrap-registro" style=" margin-top: 3%">
                     <form class="register-form" method="POST" action="">
                         <span class="login-form-title">                       
                             Modificar perfil
@@ -53,19 +58,103 @@
                         <div class="row p-b-20 justify-content-around">
                             <div class="row p-b-20 justify-content-around">
                                 <div class="col-3 wrap-input2">
-                                    <input class="input2" type="text" name="nombre" value="<%= uEvento.getNombre() %>" required>
+                                    <input class="input2" type="text" name="nombre" value="<%= uEvento.getNombre()%>" required>
                                 </div>
                                 <div class="col-4 wrap-input2  ">
-                                    <input class="input2" type="text" name="ape1" required>
+                                    <input class="input2" type="text" name="ape1" value="<%= uEvento.getApellido1()%>" required>
                                 </div>
                                 <div class="col-4 wrap-input2 ">
-                                    <input class="input2" type="text" name="ape2">
+                                    <input class="input2" type="text" name="ape2" value="<%= uEvento.getApellido2()%>">
                                 </div>
                             </div>
+
+                            <div class="row justify-content-around">
+                                <div class="col-8 ">Domicilio: </div>
+                                <div class="col-3 ">Ciudad: </div>
+                            </div>
+                            <div class="row justify-content-around p-b-20">
+                                <div class="col-8 wrap-input2">
+                                    <input class="input2" type="text" name="domicilio" value="<%= uEvento.getDomicilio()%>" required>
+                                </div>
+                                <div class="col-3 wrap-input2">
+                                    <input class="input2" type="text" name="ciudad" value="<%= uEvento.getCiudad()%>" required>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-around">
+                                <div class="col-4 text-center">Fecha de nacimiento:</div>
+                                <div class="col-3 text-center">Sexo:</div>
+                            </div>
+                            <div class="row justify-content-around p-b-20">
+
+                                <div class="col-4 wrap-input2 ">
+                                    <input class="input2" type="date" name="fNac" max="<%= formato.format(new Date())%>" 
+                                           value="<%= formato.format(uEvento.getFechanacimiento())%>" required>
+                                </div>
+
+                                <div class="col-3">
+                                    <select class="custom-select" name="sexo" required>
+                                        <%
+                                            if (uEvento.getSexo().equals('M')) { %>
+                                        <option selected value="M">Mujer</option>
+                                        <option value="H">Hombre</option>
+                                        <% } else { %>
+                                        <option value="M">Mujer</option>
+                                        <option selected value="H">Hombre</option>
+                                        <% }
+                                        %>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr/>
+                            <div class="row justify-content-around">
+                                <div class="col-11">
+                                    Email: 
+                                </div>
+                            </div>
+                            <div class="row justify-content-around">
+                                <div class="col-11 wrap-input2">
+                                    <input class="input2" type="email" name="email" value="<%= user.getCorreo() %>"required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-around m-t-20">
+                                <div class="col-5">
+                                    Nueva contraseña:
+                                </div>
+                                <div class="col-5">
+                                    Repita nueva contraseña:
+                                </div>
+                            </div>
+                            <div class="row justify-content-around">
+                                <div class="col-6  wrap-input2" style="width: 45%;">
+                                    <input class="input2" type="password" name="pass1">
+                                </div>
+                                <div class="col-6  wrap-input2" style="width: 45%;">
+                                    <input class="input2" type="password" name="pass2" required>
+                                </div>
+                            </div>
+
+
+                            <div class="row justify-content-center">
+                                <div class="col-6">
+                                    <div class="container-login100-form-btn p-t-30 justify-content-center">
+                                        <div class="wrap-login100-form-btn">
+                                            <div class="login100-form-bgbtn"></div>
+                                            <button class="login100-form-btn">
+                                                GUARDAR
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                     </form>
                 </div>
             </div>
 
+        </div>
         </div>
     </body>
 </html>
