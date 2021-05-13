@@ -6,6 +6,7 @@
 package eventaw.dao;
 
 import eventaw.entity.Evento;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,11 +36,11 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
         
-        q = this.em.createQuery("select e from Evento e where e.creador = :idCreador");
+        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador");
         q.setParameter("idCreador", idCreador);
         aux = q.getResultList();
         if(aux.isEmpty()){
-            return null;
+            return aux;
         } else {
             return q.getResultList();
         }
