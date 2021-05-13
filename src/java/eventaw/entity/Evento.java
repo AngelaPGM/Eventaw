@@ -58,36 +58,27 @@ public class Evento implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "TITULO")
+    @Column(name = "TITULO", length = 30, nullable = false)
     private String titulo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION", length = 500, nullable = false)
     private String descripcion;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA")
+    @Column(name = "FECHA", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHACOMPRA")
+    @Column(name = "FECHACOMPRA", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechacompra;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "PRECIO")
+    @Column(name = "PRECIO", nullable = false)
     private double precio;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "AFORO")
+    @Column(name = "AFORO", nullable = false)
     private int aforo;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "MAXENTRADASUSUARIO")
+    @Column(name = "MAXENTRADASUSUARIO", nullable = false)
     private int maxentradasusuario;
     @Column(name = "NUMFILAS")
     private Integer numfilas;
