@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Pepe
+ * @author angep
  */
 @Stateless
 public class RolFacade extends AbstractFacade<Rol> {

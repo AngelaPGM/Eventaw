@@ -75,11 +75,10 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
             Rol rolUsuario = this.rolFacade.find(2);
             user.setRol(rolUsuario);
 
-            this.usuarioFacade.create(user);
-
             //CREACION USUARIO EVENTO
             Usuarioevento uEvento = new Usuarioevento();
-            uEvento.setNombre(new String(request.getParameter("email").getBytes("ISO-8859-1"), "UTF8"));
+            uEvento.setId(0);
+            uEvento.setNombre(new String(request.getParameter("nombre").getBytes("ISO-8859-1"), "UTF8"));
             uEvento.setApellido1(new String(request.getParameter("ape1").getBytes("ISO-8859-1"), "UTF8"));
 
             String ape2 = new String(request.getParameter("ape2").getBytes("ISO-8859-1"), "UTF8");
@@ -88,11 +87,11 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
             } else {
                 uEvento.setApellido2("");
             }
-            
+
             uEvento.setDomicilio(new String(request.getParameter("domicilio").getBytes("ISO-8859-1"), "UTF8"));
             uEvento.setCiudad(new String(request.getParameter("ciudad").getBytes("ISO-8859-1"), "UTF8"));
             String fecha = request.getParameter("fNac");
-            
+
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
@@ -101,16 +100,17 @@ public class ServletRegistroUsuarioEvento extends HttpServlet {
                 Logger.getLogger(ServletRegistroUsuarioEvento.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-           
             uEvento.setSexo(request.getParameter("sexo"));
-            uEvento.setIdusuario(user.getId());
-            uEvento.setUsuario(user);
+            uEvento.setIdusuario(user);
+            
+
+            this.usuarioFacade.create(user);
             this.usuarioeventoFacade.create(uEvento);
             
             user.setUsuarioevento(uEvento);
             this.usuarioFacade.edit(user);
 
-            url = "ServletLogin?email="+email+"&pass="+pass1;
+            url = "ServletLogin?email=" + email + "&pass=" + pass1;
 
         }
 

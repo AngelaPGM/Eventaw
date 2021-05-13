@@ -5,7 +5,6 @@
  */
 package eventaw.dao;
 
-import eventaw.entity.Rol;
 import eventaw.entity.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -15,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Pepe
+ * @author angep
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
@@ -32,7 +31,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
     
-    public Usuario findByEmail(String email){
+        public Usuario findByEmail(String email){
         Query q;
         List<Usuario> aux;
         
@@ -76,5 +75,4 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return res;
         }
     }
-    
 }

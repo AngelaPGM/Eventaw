@@ -12,14 +12,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/util.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Inicio</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/util.css">
+    </head>
     <body>
         <%
             List<Evento> eventos = (List<Evento>) session.getAttribute("eventos");
@@ -33,28 +37,9 @@
         <div class="topnav fixed-top">
             <ul>
                 <li><a class="active">Inicio</a></li>
-
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
-                <li style="float:right"><a href="perfil.jsp">Mi perfil</a></li>
-                    <% if (user.getRol().getId() == 1) { //admin 
-                            cabecera = "Hola de nuevo";
-                            subcabecera = "Administrador";
-                    %>
-                <li style="float:right"><a href="ServletListadoAdmin">VER USUARIOS</a></li>
-                    <%} else if (user.getRol().getId() == 2) { //usuario evento 
-                        cabecera = "Reserva ya tus entradas";
-                        subcabecera = "Y no te pierdas nada";
-                    %>
+                <li style="float:right"><a href="perfilUsuario.jsp">Mi perfil</a></li>
                 <li style="float:right"><a href="misEntradas.jsp">MIS ENTRADAS</a></li>
-                    <% } else if (user.getRol().getId() == 3) { //creador eventos 
-                        cabecera = "Un espacio para";
-                        subcabecera = "tus mejores eventos";
-                    %>
-                <li style="float:right"><a href="ListaEventos.jsp">MIS EVENTOS</a></li>
-                    <%
-                        }
-                    %>
-
             </ul> 
         </div>
 
@@ -64,8 +49,8 @@
         <header class="header-inicio text-center text-white">
             <div class="bg-text">
                 <div class="container">
-                    <h1 style="font-size: 4rem"> <%= cabecera %> </h1>
-                    <h2 style="font-size: 3rem"> <%= subcabecera %> </h2>
+                    <h1 style="font-size: 4rem"> Reserva ya tus entradas </h1>
+                    <h2 style="font-size: 3rem"> y no te pierdas nada</h2>
                     <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#!">Ver eventos</a>
 
                 </div>
