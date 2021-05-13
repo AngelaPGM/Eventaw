@@ -34,9 +34,9 @@
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
-                <li><a href="inicio.jsp">Inicio</a></li>
+                <li><a href="ServletRedirectInicio">Inicio</a></li>
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
-                <li style="float:right"><a href="perfil.jsp">Mi perfil</a></li>
+                <li style="float:right"><a href="perfilUsuario.jsp">Mi perfil</a></li>
                 <li style="float:right"><a  class="active" href="misEntradas.jsp">Mis entradas</a></li>
             </ul> 
         </div>

@@ -26,7 +26,7 @@
     </head>
     <body>
         <%
-            List<Evento> eventos = (List<Evento>) session.getAttribute("eventos");
+            List<Evento> eventos = (List<Evento>) request.getAttribute("eventos");
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
         %>
