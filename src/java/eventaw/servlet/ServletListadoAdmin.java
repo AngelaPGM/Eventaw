@@ -28,15 +28,34 @@ public class ServletListadoAdmin extends HttpServlet {
    
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-       List <Usuario> listaUsuario = this.usuarioFacade.findAll();
+     throws ServletException, IOException {
+       
+       String filtrado = request.getParameter("filtradoUsuario");
+       String tipoFiltrado = request.getParameter("tipofiltrado");
+       
+       List <Usuario> listaUsuario = null;
+       String prueba ="";
+       
+       if(filtrado !=null && filtrado.length()>0){//Filtrado
+           if(tipoFiltrado.equals("ID")){
+           prueba ="Ha entrado a filtrado";
+           }else if (tipoFiltrado.equals("EMAIL")){
+           prueba ="Ha entrado a filtrado";
+           }else{//ROL
+           prueba ="Ha entrado a filtrado";
+           }
+       }else{// Quiero mostrar todos
+            listaUsuario = this.usuarioFacade.findAll();
+            
+       }
+       
        request.setAttribute("listaUsuario", listaUsuario);
+       request.setAttribute("prueba",prueba);
+       
        RequestDispatcher rd = request.getRequestDispatcher("paginaAdministrador.jsp");
-       rd.forward(request,response);
+       rd.forward(request, response);
        
-       
-    }
-
+     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

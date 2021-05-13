@@ -36,7 +36,8 @@ public class ServletGuardarUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Usuario u;
+        Usuario u, usuarioEncontrado;
+        usuarioEncontrado = null;
         String id = request.getParameter("id");
         String email = request.getParameter("correo");
         String contrasena = request.getParameter("contrasenia");
@@ -44,6 +45,10 @@ public class ServletGuardarUsuario extends HttpServlet {
         String rol = request.getParameter("rol");
         String errorCrear = "";
         String jsp = "";
+        
+        if((email !="") && (!email.equals(null))){
+           usuarioEncontrado = this.usuarioFacade.findByEmail(email);
+        }
         if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){
             
             jsp = "crearEditarUsuario.jsp";
@@ -54,6 +59,11 @@ public class ServletGuardarUsuario extends HttpServlet {
             jsp = "crearEditarUsuario.jsp";
             errorCrear = "Las contraseñas deben ser iguales.";
             
+        }else if(!usuarioEncontrado.equals(null)){
+            
+            jsp = "crearEditarUsuario.jsp";
+            errorCrear = "Este correo ya ha sido utilizado.";
+        
         }else{
             
             if(id == null || id.isEmpty()){ //Crear
