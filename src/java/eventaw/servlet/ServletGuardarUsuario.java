@@ -36,9 +36,7 @@ public class ServletGuardarUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Usuario u, usuarioEncontrado;
-        usuarioEncontrado = null;
-        u= null;
+        Usuario u = new Usuario();
         String id = request.getParameter("id");
         String email = request.getParameter("correo");
         String contrasena = request.getParameter("contrasenia");
@@ -46,67 +44,95 @@ public class ServletGuardarUsuario extends HttpServlet {
         String rol = request.getParameter("rol");
         String errorCrear = "";
         String errorEditar = "";
-        String jsp = "";
-        
-        if((email !="") && (!email.equals(null))){
-           usuarioEncontrado = this.usuarioFacade.findByEmail(email);
-        }
-        if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){
+        Boolean estoyEnEditar = false;
+        Boolean hayError = false;
+        Boolean correoExiste = false;
+        Boolean ContrasenaAnterior = false;
             
-            jsp = "crearEditarUsuario.jsp";
-            if(id !=null && !id.isEmpty()){
+         if(id !=null && !id.isEmpty()){ //Voy a editar o no.
+                estoyEnEditar = true;
+         }
+         
+         if(estoyEnEditar){
+             u = this.usuarioFacade.find(new Integer(id));
+             if(contrasena.equals(u.getContrasenya()) && contrasena.length()!=0){
+                 ContrasenaAnterior = true;
+             };
+             u=null;
+         }
+         
+         if(email!= null && !email.isEmpty()){
+
+            u = this.usuarioFacade.findByEmail(email);
+            if(u != null){
+                correoExiste =true;
+            }
+            u=null;
+         }
+
+        
+        if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){ //Campos vacios
+           
+            if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
                 errorEditar = "Por favor, completa todos los campos.";
             }else{
                 errorCrear = "Por favor, completa todos los campos.";
             }
+            hayError = true;
             
-        }else if (!(contrasena.equals(repcontrasena))){
+        }else if (!(contrasena.equals(repcontrasena))){ // Contraseñas distintas.
             
-            if(id !=null && !id.isEmpty()){
+            if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
                 errorEditar = "Las contraseñas deben ser iguales.";
             }else{
                 errorCrear = "Las contraseñas deben ser iguales.";
             }
-            jsp = "crearEditarUsuario.jsp";
+            hayError = true;
+                   
+        }else if(ContrasenaAnterior) {
             
-        }else if(usuarioEncontrado != null){
-            
-            if(id !=null && !id.isEmpty()){
-                u = this.usuarioFacade.find(new Integer(id));
-                errorEditar = "Este correo ya ha sido utilizado.";
-            }else{
-                errorCrear = "Este correo ya ha sido utilizado.";
-            }
-            
-            jsp = "crearEditarUsuario.jsp";
+            errorEditar = "Es la misma contraseña que tenias antes, por favor crea una nueva.";
+            hayError =true;
         
-        }else{
+        }else if (!hayError && correoExiste) {
+                
+                errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                
+                hayError = true;
+                
+        }else{ //Si no hay errores hacemos esto.
             
-            if(id == null || id.isEmpty()){ //Crear
+            if(!estoyEnEditar){ //Crear
+                
                 u = new Usuario();
-            }else{//Editar
-                u = this.usuarioFacade.find(new Integer(id));
-            }
                 Rol r = this.rolFacade.find(new Integer(rol));
                 u.setCorreo(email);
                 u.setContrasenya(contrasena);
                 u.setRol(r);
-                
-            if(id == null || id.isEmpty()){ //Crear
                 this.usuarioFacade.create(u);
-            }else{ //Editar
+                
+            }else{//Editar
+                
+                u = this.usuarioFacade.find(new Integer(id));
+                Rol r = this.rolFacade.find(new Integer(rol));
+                u.setCorreo(email);
+                u.setContrasenya(contrasena);
+                u.setRol(r);
                 this.usuarioFacade.edit(u);
+            
             }
+                
         }
         
-        if(jsp != ""){
+
+        if(hayError){
             
             request.setAttribute("u", u);
             request.setAttribute("errorCrear", errorCrear);
             request.setAttribute("errorEditar", errorEditar);
-            RequestDispatcher rd = request.getRequestDispatcher(jsp);
+            RequestDispatcher rd = request.getRequestDispatcher("crearEditarUsuario.jsp");
             rd.forward(request, response);
             
         }else{
