@@ -77,18 +77,10 @@ public class ServletLogin extends HttpServlet {
                         
                     eventos = this.eventoFacade.findByCreator(usuario.getId());
                     session.setAttribute("eventos", eventos);
-                } else if (usuario.getId() == 3){
-                    jsp = "inicio.jsp";
+                } else if (usuario.getId() == 1){
+                    jsp = "ServletListadoAdmin";
                     session.setAttribute("user", usuario);
-                        
-                    eventos = this.eventoFacade.findAll();
-            
-                    for(Evento e : eventos){
-                        if(!e.getFecha().after(today)) eventos.remove(e);
-                    }
-                    
-                    session.setAttribute("eventos", eventos);
-                }
+                } 
             } else {
                 jsp = "login.jsp";
                 errorLog = "¡Contraseña incorrecta!";
