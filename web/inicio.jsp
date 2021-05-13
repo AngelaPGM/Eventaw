@@ -63,12 +63,13 @@
                         <h1 class="bg-text"> Busca un evento: </h1>
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <form action="ServletListadoInicio">
+                    <div class="row justify-content-center">
                     <div class="col-5 wrap-input2 ">
-                        <input class="input2" type="text" name="buscador" placeholder="Buscar eventos por nombre"/> 
+                        <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre"/> 
                     </div>
                     <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        <input class="input2"   type="date" id="start" name="buscadorFecha" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
                     </div>
                     <div class="col-2">
                         <div class="wrap-login100-form-btn">
@@ -79,6 +80,7 @@
                         </div>                    
                     </div>
                 </div>
+                </form>
             </div>
         </section>            
 
