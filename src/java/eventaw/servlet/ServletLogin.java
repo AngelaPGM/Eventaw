@@ -56,27 +56,47 @@ public class ServletLogin extends HttpServlet {
         HttpSession session = request.getSession();
         
         usuario = this.usuarioFacade.findByEmail(email);
-        eventos = this.eventoFacade.findAll();
         
-        if(usuario != null){
-            if(usuario.getContrasenya().equals(password)){
-                jsp = "inicio.jsp";
-                session.setAttribute("user", usuario);
+        if(usuario.getRol().getId() == 2){
+            if(usuario != null){
+                if(usuario.getContrasenya().equals(password)){
+                    jsp = "inicio.jsp";
+                    session.setAttribute("user", usuario);
+                } else {
+                    jsp = "login.jsp";
+                    errorLog = "¡Contraseña incorrecta!";
+                    }
+                } else {
+                    jsp = "login.jsp";
+                    errorLog = "¡Email incorrecto!";
+                }
+            
+            eventos = this.eventoFacade.findAll();
+            
+            for(Evento e : eventos){
+                if(!e.getFecha().after(today)) eventos.remove(e);
+            }
+            
+        } else if (usuario.getRol().getId() == 3) {
+            if(usuario != null){
+                if(usuario.getContrasenya().equals(password)){
+                    jsp = "inicioCreador.jsp";
+                    session.setAttribute("user", usuario);
+                } else {
+                    jsp = "login.jsp";
+                    errorLog = "¡Contraseña incorrecta!";
+                }
             } else {
                 jsp = "login.jsp";
-                errorLog = "¡Contraseña incorrecta!";
+                errorLog = "¡Email incorrecto!";
             }
-        } else {
-            jsp = "login.jsp";
-            errorLog = "¡Email incorrecto!";
+            
+            eventos = this.eventoFacade.findAll();
+            session.setAttribute("eventos", eventos);
         }
         
-        for(Evento e : eventos){
-            if(!e.getFecha().after(today)) eventos.remove(e);
-        }
         
         request.setAttribute("errorLog", errorLog);
-        session.setAttribute("eventos", eventos);
         
         RequestDispatcher rd = request.getRequestDispatcher(jsp);
         rd.forward(request, response);
