@@ -50,7 +50,7 @@
                         cabecera = "Un espacio para";
                         subcabecera = "tus mejores eventos";
                     %>
-                <li style="float:right"><a href="LlistaEventos.jsp">MIS EVENTOS</a></li>
+                <li style="float:right"><a href="ListaEventos.jsp">MIS EVENTOS</a></li>
                     <%
                         }
                     %>

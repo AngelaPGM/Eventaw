@@ -77,7 +77,7 @@ public class ServletLogin extends HttpServlet {
                         
                     eventos = this.eventoFacade.findByCreator(usuario.getId());
                     session.setAttribute("eventos", eventos);
-                } else if (usuario.getId() == 3){
+                } else if (usuario.getId() == 1){
                     jsp = "inicio.jsp";
                     session.setAttribute("user", usuario);
                         
