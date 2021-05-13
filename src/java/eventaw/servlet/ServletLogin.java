@@ -57,44 +57,35 @@ public class ServletLogin extends HttpServlet {
         
         usuario = this.usuarioFacade.findByEmail(email);
         
-        if(usuario.getRol().getId() == 2){
-            if(usuario != null){
-                if(usuario.getContrasenya().equals(password)){
+        if(usuario != null){
+            if(usuario.getContrasenya().equals(password)){
+                if(usuario.getRol().getId() == 2){
                     jsp = "inicio.jsp";
                     session.setAttribute("user", usuario);
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Contraseña incorrecta!";
+                        
+                    eventos = this.eventoFacade.findAll();
+            
+                    for(Evento e : eventos){
+                        if(!e.getFecha().after(today)) eventos.remove(e);
                     }
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Email incorrecto!";
-                }
-            
-            eventos = this.eventoFacade.findAll();
-            
-            for(Evento e : eventos){
-                if(!e.getFecha().after(today)) eventos.remove(e);
-            }
-            
-        } else if (usuario.getRol().getId() == 3) {
-            if(usuario != null){
-                if(usuario.getContrasenya().equals(password)){
+                    
+                    session.setAttribute("eventos", eventos);
+                    
+                } else if (usuario.getRol().getId() == 3) {
                     jsp = "inicioCreador.jsp";
                     session.setAttribute("user", usuario);
-                } else {
-                    jsp = "login.jsp";
-                    errorLog = "¡Contraseña incorrecta!";
+                        
+                    eventos = this.eventoFacade.findByCreator(usuario.getId());
+                    session.setAttribute("eventos", eventos);
                 }
             } else {
                 jsp = "login.jsp";
-                errorLog = "¡Email incorrecto!";
+                errorLog = "¡Contraseña incorrecta!";
             }
-            
-            eventos = this.eventoFacade.findAll();
-            session.setAttribute("eventos", eventos);
+        } else {
+            jsp = "login.jsp";
+            errorLog = "¡Email incorrecto!";
         }
-        
         
         request.setAttribute("errorLog", errorLog);
         
