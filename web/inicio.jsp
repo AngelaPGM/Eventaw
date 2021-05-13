@@ -28,8 +28,6 @@
         <%
             List<Evento> eventos = (List<Evento>) session.getAttribute("eventos");
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            Usuario user = (Usuario) session.getAttribute("user");
-            String cabecera = "", subcabecera = "";
 
         %>
 
