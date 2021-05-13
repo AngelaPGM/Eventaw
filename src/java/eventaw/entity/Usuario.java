@@ -47,14 +47,10 @@ public class Usuario implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "CORREO")
+    @Column(name = "CORREO", length = 45, nullable = false)
     private String correo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "CONTRASENYA")
+    @Column(name = "CONTRASENYA", length = 45, nullable = false)
     private String contrasenya;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
     private List<Conversacion> conversacionList;
