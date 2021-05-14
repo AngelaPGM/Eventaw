@@ -64,7 +64,7 @@
                         <hr/>
                         <div class="row">
                             <p style="font-size: 1.2rem; color:black">
-                                ¿Cuantas entradas desea comprar? (<%= new DecimalFormat("#0.00").format(evento.getPrecio()%>€ cada una): 
+                                ¿Cuantas entradas desea comprar? (<%= new DecimalFormat("#0.00").format(evento.getPrecio())%>€ cada una): 
                             </p>
                         </div>
                         <div class="row justify-content-center" >
