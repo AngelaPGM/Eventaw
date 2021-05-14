@@ -57,13 +57,13 @@ public class ServletGuardarUsuario extends HttpServlet {
          if(email!= null && !email.isEmpty()){
 
             u = this.usuarioFacade.findByEmail(email);
-            if(u != null){
+            if(u != null && !u.getCorreo().equals(email)){
                 correoExiste =true;
             }
             u=null;
          }
 
-        
+         
         if((email == "") || (rol == null)){ //Campos vacios
            
             if(estoyEnEditar){
@@ -84,7 +84,7 @@ public class ServletGuardarUsuario extends HttpServlet {
             }
             hayError = true;
                    
-        }else if (!hayError && correoExiste && !estoyEnEditar) {
+        }else if (!hayError && correoExiste) {
                 
                 errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
                 

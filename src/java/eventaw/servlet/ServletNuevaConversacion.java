@@ -71,6 +71,7 @@ public class ServletNuevaConversacion extends HttpServlet {
         c.setMensajeList(mensajes);
         this.conversacionFacade.edit(c);
         
+        request.setAttribute("m", mensajes);
         request.setAttribute("c", c);
         
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
