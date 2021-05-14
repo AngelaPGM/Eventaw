@@ -59,7 +59,7 @@
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag"></div>
-                                <a class="login100-form-btn" style="text-decoration: none" href="crearEditarUsuario.jsp" >
+                                <a class="login100-form-btn" style="text-decoration: none" href="ServletCrudUsuario" >
                                     Nuevo usuario
                                 </a>
                             </div>                    

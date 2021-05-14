@@ -44,9 +44,15 @@ public class ServletCrudUsuario extends HttpServlet {
             usuarioFacade.remove(u);
             response.sendRedirect("ServletListadoAdmin");
         
-        }else{ //Editar
+        } else { //Editar
             if(id!=null && !id.equals("")){
                 u = this.usuarioFacade.find(new Integer(id));
+                
+                if(u.getRol().getId() == 2){
+                    request.setAttribute("u",u);
+                    RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp?editar=1");
+                    rd.forward(request, response);
+                }
             }
             
             request.setAttribute("u",u);

@@ -24,9 +24,18 @@
         <link rel="stylesheet" href="css/util.css">
     </head>
     <%
-        Usuario user = (Usuario) session.getAttribute("user");
+        String editar = request.getParameter("editar");
+        Usuario user = new Usuario();
+        
+        if(editar.equals("1")){
+            user = (Usuario) request.getAttribute("u");
+        } else {
+            user = (Usuario) session.getAttribute("user");
+            
+        }
+        
         Usuarioevento uEvento = (Usuarioevento) user.getUsuarioevento();
-
+        
         String errorEditar = (String) request.getAttribute("errorEditar");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     %>
