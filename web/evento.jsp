@@ -4,6 +4,8 @@
     Author     : Pepe
 --%>
 
+<%@page import="eventaw.entity.Entrada"%>
+<%@page import="java.util.List"%>
 <%@page import="eventaw.entity.Usuarioevento"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -26,6 +28,17 @@
     <%
         Evento evento = (Evento) request.getAttribute("evento");
         Usuario user = (Usuario) session.getAttribute("user");
+        List<Entrada> entradasUsuario = user.getUsuarioevento().getEntradaList();
+        int entradasLibres = evento.getAforo()-evento.getEntradaList().size();
+        int contador = 0;
+        
+        for(Entrada e: entradasUsuario) {
+            if(e.getEvento().equals(evento)) {
+                contador++;
+            }
+        }
+        
+        int puedeComprar = evento.getMaxentradasusuario()-contador;
     %>
     <body>
         <!-- Barra navegacion -->
@@ -41,7 +54,7 @@
         <div class="fondo-pagina">
             <div class="container-perfil">
                 <div class="wrap-registro justify-content-center text-center" >
-                    <form class="register-form" method="POST" action="ServletAceptaPago">                    
+                    <form class="register-form" method="POST" action="ServletAceptaPago?idEvento=<%= evento.getId()%>">                    
                         <span class="bg-text" style="color: #7cc5e5">
                             <h1><%= evento.getTitulo()%></h1>
                             <h4><%= evento.getDescripcion()%></h4> 
@@ -50,15 +63,20 @@
                         <hr/>
                         <div class="row">
                             <p style="font-size: 1.2rem; color:black">
-                                ¿Desea comprar entradas? (a <%= evento.getPrecio()%>€ cada una): 
+                                ¿Cuantas entradas desea comprar? (<%= evento.getPrecio()%>€ cada una): 
                             </p>
                         </div>
                         <div class="row justify-content-center" >
+                            <p class="m-b-10">
+                                    Nota: tendr&aacute;s que confirmar la compra en la siguiente ventana.
+                                </p>
                             <div class="col-2">
                                 <select  class="custom-select text-center justify-content-center" style="padding: 5px" name="numEntradas">
-                                    <%
-                                        
-                                        for (int i = 1; i <= evento.getMaxentradasusuario(); i++) {
+                                    <%  
+                                        if(entradasLibres < puedeComprar) {
+                                            puedeComprar = entradasLibres;
+                                        }
+                                        for (int i = 1; i <= puedeComprar; i++) {
                                     %>
                                     <option><%= i%></option>
                                     <%
@@ -66,29 +84,15 @@
                                     %>
                                 </select>
                             </div>
-
+                                <div class="col-2">
+                                    <input class="btn btn-primary" style="border-radius: 40px; background-color: #7cc5e5; border-color: #7cc5e5" 
+                                           type="submit" value="RESERVAR" name="inscribir" />
+                                </div>
                         </div>
+                                
                     </form>
                 </div>
             </div>
         </div>
-
-        <h1><%= evento.getTitulo()%></h1>
-        <%= evento.getDescripcion()%> <br/>
-        <br/>
-        <form action="ServletAceptaPago">
-            <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
-            ¿Desea comprar entradas? (a <%= evento.getPrecio()%>€ cada una)  
-            <select name="numEntradas">
-                <%
-                    for (int i = 1; i <= evento.getMaxentradasusuario(); i++) {
-                %>
-                <option><%= i%></option>
-                <%
-                    }
-                %>
-            </select>
-            <input type="submit" value="INSCRIBIRSE" name="inscribir" />
-        </form>
     </body>
 </html>
