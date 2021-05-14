@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,6 +37,8 @@ public class ServletGuardarUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("user");
         Usuario u = new Usuario();
         String id = request.getParameter("id");
         String email = request.getParameter("correo");
@@ -64,7 +67,7 @@ public class ServletGuardarUsuario extends HttpServlet {
          }
 
          
-        if((email.equals("")) || (rol == null)){ //Campos vacios
+        if((email.equals(""))){ //Campos vacios
            
             if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
@@ -107,26 +110,32 @@ public class ServletGuardarUsuario extends HttpServlet {
                 this.usuarioFacade.create(u);
                 
             }else{//Editar
-                if(contrasena.equals("") && repcontrasena.equals("")){
+                if(contrasena.equals("") && repcontrasena.equals("")){//Sin cambiar Contraseña
                     u = this.usuarioFacade.find(new Integer(id));
-                    Rol r = this.rolFacade.find(new Integer(rol));
+                    
                     u.setCorreo(email);
-                    u.setRol(r);
+                    if(usuario.getRol().getId() == 1){
+                        Rol r = this.rolFacade.find(new Integer(rol));
+                        u.setRol(r);
+                    }
                     this.usuarioFacade.edit(u);
                 } else {
                     u = this.usuarioFacade.find(new Integer(id));
-                    Rol r = this.rolFacade.find(new Integer(rol));
                     u.setCorreo(email);
                     u.setContrasenya(contrasena);
-                    u.setRol(r);
+                    if(usuario.getRol().getId() == 1){
+                        Rol r = this.rolFacade.find(new Integer(rol));
+                        u.setRol(r);
+                    }
                     this.usuarioFacade.edit(u);
                 }
+                errorEditar = "Sus datos han sido modificados correctamente";
             }
                 
         }
         
 
-        if(hayError){
+        if(hayError || usuario.getRol().getId() != 1){
             
             request.setAttribute("u", u);
             request.setAttribute("errorCrear", errorCrear);

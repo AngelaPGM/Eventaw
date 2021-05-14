@@ -43,10 +43,22 @@
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
+                <%
+                    if(!editar.equals("1")){
+                %>
                 <li><a href="ServletRedirectInicio">Inicio</a></li>
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a class="active" href="perfilUsuario.jsp">Mi perfil</a></li>
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
+                <%
+                    } else {
+                %>
+                <li><a href="ServletListadoAdmin">Inicio</a></li>
+                <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a href="">Mi perfil</a></li>
+                <%
+                    }
+                %>
             </ul> 
         </div>
         <div class="fondo-pagina">

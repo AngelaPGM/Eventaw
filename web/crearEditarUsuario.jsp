@@ -11,6 +11,7 @@
     <body>
         <% String errorCrear = (String) request.getAttribute("errorCrear");
            String errorEditar = (String) request.getAttribute("errorEditar");
+           Usuario yo = (Usuario) session.getAttribute("user");
            Usuario u = (Usuario) request.getAttribute("u");
            
            if(errorCrear == null){
@@ -47,11 +48,13 @@
                 Integer idRolU = rolU.getId();
            %>
            <h1>Modificación de datos del usuario. <h1>
-           <form method="POST" action="ServletGuardarUsuario">
-           Id : <input type="text" name="id" value="<%= idU%>" readonly="readonly" /> <br/>
+                   <form method="POST" action="ServletGuardarUsuario?id=<%= idU %>">
            Correo Electronico : <input type="text" name="correo" value="<%= correoU%>" /> <br/>
            Contraseña: <input type="password" name="contrasenia" value="" /> <br/>
            Repetir Contraseña:  <input type="password" name="contrasenia1" value="" /> <br/>
+           <%
+                if(yo.getRol().getId() == 1){
+            %>
            Rol: <br/> 
            <% if(idRolU == 3){
            %>
@@ -59,7 +62,6 @@
            <input type="radio" name="rol" value="1" /> Administrador del Sistema <br/>
            <input type="radio" name="rol" value="4" /> Teleoperadores <br/>
            <input type="radio" name="rol" value="5" /> Analista de Eventos <br/>
-           <input type="submit" value="Guardar" /> <br/>
            <%
            }else if(idRolU == 1){
            %>
@@ -67,8 +69,6 @@
            <input type="radio" name="rol" value="1" checked="checked" /> Administrador del Sistema <br/>
            <input type="radio" name="rol" value="4" /> Teleoperadores <br/>
            <input type="radio" name="rol" value="5" /> Analista de Eventos <br/>
-           <input type="submit" value="Guardar" /> <br/>
-           
            <%
            }else if(idRolU == 4){
            %>
@@ -76,7 +76,6 @@
            <input type="radio" name="rol" value="1" /> Administrador del Sistema <br/>
            <input type="radio" name="rol" value="4" checked="checked" /> Teleoperadores <br/>
            <input type="radio" name="rol" value="5" /> Analista de Eventos <br/>
-           <input type="submit" value="Guardar" /> <br/>
            <%
            }else{
            %>
@@ -84,10 +83,11 @@
            <input type="radio" name="rol" value="1" /> Administrador del Sistema <br/>
            <input type="radio" name="rol" value="4" /> Teleoperadores <br/>
            <input type="radio" name="rol" value="5" checked="checked"/> Analista de Eventos <br/>
-           <input type="submit" value="Guardar" /> <br/>
            <%
                }
+            }
            %>
+           <input type="submit" value="Guardar" /> <br/>
            <%= errorEditar %>
         </form>
 
