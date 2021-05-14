@@ -89,6 +89,7 @@
 
         <% List<Usuario> ListaUsuario = (List) request.getAttribute("listaUsuario");
             String errores = (String) request.getAttribute("errores");
+            Usuario user = (Usuario) session.getAttribute("user");
             String borrar = "borrado";
 
             if (!ListaUsuario.isEmpty() || (errores != "")) {
@@ -114,7 +115,17 @@
                     <td><%= u.getContrasenya()%></td>            
                     <td><%= u.getRol().getTipo()%></td>      
                     <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>">EDITAR</a></td>
-                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">BORRAR</a></td>            
+                    <%
+                        if(user.getId() != u.getId()){
+                    %>
+                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
+                    <%
+                        }else{
+                    %>
+                    <td></td>
+                    <%
+                        }
+                    %>
                 </tr>        
                 <%
                     }

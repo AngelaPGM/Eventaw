@@ -40,6 +40,7 @@
                 <tr>
                     <th>TITULO</th>
                     <th>DESCRIPCION</th>
+                    <th>CIUDAD</th>
                     <th>FECHA</th>
                     <th>FECHA_LIMITE_COMPRA</th>
                     <th>PRECIO</th>
@@ -56,6 +57,7 @@
                 <tr>
                     <td><%= e.getTitulo() %></td>
                     <td><%= e.getDescripcion() %></td>
+                    <td><%= e.getCiudad() %></td>
                     <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()) %></td>
                     <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFechacompra()) %></td>
                     <td><%= e.getPrecio() %></td>

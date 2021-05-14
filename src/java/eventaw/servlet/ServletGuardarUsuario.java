@@ -48,17 +48,11 @@ public class ServletGuardarUsuario extends HttpServlet {
         Boolean hayError = false;
         Boolean correoExiste = false;
         Boolean ContrasenaAnterior = false;
+        
+        
             
-         if(id !=null && !id.isEmpty()){ //Voy a editar o no.
+         if(id != null && !id.isEmpty()){ //Voy a editar o no.
                 estoyEnEditar = true;
-         }
-         
-         if(estoyEnEditar){
-             u = this.usuarioFacade.find(new Integer(id));
-             if(contrasena.equals(u.getContrasenya()) && contrasena.length()!=0){
-                 ContrasenaAnterior = true;
-             };
-             u=null;
          }
          
          if(email!= null && !email.isEmpty()){
@@ -91,12 +85,7 @@ public class ServletGuardarUsuario extends HttpServlet {
             }
             hayError = true;
                    
-        }else if(ContrasenaAnterior) {
-            
-            errorEditar = "Es la misma contraseña que tenias antes, por favor crea una nueva.";
-            hayError =true;
-        
-        }else if (!hayError && correoExiste) {
+        }else if (!hayError && correoExiste && !estoyEnEditar) {
                 
                 errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
                 
