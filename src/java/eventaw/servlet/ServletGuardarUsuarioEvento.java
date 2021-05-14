@@ -46,7 +46,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("user");
-        Usuario u = new Usuario();
+        Usuario u;
         String nombre = request.getParameter("nombre");
         String ape1 = request.getParameter("ape1");
         String ape2 = request.getParameter("ape2");
@@ -67,7 +67,6 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
             if(u != null && !u.getCorreo().equals(usuario.getCorreo())){
                 correoExiste =true;
             }
-            u=null;
          }
             
         if (correoExiste) {
