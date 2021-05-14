@@ -55,7 +55,7 @@ public class ServletListadoEventos extends HttpServlet {
        
        
        try{
-            if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio != "" && fechaFinal != ""){//Filtrado
+            if(nombreEvento !=null && nombreEvento.length()>0 && !fechaInicio.equals("") && !fechaFinal.equals("")){//Filtrado
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
                 
@@ -71,12 +71,41 @@ public class ServletListadoEventos extends HttpServlet {
                     listaEvento = listaE;
                 }
                 
-            } else if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio == "" && fechaFinal == "") {//Solo Nombre
+            } else if (nombreEvento !=null && nombreEvento.length()>0 && !fechaInicio.equals("") && fechaFinal.equals("")) {// Nombre y Fecha Inicio
+                Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
+                
+                listaEvento = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
+                listaE = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
+                
+                if(listaE != null && !listaE.isEmpty()){
+                    for(Evento e : listaEvento){
+                        if(fechaIni.after(e.getFecha())){
+                            listaE.remove(e);
+                        }
+                    }
+                    listaEvento = listaE;
+                }
+                
+            } else if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio.equals("") && !fechaFinal.equals("")) {// Nombre y Fecha Final
+                Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
+                
+                listaEvento = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
+                listaE = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
+                
+                if(listaE != null && !listaE.isEmpty()){
+                    for(Evento e : listaEvento){
+                        if(fechaFin.before(e.getFecha())){
+                            listaE.remove(e);
+                        }
+                    }
+                    listaEvento = listaE;
+                }
+            } else if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio.equals("") && fechaFinal.equals("")) {//Solo Nombre
                 listaE = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
                 if(listaE != null && !listaE.isEmpty()){
                     listaEvento = listaE;
                 }
-            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio != "" && fechaFinal != "") {// Solo Fechas
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && !fechaInicio.equals("") && !fechaFinal.equals("")) {// Solo Fechas
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
                 listaEvento = this.eventoFacade.findByCreator(usuario.getId());
@@ -87,7 +116,7 @@ public class ServletListadoEventos extends HttpServlet {
                     }
                 }
                 listaEvento = listaE;    
-            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio != "" && fechaFinal == "") {// Solo Fecha Inicio
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && !fechaInicio.equals("") && fechaFinal.equals("")) {// Solo Fecha Inicio
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
                 listaEvento = this.eventoFacade.findByCreator(usuario.getId());
                 listaE = this.eventoFacade.findByCreator(usuario.getId());
@@ -97,7 +126,7 @@ public class ServletListadoEventos extends HttpServlet {
                     }
                 }
                 listaEvento = listaE;
-            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio == "" && fechaFinal != ""){// Solo Fecha Final
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio.equals("") && !fechaFinal.equals("")){// Solo Fecha Final
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
                 listaEvento = this.eventoFacade.findByCreator(usuario.getId());
                 listaE = this.eventoFacade.findByCreator(usuario.getId());

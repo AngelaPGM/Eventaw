@@ -153,6 +153,7 @@
                         <tr>
                             <th>EVENTO</th>
                             <th>DESCRIPCION</th>
+                            <th>CIUDAD</th>
                             <th>FECHA</th>
                         </tr>
                     </thead>
@@ -163,6 +164,7 @@
                         <tr>
                             <td><%= e.getEvento().getTitulo()%></td>
                             <td><%= e.getEvento().getDescripcion()%></td>
+                            <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
                         </tr>
                         <%
