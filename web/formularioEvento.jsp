@@ -18,7 +18,7 @@
     <%
         Evento evento = (Evento)request.getAttribute("evento");
         String error = (String)request.getAttribute("error");
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyy");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Usuario usuario;
         
         usuario = (Usuario)session.getAttribute("user");
@@ -45,6 +45,8 @@
                 asientos="";
             }
         }
+        
+        
     %>
     <body>
         <h1>Formulario Evento</h1>
@@ -69,22 +71,26 @@
                     %>
                     <tr>
                         <td>Fecha*</td>
-                        <td><input class="input2"   type="date" id="start" name="fecha" value="<%=formato.format(new Date())%>" max="2040-12-31"></td>
+                        <td><input class="input2"   type="date" id="start" name="fecha" max="2040-12-31" 
+                                   value="<%=formato.format(new Date())%>"></td>
                     </tr>
                     <tr>
                         <td>Fecha límite*</td>
-                        <td><input class="input2"   type="date" id="start" name="fechaCompra" value="<%=formato.format(new Date())%>" max="2040-12-31"></td>
+                        <td><input class="input2"   type="date" id="start" name="fechaCompra" max="2040-12-31" 
+                                   value="<%=formato.format(new Date())%>"></td>
                     </tr>
                     <%
                         } else {  
                     %>
                     <tr>
                         <td>Fecha*</td>
-                        <td><input class="input2"   type="date" id="start" name="fecha" value="<%=formato.parse(fecha)%>" max="2040-12-31"></td>
+                        <td><input class="input2" type="date" id="start" name="fecha" max="2040-12-31" 
+                                   value="<%= fecha %>"></td>
                     </tr>
                     <tr>
                         <td>Fecha límite*</td>
-                        <td><input class="input2"   type="date" id="start" name="fechaCompra" value="<%=formato.parse(fechaCompra)%>" max="2040-12-31"></td>
+                        <td><input class="input2"   type="date" id="start" name="fechaCompra" max="2040-12-31" 
+                                   value="<%= fechaCompra %>"></td>
                     </tr>
                     <%
                         }    
