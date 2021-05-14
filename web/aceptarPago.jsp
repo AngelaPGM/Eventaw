@@ -34,8 +34,6 @@
         Evento evento = (Evento) request.getAttribute("evento");
         Double numEntradas = (Double) request.getAttribute("numEntradas");
         Map<Integer, List<Integer>> asientos = new TreeMap();
-
-
     %>
     <body>
         <!-- Barra navegacion -->
@@ -47,67 +45,75 @@
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
             </ul> 
         </div>
-        <%      for (int i = 1; i <= evento.getNumfilas(); i++) {
-                List<Integer> aux = new ArrayList();
-                for (int j = 1; j <= evento.getAsientosfila(); j++) {
-                    aux.add(j);
-                }
-                asientos.put(i, aux);
-            }
 
-            for (Entrada e : evento.getEntradaList()) {
-                asientos.get(e.getNumfila()).remove(e.getAsientofila());
-            }
-        %>
-        <h1>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas)%> por su inscripción en el evento: <%= evento.getTitulo()%></h1>
-        <%
-            if (numEntradas == 1.0) {
-        %>
-        <form action="ServletInscribir">
-            <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
-            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
-            Seleccione su asiento: : <select name="asiento0">
-                <%
-                    for (Integer i : asientos.keySet()) {
-                        for (Integer j : asientos.get(i)) {
-                %>
-                <option>Fila: <%= i%> Asiento: <%= j%></option>
-                <%
+        <div class="fondo-pagina">
+            <div class="container-perfil">
+                <div class="wrap-registro justify-content-center text-center" >
+                    <form class="register-form" action="ServletInscribir">
+                    <%      for (int i = 1; i <= evento.getNumfilas(); i++) {
+                            List<Integer> aux = new ArrayList();
+                            for (int j = 1; j <= evento.getAsientosfila(); j++) {
+                                aux.add(j);
+                            }
+                            asientos.put(i, aux);
                         }
-                    }
-                %>
-            </select>
-            <input type="submit" value="Aceptar" name="aceptar" />
-        </form>
-        <%
-        } else {
-        %>
-        <form action="ServletInscribir">
-            <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
-            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
 
-            Seleccione sus asientos: <br/>
-            <%
-                for (int i = 0; i < numEntradas; i++) {
-            %>
-            <select name="asiento<%= i%>">
-                <%
-                    for (Integer j : asientos.keySet()) {
-                        for (Integer k : asientos.get(j)) {
-                %>
-                <option>Fila: <%= j%> Asiento: <%= k%></option>
-                <%
+                        for (Entrada e : evento.getEntradaList()) {
+                            asientos.get(e.getNumfila()).remove(e.getAsientofila());
                         }
-                    }
-                %>
-            </select><br/>
-            <%
-                }
-            %>
-            <input type="submit" value="Aceptar" name="aceptar" />
-        </form>
-        <%
-            }
-        %>
+                    %>
+                    <h1>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas)%>€ por su compra en el evento <%= evento.getTitulo()%></h1>
+                    <%
+                        if (numEntradas == 1.0) {
+                    %>ç
+                        <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
+                        <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
+                        Seleccione su asiento: : <select name="asiento0">
+                            <%
+                                for (Integer i : asientos.keySet()) {
+                                    for (Integer j : asientos.get(i)) {
+                            %>
+                            <option>Fila: <%= i%> Asiento: <%= j%></option>
+                            <%
+                                    }
+                                }
+                            %>
+                        </select>
+                        <input type="submit" value="Aceptar" name="aceptar" />
+                    </form>
+                    <%
+                    } else {
+                    %>
+                    <form action="ServletInscribir">
+                        <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
+                        <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
+
+                        Seleccione sus asientos: <br/>
+                        <%
+                            for (int i = 0; i < numEntradas; i++) {
+                        %>
+                        <select name="asiento<%= i%>">
+                            <%
+                                for (Integer j : asientos.keySet()) {
+                                    for (Integer k : asientos.get(j)) {
+                            %>
+                            <option>Fila: <%= j%> Asiento: <%= k%></option>
+                            <%
+                                    }
+                                }
+                            %>
+                        </select><br/>
+                        <%
+                            }
+                        %>
+                        <input type="submit" value="Aceptar" name="aceptar" />
+                    </form>
+                    <%
+                        }
+                    %>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
