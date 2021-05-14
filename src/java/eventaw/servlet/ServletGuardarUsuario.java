@@ -56,15 +56,15 @@ public class ServletGuardarUsuario extends HttpServlet {
          
          if(email!= null && !email.isEmpty()){
 
-            u = this.usuarioFacade.findByEmail(email);
-            if(u != null && !u.getCorreo().equals(email)){
+            u = this.usuarioFacade.find(new Integer(id));
+            if(u != null && !u.getCorreo().equals(email) && this.usuarioFacade.findByEmail(email) != null){
                 correoExiste =true;
             }
-            u=null;
+            u = null;
          }
 
          
-        if((email == "") || (rol == null)){ //Campos vacios
+        if((email.equals("")) || (rol == null)){ //Campos vacios
            
             if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
@@ -86,7 +86,12 @@ public class ServletGuardarUsuario extends HttpServlet {
                    
         }else if (!hayError && correoExiste) {
                 
-                errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                if(estoyEnEditar){
+                    u = this.usuarioFacade.find(new Integer(id));
+                    errorEditar = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }else{
+                    errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }
                 
                 hayError = true;
                 
