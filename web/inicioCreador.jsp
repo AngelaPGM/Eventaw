@@ -20,11 +20,17 @@
         <%
             String borrado = "borrado";
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Usuario  usuario = (Usuario)session.getAttribute("user");
             
             List<Evento> misEventos;
             misEventos = (List<Evento>) request.getAttribute("eventos");
         %>
-        <h1>Mis Eventos  <a href="">Mi Perfil</a> <a href="ServletCierreSesion">Cerrar Sesión</a></h1>
+        <h1>Mis Eventos <a href="ServletCierreSesion">Cerrar Sesión</a></h1>
+        
+        Mi correo: <%= usuario.getCorreo() %> <br/>
+        <a href="ServletCrudUsuario?id=<%= usuario.getId() %>">Modificar mis datos</a>
+        <br/>
+        <br/>
         
         <form action="ServletListadoEventos">
             <input type="text" name="buscador" value="" /> 
@@ -33,8 +39,6 @@
         <input type="submit" value="Buscar" name="buscarBoton" />
         </form>
         <br/>
-        <br/>
-        
         <table border="1">
             <thead>
                 <tr>

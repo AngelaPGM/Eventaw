@@ -47,7 +47,6 @@ public class ServletGuardarUsuario extends HttpServlet {
         Boolean estoyEnEditar = false;
         Boolean hayError = false;
         Boolean correoExiste = false;
-        Boolean ContrasenaAnterior = false;
         
         
             
@@ -65,7 +64,7 @@ public class ServletGuardarUsuario extends HttpServlet {
          }
 
         
-        if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){ //Campos vacios
+        if((email == "") || (rol == null)){ //Campos vacios
            
             if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
@@ -91,7 +90,7 @@ public class ServletGuardarUsuario extends HttpServlet {
                 
                 hayError = true;
                 
-        }else{ //Si no hay errores hacemos esto.
+        } else { //Si no hay errores hacemos esto.
             
             if(!estoyEnEditar){ //Crear
                 
@@ -103,14 +102,20 @@ public class ServletGuardarUsuario extends HttpServlet {
                 this.usuarioFacade.create(u);
                 
             }else{//Editar
-                
-                u = this.usuarioFacade.find(new Integer(id));
-                Rol r = this.rolFacade.find(new Integer(rol));
-                u.setCorreo(email);
-                u.setContrasenya(contrasena);
-                u.setRol(r);
-                this.usuarioFacade.edit(u);
-            
+                if(contrasena.equals("") && repcontrasena.equals("")){
+                    u = this.usuarioFacade.find(new Integer(id));
+                    Rol r = this.rolFacade.find(new Integer(rol));
+                    u.setCorreo(email);
+                    u.setRol(r);
+                    this.usuarioFacade.edit(u);
+                } else {
+                    u = this.usuarioFacade.find(new Integer(id));
+                    Rol r = this.rolFacade.find(new Integer(rol));
+                    u.setCorreo(email);
+                    u.setContrasenya(contrasena);
+                    u.setRol(r);
+                    this.usuarioFacade.edit(u);
+                }
             }
                 
         }
