@@ -60,14 +60,17 @@
         <section id="ancla">
             <div class="container p-t-30">
                 <div class="row">
-                    <div class="col-sm-10 col-md-7 offset-1" style="padding: 1rem 4rem">
-                        <h1 class="bg-text"> Busca un evento: </h1>
+                    <div class="col-sm-10 col-md-7" style="padding: 1rem ">
+                        <h1 class="bg-text" style="color:#b997f6;"> Eventos disponibles: </h1>
                     </div>
                 </div>
                 <form action="ServletListadoInicio">
                     <div class="row justify-content-center">
                         <div class="col-5 wrap-input2 ">
-                            <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre"/> 
+                            <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre y/o fecha"/> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="buscadorFecha" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
                         </div>
                         <div class="col-2 wrap-input2 wrap-separacion10" >
                             <input class="input2"   type="date" id="start" name="buscadorFecha" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
@@ -86,12 +89,7 @@
         </section>            
 
         <!--Eventos Disponibles:-->
-        <div class="container m-t-30 ">
-            <div class="row justify-content-center text-center">
-                <div class="col-4">
-                    <h1 class="bg-text" style=" color:#b997f6;"> Eventos disponibles </h1>
-                </div>
-            </div>
+        <div class="container m-t-30">
             <div class="row justify-content-center m-t-10">
                 <div class="col-12">
 
@@ -126,7 +124,7 @@
                                 <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
                                 <td>  <%= ev.getPrecio()%> € </td>
                                 <td>  <%
-                            if (ev.getFechacompra().after(new Date())) {%>
+                                    if (ev.getFechacompra().after(new Date())) {%>
                                     <%= formato.format(ev.getFechacompra())%>
                                     <% } else { %>
                                     PLAZO ACABADO
@@ -135,7 +133,7 @@
                                 <td>  <%
                                     if (ev.getFechacompra().after(new Date()) && plazasDisp > 0) {
                                         //QUIZA SE PODRIA AÑADIR AQUI UNA COMPROBACION DE QUE EL USUARIO NO TIENE EL MAX DE ENTRADAS
-%>
+                                    %>
 
                                     <a class="btn  btn-primary"
                                        href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> </td>  

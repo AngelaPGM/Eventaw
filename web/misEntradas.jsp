@@ -98,11 +98,12 @@
         %>
 
         <div class="container m-t-30">
-            <div class="table-responsive">
+
 
                 <%
                     if (!entradasFuturas.isEmpty()) {
                 %>
+                            <div class="table-responsive">
                 <table class="center table table-striped align-middle" id="tabla-custom">
                     <thead>
                         <tr>
@@ -133,7 +134,7 @@
                 } else {
                 %>
 
-                <div class="bg-text text-center" style="margin-top: 10%">
+                <div class="bg-text justify-content-center text-center" style="margin-top: 10%">
                     <h1 style="color: #9e9e9e"> Vaya, a&uacute;n no tienes ninguna entrada :(</h1>
                     <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
                 </div>
