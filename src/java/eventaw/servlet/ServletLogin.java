@@ -78,6 +78,10 @@ public class ServletLogin extends HttpServlet {
                         jsp = "ServletListadoAdmin";
                         session.setAttribute("user", usuario);
                         break;
+                    case 4:
+                        jsp = "ServletTeleoperador";
+                        session.setAttribute("user", usuario);
+                        break;
                     default:
                         break;
                 } 
