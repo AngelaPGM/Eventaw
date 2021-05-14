@@ -27,7 +27,8 @@
     <body>
         <%
             List<Evento> eventos = (List<Evento>) request.getAttribute("eventos");
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyy");
+            int plazasDisp;
 
         %>
 
@@ -84,36 +85,73 @@
             </div>
         </section>            
 
-
+        <!--Eventos Disponibles:-->
         <div class="container m-t-30 ">
             <div class="row justify-content-center text-center">
                 <div class="col-4">
-                        <h1 class="bg-text" style=" color:#b997f6;"> Eventos disponibles </h1>
-                    </div>
-        </div>
+                    <h1 class="bg-text" style=" color:#b997f6;"> Eventos disponibles </h1>
+                </div>
+            </div>
             <div class="row justify-content-center m-t-10">
-                <div class="col-6">
-                <!--<br/>Eventos Disponibles: <br/>-->
-                <table class="center table table-striped align-middle" id="tabla-custom" style="font-size:1.2rem">
-                    <thead>
-                        <tr>
-                            <th>EVENTO</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <td>
+                <div class="col-12">
+
+                    <table class="center table table-striped align-middle" id="tabla-custom" style="font-size:1.2rem">
+                        <thead>
+                            <tr>
+                                <th>NOMBRE</th>
+                                <th>DESCRIPCI&Oacute;N</th>
+                                <th>CIUDAD</th>
+                                <th>FECHA</th>
+                                <th>PLAZAS DISPONIBLES</th>
+                                <th>PRECIO</th>
+                                <th>COMPRA HASTA</th>
+                                <th>COMPRAR ENTRADA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                for (Evento ev : eventos) {
+                            %>
+                        <td> <%= ev.getTitulo()%></td>
+                        <td>  <%= ev.getDescripcion()%> </td>
+                        <td>  <%= ev.getCiudad()%> </td>
+                        <td>  <%= formato.format(ev.getFecha())%> </td>
+
+
                         <%
-                            for (Evento ev : eventos) {
+                            plazasDisp = ev.getAforo() - ev.getEntradaList().size();
                         %>
-                        <a style="color:white" href="ServletEvento?id=<%= ev.getId()%>"><%= ev.getTitulo()%></a><br/>
+                        <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
+                        <td>  <%= ev.getPrecio()%> € </td>
+                        <td>  <%
+                            if (ev.getFechacompra().after(new Date())) {%>
+                            <%= formato.format(ev.getFechacompra())%>
+                            <% } else { %>
+                            PLAZO ACABADO
+                            <% }
+                            %>  </td>
+                        <td>  <%
+                            if (ev.getFechacompra().after(new Date()) && plazasDisp > 0) {
+                        //QUIZA SE PODRIA AÑADIR AQUI UNA COMPROBACION DE QUE EL USUARIO NO TIENE EL MAX DE ENTRADAS
+                            %>
+
+                            <a class="btn  btn-primary"
+                               href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> </td>  
+                            <% } else { %>
+                        <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
+                           href=""> COMPRAR</a> </td>  
+                        <% }
+                        %>
+
                         <%
                             }
                         %>
-                    </td></tbody>
-                </table>
-                    </div>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <br/>
     </body>
 </html>

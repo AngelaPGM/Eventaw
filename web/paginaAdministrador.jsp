@@ -148,6 +148,48 @@
         </table>
 
         <%= errores%> <br/>
+        
+        
+                <!-- EVENTOS  -->
+        <section id="eventos">
+            <div class="container m-t-30">
+                <div class="row">
+                    <div class="col-sm-10 col-md-7">
+                        <h1 class="bg-text" style=" color:#7cc5e5;"> Eventos disponibles: </h1>
+                    </div>
+                </div>
+                <form action="ServletListadoAdmin">
+                    <div class="row m-t-10">
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="botones-pag-azul"></div>
+                                <a class="login100-form-btn" style="text-decoration: none" href="crearEditarUsuario.jsp" >
+                                    Nuevo evento
+                                </a>
+                            </div>                    
+                        </div>
+                        <div class="col-5 wrap-input2 offset-2">
+                            <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoUsuario"/> 
+                        </div>
+                        <div class="col-1">
+                            <select name="tipofiltrado" class="custom-select">
+                                <option value="id">ID</option> 
+                                <option value="email">EMAIL</option>
+                                <option value="rol">ROL</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="botones-pag-azul"></div>
+                                <button class="login100-form-btn" value="FiltrarUsuario" >
+                                    FILTRAR
+                                </button>
+                            </div>                    
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section> 
 
     </body>
 </html>

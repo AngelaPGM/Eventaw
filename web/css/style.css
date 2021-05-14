@@ -258,9 +258,32 @@ button:hover {
     transition-duration: 0.4s;  
 }
 
-.botones-pag:hover {
-    background-color: #008CBA;
+.botones-pag-rosa {
+    position: absolute;
+    z-index: -1;
+    width: 300%;
+    height: 100%;
+    color: #fff;
+    background-color: #d85ee4;
+    top: 0;
+    left: -100%;
+    transition-duration: 0.4s;  
 }
+
+.botones-pag-azul {
+    position: absolute;
+    z-index: -1;
+    width: 300%;
+    height: 100%;
+    color: #fff;
+    background-color: #7cc5e5;
+    top: 0;
+    left: -100%;
+    transition-duration: 0.4s;  
+}
+
+
+
 
 .login100-form-btn {
     font-family: Poppins-Medium;
