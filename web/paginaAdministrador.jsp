@@ -39,14 +39,15 @@
                 <div class="container">
                     <h1 style="font-size: 4rem"> Bienvenido de nuevo, </h1>
                     <h2 style="font-size: 3rem"> administrador</h2>
-                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#!">Ver usuarios</a>
+                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#usuarios">Ver usuarios</a><br/>
+                    <a class="btn btn-primary btn-xl rounded-pill mt-3" href="#usuarios">Ver eventos</a>
 
                 </div>
             </div>
         </header>
 
         <!-- USUARIOS  -->
-        <section>
+        <section id="usuarios">
             <div class="container m-t-30">
                 <div class="row">
                     <div class="col-sm-10 col-md-7">
