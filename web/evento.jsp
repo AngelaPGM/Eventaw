@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="eventaw.entity.Entrada"%>
 <%@page import="java.util.List"%>
 <%@page import="eventaw.entity.Usuarioevento"%>
@@ -63,7 +64,7 @@
                         <hr/>
                         <div class="row">
                             <p style="font-size: 1.2rem; color:black">
-                                ¿Cuantas entradas desea comprar? (<%= evento.getPrecio()%>€ cada una): 
+                                ¿Cuantas entradas desea comprar? (<%= new DecimalFormat("#0.00").format(evento.getPrecio()%>€ cada una): 
                             </p>
                         </div>
                         <div class="row justify-content-center" >

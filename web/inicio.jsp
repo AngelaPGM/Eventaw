@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
@@ -124,7 +125,7 @@
                                     plazasDisp = ev.getAforo() - ev.getEntradaList().size();
                                 %>
                                 <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
-                                <td>  <%= ev.getPrecio()%> € </td>
+                                <td>  <%= new DecimalFormat("#0.00").format(ev.getPrecio()) %> € </td>
                                 <td>  <%
                                     if (ev.getFechacompra().after(new Date())) {%>
                                     <%= formato.format(ev.getFechacompra())%>

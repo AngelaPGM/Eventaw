@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
@@ -98,16 +99,16 @@
         %>
 
         <div class="container m-t-30">
-
-
-                <%
-                    if (!entradasFuturas.isEmpty()) {
-                %>
-                            <div class="table-responsive">
+            <%
+                if (!entradasFuturas.isEmpty()) {
+            %>
+            <div class="table-responsive">
                 <table class="center table table-striped align-middle" id="tabla-custom">
                     <thead>
                         <tr>
                             <th>EVENTO</th>
+                            <th>DESCRIPCI&Oacute;N</th>
+                            <th>CIUDAD</th>
                             <th>FECHA</th>
                             <th>FILA</th>
                             <th>ASIENTO</th>
@@ -120,10 +121,13 @@
                         %>
                         <tr>
                             <td><%= e.getEvento().getTitulo()%></td>
+                            <td><%= e.getEvento().getDescripcion()%></td>
+                            <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
+
                             <td><%= e.getNumfila()%></td>
                             <td><%= e.getAsientofila()%></td>
-                            <td><%= e.getEvento().getPrecio()%> €</td>
+                            <td><%= new DecimalFormat("#0.00").format(e.getEvento().getPrecio())%> €</td>
                         </tr>
                         <%
                             }
