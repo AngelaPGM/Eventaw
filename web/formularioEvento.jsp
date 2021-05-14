@@ -4,6 +4,7 @@
     Author     : Gonzalo
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -17,19 +18,21 @@
     <%
         Evento evento = (Evento)request.getAttribute("evento");
         String error = (String)request.getAttribute("error");
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyy");
         Usuario usuario;
         
         usuario = (Usuario)session.getAttribute("user");
         
-        String id = "", titulo = "", desc = "", fecha = "", fechaCompra = "", precio = "",
+        String id = "", titulo = "", desc = "", ciudad = "", fecha = "", fechaCompra = "", precio = "",
                     aforo = "", max = "", numFilas = "", asientos = "";
         
         if (evento != null) {
             id = "" + evento.getId();
             titulo = evento.getTitulo();
             desc = evento.getDescripcion();
-            fecha = new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha());
-            fechaCompra = new SimpleDateFormat("dd/MM/yyyy").format(evento.getFechacompra());
+            ciudad = evento.getCiudad();
+            fecha = formato.format(evento.getFecha());
+            fechaCompra = formato.format(evento.getFechacompra());
             precio = "" + evento.getPrecio();
             aforo = "" + evento.getAforo();
             max = "" + evento.getMaxentradasusuario();
@@ -58,13 +61,34 @@
                         <td><input type="text" name="desc" value="<%= desc %>"/></td>
                     </tr>
                     <tr>
+                        <td>Ciudad</td>
+                        <td><input type="text" name="ciudad" value="<%= ciudad %>"/></td>
+                    </tr>
+                    <%
+                           if(fecha.equals("") || fechaCompra.equals("")){ 
+                    %>
+                    <tr>
                         <td>Fecha*</td>
-                        <td><input type="text" name="fecha" value="<%= fecha %>"/></td>
+                        <td><input class="input2"   type="date" id="start" name="fecha" value="<%=formato.format(new Date())%>" max="2040-12-31"></td>
                     </tr>
                     <tr>
                         <td>Fecha límite*</td>
-                        <td><input type="text" name="fechaCompra" value="<%= fechaCompra %>"/></td>
+                        <td><input class="input2"   type="date" id="start" name="fechaCompra" value="<%=formato.format(new Date())%>" max="2040-12-31"></td>
                     </tr>
+                    <%
+                        } else {  
+                    %>
+                    <tr>
+                        <td>Fecha*</td>
+                        <td><input class="input2"   type="date" id="start" name="fecha" value="<%=formato.parse(fecha)%>" max="2040-12-31"></td>
+                    </tr>
+                    <tr>
+                        <td>Fecha límite*</td>
+                        <td><input class="input2"   type="date" id="start" name="fechaCompra" value="<%=formato.parse(fechaCompra)%>" max="2040-12-31"></td>
+                    </tr>
+                    <%
+                        }    
+                    %>
                     <tr>
                         <td>Precio*</td>
                         <td><input type="text" name="precio" value="<%= precio %>"/></td>
