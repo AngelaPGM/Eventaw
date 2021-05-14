@@ -109,45 +109,45 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <%
                                 for (Evento ev : eventos) {
                             %>
-                        <td> <%= ev.getTitulo()%></td>
-                        <td>  <%= ev.getDescripcion()%> </td>
-                        <td>  <%= ev.getCiudad()%> </td>
-                        <td>  <%= formato.format(ev.getFecha())%> </td>
+                            <tr>
+                                <td> <%= ev.getTitulo()%></td>
+                                <td>  <%= ev.getDescripcion()%> </td>
+                                <td>  <%= ev.getCiudad()%> </td>
+                                <td>  <%= formato.format(ev.getFecha())%> </td>
 
 
-                        <%
-                            plazasDisp = ev.getAforo() - ev.getEntradaList().size();
-                        %>
-                        <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
-                        <td>  <%= ev.getPrecio()%> € </td>
-                        <td>  <%
+                                <%
+                                    plazasDisp = ev.getAforo() - ev.getEntradaList().size();
+                                %>
+                                <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
+                                <td>  <%= ev.getPrecio()%> € </td>
+                                <td>  <%
                             if (ev.getFechacompra().after(new Date())) {%>
-                            <%= formato.format(ev.getFechacompra())%>
-                            <% } else { %>
-                            PLAZO ACABADO
-                            <% }
-                            %>  </td>
-                        <td>  <%
-                            if (ev.getFechacompra().after(new Date()) && plazasDisp > 0) {
-                        //QUIZA SE PODRIA AÑADIR AQUI UNA COMPROBACION DE QUE EL USUARIO NO TIENE EL MAX DE ENTRADAS
-                            %>
+                                    <%= formato.format(ev.getFechacompra())%>
+                                    <% } else { %>
+                                    PLAZO ACABADO
+                                    <% }
+                                    %>  </td>
+                                <td>  <%
+                                    if (ev.getFechacompra().after(new Date()) && plazasDisp > 0) {
+                                        //QUIZA SE PODRIA AÑADIR AQUI UNA COMPROBACION DE QUE EL USUARIO NO TIENE EL MAX DE ENTRADAS
+%>
 
-                            <a class="btn  btn-primary"
-                               href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> </td>  
-                            <% } else { %>
+                                    <a class="btn  btn-primary"
+                                       href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> </td>  
+                                    <% } else { %>
                         <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
                            href=""> COMPRAR</a> </td>  
                         <% }
                         %>
-
+                        </tr>
                         <%
                             }
                         %>
-
-
                         </tbody>
                     </table>
                 </div>
