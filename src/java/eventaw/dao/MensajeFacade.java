@@ -6,9 +6,11 @@
 package eventaw.dao;
 
 import eventaw.entity.Mensaje;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,21 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
 
     public MensajeFacade() {
         super(Mensaje.class);
+    }
+    
+    public List<Mensaje> findByConver(Integer id){
+        List<Mensaje> res;
+        Query q;
+        q = this.em.createQuery("SELECT m FROM Mensaje m WHERE m.conversacion.id = :id ORDER BY m.fecha DESC");
+        q.setParameter("id", id);
+        
+        res = q.getResultList();
+
+        if(res.isEmpty()){
+            return null;
+        } else {
+            return res;
+        }
     }
     
 }
