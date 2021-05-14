@@ -30,8 +30,7 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
     public EntradaFacade() {
         super(Entrada.class);
     }
-    
-    public List<Entrada> findById(Integer id){
+        public List<Entrada> findById(Integer id){
         Query q;
         List<Entrada> aux;
 

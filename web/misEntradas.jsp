@@ -80,14 +80,14 @@
 
                 entradasFuturas = (List<Entrada>) request.getAttribute("entradas");
 
-                for (Entrada e : usuario.getEntradaList()) {
+                for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
                     if (e.getEvento().getFecha().before(new Date())) {
                         entradasPasadas.add(e);
                     }
                 }
             } else {
 
-                for (Entrada e : usuario.getEntradaList()) {
+                for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
                     if (e.getEvento().getFecha().after(new Date())) {
                         entradasFuturas.add(e);
                     } else {

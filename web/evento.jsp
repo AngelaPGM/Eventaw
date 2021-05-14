@@ -4,6 +4,9 @@
     Author     : Pepe
 --%>
 
+<%@page import="eventaw.entity.Usuarioevento"%>
+<%@page import="eventaw.entity.Usuario"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Evento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,6 +25,7 @@
     </head>
     <%
         Evento evento = (Evento) request.getAttribute("evento");
+        Usuario user = (Usuario) session.getAttribute("user");
     %>
     <body>
         <!-- Barra navegacion -->
@@ -32,6 +36,41 @@
                 <li style="float:right"><a href="perfilUsuario.jsp">Mi perfil</a></li>
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
             </ul> 
+        </div>
+
+        <div class="fondo-pagina">
+            <div class="container-perfil">
+                <div class="wrap-registro justify-content-center text-center" >
+                    <form class="register-form" method="POST" action="ServletAceptaPago">                    
+                        <span class="bg-text" style="color: #7cc5e5">
+                            <h1><%= evento.getTitulo()%></h1>
+                            <h4><%= evento.getDescripcion()%></h4> 
+                            <h4 style="padding-top: 1%;">en <%= evento.getCiudad()%> el <%= new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha())%></h4>
+                        </span>
+                        <hr/>
+                        <div class="row">
+                            <p style="font-size: 1.2rem; color:black">
+                                ¿Desea comprar entradas? (a <%= evento.getPrecio()%>€ cada una): 
+                            </p>
+                        </div>
+                        <div class="row justify-content-center" >
+                            <div class="col-2">
+                                <select  class="custom-select text-center justify-content-center" style="padding: 5px" name="numEntradas">
+                                    <%
+                                        
+                                        for (int i = 1; i <= evento.getMaxentradasusuario(); i++) {
+                                    %>
+                                    <option><%= i%></option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <h1><%= evento.getTitulo()%></h1>

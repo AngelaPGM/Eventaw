@@ -48,7 +48,7 @@ public class Entrada implements Serializable {
     private Evento evento;
     @JoinColumn(name = "USUARIO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Usuario usuario;
+    private Usuarioevento usuario;
 
     public Entrada() {
     }
@@ -89,11 +89,11 @@ public class Entrada implements Serializable {
         this.evento = evento;
     }
 
-    public Usuario getUsuario() {
+    public Usuarioevento getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(Usuarioevento usuario) {
         this.usuario = usuario;
     }
 

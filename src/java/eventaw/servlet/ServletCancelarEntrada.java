@@ -8,9 +8,11 @@ package eventaw.servlet;
 import eventaw.dao.EntradaFacade;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
+import eventaw.dao.UsuarioeventoFacade;
 import eventaw.entity.Entrada;
 import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
+import eventaw.entity.Usuarioevento;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -30,7 +32,8 @@ import javax.servlet.http.HttpSession;
 public class ServletCancelarEntrada extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
+    private UsuarioeventoFacade usuarioeventoFacade;
+
 
     @EJB
     private EventoFacade eventoFacade;
@@ -51,22 +54,22 @@ public class ServletCancelarEntrada extends HttpServlet {
             throws ServletException, IOException {
         String idEntrada = request.getParameter("idEntrada");
         Entrada entrada;
-        Usuario usuario;
+        Usuarioevento usuarioEvento;
         Evento evento;
         
         entrada = this.entradaFacade.find(new Integer(idEntrada));
-        usuario = entrada.getUsuario();
+        usuarioEvento = entrada.getUsuario();
         evento = entrada.getEvento();
         
-        usuario.getEntradaList().remove(entrada);
+        usuarioEvento.getEntradaList().remove(entrada);
         evento.getEntradaList().remove(entrada);
         
         this.entradaFacade.remove(entrada);
         this.eventoFacade.edit(evento);
-        this.usuarioFacade.edit(usuario);
+        this.usuarioeventoFacade.edit(usuarioEvento);
         
         HttpSession session = request.getSession();
-        session.setAttribute("user", usuario);
+        session.setAttribute("user", usuarioEvento.getIdusuario());
         
         response.sendRedirect("misEntradas.jsp");
         //RequestDispatcher rd = request.getRequestDispatcher("misEntradas.jsp");

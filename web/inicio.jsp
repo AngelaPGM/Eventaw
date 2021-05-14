@@ -92,6 +92,8 @@
         <div class="container m-t-30">
             <div class="row justify-content-center m-t-10">
                 <div class="col-12">
+                    <%
+                        if(!eventos.isEmpty()) { %>
 
                     <table class="center table table-striped align-middle" id="tabla-custom" style="font-size:1.2rem">
                         <thead>
@@ -148,6 +150,13 @@
                         %>
                         </tbody>
                     </table>
+                                                    
+                      <%  } else { %>
+                <div class="bg-text justify-content-center text-center">
+                    <h1 style="color: #9e9e9e"> Actualmente no hay eventos disponibles</h1>
+                </div>
+<% }
+                        %>
                 </div>
             </div>
         </div>
