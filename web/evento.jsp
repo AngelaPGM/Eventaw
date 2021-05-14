@@ -23,12 +23,15 @@
         <br/>
         <form action="ServletAceptaPago">
             <input type="hidden" name="idEvento" value="<%= evento.getId() %>" />
-            ¿Desea comprar entradas? <select name="numEntradas">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+            ¿Desea comprar entradas? (a <%= evento.getPrecio() %>€ cada una)  
+            <select name="numEntradas">
+            <%
+                for(int i = 1; i <= evento.getMaxentradasusuario(); i++){
+            %>
+            <option><%= i %></option>
+            <%
+                }
+            %>
         </select>
         <input type="submit" value="INSCRIBIRSE" name="inscribir" />
         </form>

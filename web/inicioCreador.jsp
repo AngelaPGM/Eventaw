@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -18,13 +19,19 @@
     <body>
         <%
             String borrado = "borrado";
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             
             List<Evento> misEventos;
             misEventos = (List<Evento>) request.getAttribute("eventos");
         %>
-        <h1>Mis Eventos</h1>
+        <h1>Mis Eventos  <a href="">Mi Perfil</a> <a href="ServletCierreSesion">Cerrar Sesión</a></h1>
         
-        <input type="text" name="buscador" value="Buscar Eventos" /> <input type="submit" value="Buscar" name="buscarBoton" />
+        <form action="ServletListadoEventos">
+            <input type="text" name="buscador" value="" /> 
+        <input class="input2"   type="date" id="start" name="fechaInicio" min="<%=formato.format(new Date())%>" max="2040-12-31">
+        <input class="input2"   type="date" id="start" name="fechaFinal" min="<%=formato.format(new Date())%>" max="2040-12-31">
+        <input type="submit" value="Buscar" name="buscarBoton" />
+        </form>
         <br/>
         <br/>
         

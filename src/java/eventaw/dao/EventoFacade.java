@@ -57,4 +57,19 @@ public class EventoFacade extends AbstractFacade<Evento> {
             return q.getResultList();
         }
     }
+    
+    public List<Evento> findByCreatorAndName(Integer idCreador, String nombreEvento){
+        Query q;
+        List<Evento> aux;
+
+        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador and e.titulo LIKE :titulo");
+        q.setParameter("idCreador", idCreador);
+        q.setParameter("titulo", '%' + nombreEvento + '%');
+        aux = q.getResultList();
+        if(aux.isEmpty()){
+            return aux;
+        } else {
+            return q.getResultList();
+        }
+    }
 }

@@ -5,8 +5,8 @@
  */
 package eventaw.servlet;
 
-import eventaw.dao.EntradaFacade;
-import eventaw.entity.Entrada;
+import eventaw.dao.EventoFacade;
+import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,13 +25,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author angep
+ * @author Pepe
  */
-@WebServlet(name = "ServletListadoEntradas", urlPatterns = {"/ServletListadoEntradas"})
-public class ServletListadoEntradas extends HttpServlet {
+@WebServlet(name = "ServletListadoEventos", urlPatterns = {"/ServletListadoEventos"})
+public class ServletListadoEventos extends HttpServlet {
 
     @EJB
-    private EntradaFacade entradaFacade;
+    private EventoFacade eventoFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,80 +44,80 @@ public class ServletListadoEntradas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String nombreEntrada = request.getParameter("buscador");
+       String nombreEvento = request.getParameter("buscador");
        String fechaInicio = request.getParameter("fechaInicio");
        String fechaFinal = request.getParameter("fechaFinal");
        
-       List <Entrada> listaEntrada = new ArrayList<>();
-       List <Entrada> listaE;
+       List <Evento> listaEvento = new ArrayList<>();
+       List <Evento> listaE;
        HttpSession session = request.getSession();
        Usuario usuario = (Usuario) session.getAttribute("user");
        
        
        try{
-            if(nombreEntrada !=null && nombreEntrada.length()>0 && fechaInicio != "" && fechaFinal != ""){//Filtrado
+            if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio != "" && fechaFinal != ""){//Filtrado
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
                 
-                listaEntrada = this.entradaFacade.filterByNameAndId(nombreEntrada, usuario.getId());
-                listaE = this.entradaFacade.filterByNameAndId(nombreEntrada, usuario.getId());
+                listaEvento = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
+                listaE = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
                 
                 if(listaE != null && !listaE.isEmpty()){
-                    for(Entrada e : listaEntrada){
-                        if(fechaIni.after(e.getEvento().getFecha()) || fechaFin.before(e.getEvento().getFecha())){
+                    for(Evento e : listaEvento){
+                        if(fechaIni.after(e.getFecha()) || fechaFin.before(e.getFecha())){
                             listaE.remove(e);
                         }
                     }
-                    listaEntrada = listaE;
+                    listaEvento = listaE;
                 }
                 
-            } else if(nombreEntrada !=null && nombreEntrada.length()>0 && fechaInicio == "" && fechaFinal == "") {//Solo Nombre
-                listaE = this.entradaFacade.filterByNameAndId(nombreEntrada, usuario.getId());
+            } else if(nombreEvento !=null && nombreEvento.length()>0 && fechaInicio == "" && fechaFinal == "") {//Solo Nombre
+                listaE = this.eventoFacade.findByCreatorAndName(usuario.getId(), nombreEvento);
                 if(listaE != null && !listaE.isEmpty()){
-                    listaEntrada = listaE;
+                    listaEvento = listaE;
                 }
-            } else if(nombreEntrada == "" && nombreEntrada.length()<=0 && fechaInicio != "" && fechaFinal != "") {// Solo Fechas
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio != "" && fechaFinal != "") {// Solo Fechas
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
-                listaEntrada = this.entradaFacade.findById(usuario.getId());
-                listaE = this.entradaFacade.findById(usuario.getId());
-                for(Entrada e : listaEntrada){
-                    if(fechaIni.after(e.getEvento().getFecha()) || fechaFin.before(e.getEvento().getFecha())){
+                listaEvento = this.eventoFacade.findByCreator(usuario.getId());
+                listaE = this.eventoFacade.findByCreator(usuario.getId());
+                for(Evento e : listaEvento){
+                    if(fechaIni.after(e.getFecha()) || fechaFin.before(e.getFecha())){
                         listaE.remove(e);
                     }
                 }
-                listaEntrada = listaE;    
-            } else if(nombreEntrada == "" && nombreEntrada.length()<=0 && fechaInicio != "" && fechaFinal == "") {// Solo Fecha Inicio
+                listaEvento = listaE;    
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio != "" && fechaFinal == "") {// Solo Fecha Inicio
                 Date fechaIni = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
-                listaEntrada = this.entradaFacade.findById(usuario.getId());
-                listaE = this.entradaFacade.findById(usuario.getId());
-                for(Entrada e : listaEntrada){
-                    if(fechaIni.after(e.getEvento().getFecha())){
+                listaEvento = this.eventoFacade.findByCreator(usuario.getId());
+                listaE = this.eventoFacade.findByCreator(usuario.getId());
+                for(Evento e : listaEvento){
+                    if(fechaIni.after(e.getFecha())){
                         listaE.remove(e);
                     }
                 }
-                listaEntrada = listaE;
-            } else if(nombreEntrada == "" && nombreEntrada.length()<=0 && fechaInicio == "" && fechaFinal != ""){// Solo Fecha Final
+                listaEvento = listaE;
+            } else if(nombreEvento == "" && nombreEvento.length()<=0 && fechaInicio == "" && fechaFinal != ""){// Solo Fecha Final
                 Date fechaFin = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFinal);
-                listaEntrada = this.entradaFacade.findById(usuario.getId());
-                listaE = this.entradaFacade.findById(usuario.getId());
-                for(Entrada e : listaEntrada){
-                    if(fechaFin.before(e.getEvento().getFecha())){
+                listaEvento = this.eventoFacade.findByCreator(usuario.getId());
+                listaE = this.eventoFacade.findByCreator(usuario.getId());
+                for(Evento e : listaEvento){
+                    if(fechaFin.before(e.getFecha())){
                         listaE.remove(e);
                     }
                 }
-                listaEntrada = listaE;
+                listaEvento = listaE;
             }else{// Quiero mostrar todos
-                listaEntrada = this.entradaFacade.findById(usuario.getId());
+                listaEvento = this.eventoFacade.findByCreator(usuario.getId());
             
             }
        }catch(Exception e){
-            listaEntrada = this.entradaFacade.findById(usuario.getId());
+            listaEvento = this.eventoFacade.findByCreator(usuario.getId());
        }
        
-       request.setAttribute("entradas", listaEntrada);
+       request.setAttribute("eventos", listaEvento);
        
-       RequestDispatcher rd = request.getRequestDispatcher("misEntradas.jsp?filtrado=1");
+       RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
        rd.forward(request, response);
     }
 
