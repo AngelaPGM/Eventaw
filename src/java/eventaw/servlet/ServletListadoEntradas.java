@@ -64,7 +64,7 @@ String nombreEntrada = request.getParameter("buscador");
                 
                 if(listaE != null && !listaE.isEmpty()){
                     for(Entrada e : listaEntrada){
-                        if(fechaIni.after(e.getEvento().getFecha()) && fechaFin.before(e.getEvento().getFecha())){
+                        if(fechaIni.after(e.getEvento().getFecha()) || fechaFin.before(e.getEvento().getFecha())){
                             listaE.remove(e);
                         }
                     }
@@ -82,7 +82,7 @@ String nombreEntrada = request.getParameter("buscador");
                 listaEntrada = this.entradaFacade.findById(usuario.getId());
                 listaE = this.entradaFacade.findById(usuario.getId());
                 for(Entrada e : listaEntrada){
-                    if(fechaIni.after(e.getEvento().getFecha()) && fechaFin.before(e.getEvento().getFecha())){
+                    if(fechaIni.after(e.getEvento().getFecha()) || fechaFin.before(e.getEvento().getFecha())){
                         listaE.remove(e);
                     }
                 }
