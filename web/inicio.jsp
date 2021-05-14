@@ -49,14 +49,14 @@
                 <div class="container">
                     <h1 style="font-size: 4rem"> Reserva ya tus entradas </h1>
                     <h2 style="font-size: 3rem"> y no te pierdas nada</h2>
-                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#!">Ver eventos</a>
+                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#ancla">Ver eventos</a>
 
                 </div>
             </div>
         </header>
 
 
-        <section>
+        <section id="ancla">
             <div class="container p-t-30">
                 <div class="row">
                     <div class="col-sm-10 col-md-7 offset-1" style="padding: 1rem 4rem">
