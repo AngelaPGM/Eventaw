@@ -71,13 +71,14 @@ public class ServletCRUDEvento extends HttpServlet {
             if(borrar.equals("borrado")){
                 Integer eID = new Integer(id);
                 evento = this.eventoFacade.find(eID);
-                this.eventoFacade.remove(evento);
                 
                 for(Entrada e : evento.getEntradaList()){
                     this.entradaFacade.remove(e);
                     e.getUsuario().getEntradaList().remove(e);
                     this.usuarioeventoFacade.edit(e.getUsuario());
                 }
+                
+                this.eventoFacade.remove(evento);
                 
                 if(usuario.getRol().getId() == 1){
                     
