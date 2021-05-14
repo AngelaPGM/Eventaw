@@ -65,38 +65,55 @@
                 </div>
                 <form action="ServletListadoInicio">
                     <div class="row justify-content-center">
-                    <div class="col-5 wrap-input2 ">
-                        <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre"/> 
+                        <div class="col-5 wrap-input2 ">
+                            <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre"/> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="buscadorFecha" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        </div>
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn" value="Buscar">
+                                    Buscar
+                                </button>
+                            </div>                    
+                        </div>
                     </div>
-                    <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="buscadorFecha" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
-                    </div>
-                    <div class="col-2">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn" value="Buscar">
-                                Buscar
-                            </button>
-                        </div>                    
-                    </div>
-                </div>
                 </form>
             </div>
         </section>            
 
 
-
-
-        <!--<br/>Eventos Disponibles: <br/>-->
-        <%
-            for (Evento ev : eventos) {
-        %>
-        <a href="ServletEvento?id=<%= ev.getId()%>"><%= ev.getTitulo()%></a><br/>
-        <%
-            }
-        %>
-
-
+        <div class="container m-t-30 ">
+            <div class="row justify-content-center text-center">
+                <div class="col-4">
+                        <h1 class="bg-text" style=" color:#b997f6;"> Eventos disponibles </h1>
+                    </div>
+        </div>
+            <div class="row justify-content-center m-t-10">
+                <div class="col-6">
+                <!--<br/>Eventos Disponibles: <br/>-->
+                <table class="center table table-striped align-middle" id="tabla-custom" style="font-size:1.2rem">
+                    <thead>
+                        <tr>
+                            <th>EVENTO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <td>
+                        <%
+                            for (Evento ev : eventos) {
+                        %>
+                        <a style="color:white" href="ServletEvento?id=<%= ev.getId()%>"><%= ev.getTitulo()%></a><br/>
+                        <%
+                            }
+                        %>
+                    </td></tbody>
+                </table>
+                    </div>
+            </div>
+        </div>
         <br/>
     </body>
 </html>

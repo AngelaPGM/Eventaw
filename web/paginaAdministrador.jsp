@@ -58,9 +58,9 @@
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag"></div>
-                                <button class="login100-form-btn" value="FiltrarUsuario" >
+                                <a class="login100-form-btn" style="text-decoration: none" href="crearEditarUsuario.jsp" >
                                     Nuevo usuario
-                                </button>
+                                </a>
                             </div>                    
                         </div>
                         <div class="col-5 wrap-input2 offset-2">

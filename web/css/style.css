@@ -470,4 +470,17 @@ button:hover {
     color:white;
 }
 
+#tabla-custom2 {
+    font-family: Poppins-Regular;
+    border-collapse: collapse;
+    text-align: center;
+
+}
+
+#tabla-custom2 td, #tabla-custom2 th {
+    padding: 5px;
+    background-color: #00dbde;
+    color:white;
+}
+
 
