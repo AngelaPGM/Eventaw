@@ -27,7 +27,7 @@
         Usuario user = (Usuario) session.getAttribute("user");
         Usuarioevento uEvento = (Usuarioevento) user.getUsuarioevento();
 
-        String errorLog = (String) request.getAttribute("errorLog");
+        String errorEditar = (String) request.getAttribute("errorEditar");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     %>
     <body>
@@ -43,11 +43,19 @@
         <div class="fondo-pagina">
             <div class="container-perfil">
                 <div class="wrap-registro" style=" margin-top: 3%">
-                    <form class="register-form" method="POST" action="">
+                    <form class="register-form" method="POST" action="ServletGuardarUsuarioEvento">
                         <span class="login-form-title">                       
                             Modificar perfil
                         </span>
-
+                        
+                        <%
+                            if (errorEditar != null && !errorEditar.equals("")) {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>Error:</strong> <%= errorEditar%> </a>
+                        </div>
+                        <% }
+                        %>
+                        
                         <hr/>
 
                         <div class="row justify-content-around p-t-5">
@@ -132,7 +140,7 @@
                                     <input class="input2" type="password" name="pass1">
                                 </div>
                                 <div class="col-6  wrap-input2" style="width: 45%;">
-                                    <input class="input2" type="password" name="pass2" required>
+                                    <input class="input2" type="password" name="pass2">
                                 </div>
                             </div>
 
