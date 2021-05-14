@@ -50,6 +50,10 @@ public class ServletRedireccion extends HttpServlet {
         
         List<Mensaje> m = this.mensajeFacade.findByConver(c.getId());
         
+        if(m == null){
+            m = new ArrayList<>();
+        }
+        
         request.setAttribute("c", c);
         request.setAttribute("m", m);
         
