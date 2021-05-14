@@ -11,6 +11,7 @@ import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -53,6 +54,7 @@ public class ServletLogin extends HttpServlet {
         String errorLog = "";
         List<Evento> eventos;
         Date today = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         HttpSession session = request.getSession();
         
         usuario = this.usuarioFacade.findByEmail(email);
@@ -65,7 +67,9 @@ public class ServletLogin extends HttpServlet {
                         session.setAttribute("user", usuario);
                         eventos = this.eventoFacade.findAll();
                         for(Evento e : this.eventoFacade.findAll()){
-                            if(!e.getFecha().after(today)) eventos.remove(e);
+                            if(!formato.format(e.getFecha()).equals(formato.format(today))){
+                                if(!e.getFecha().after(today)) eventos.remove(e);
+                            }
                         }   
                         request.setAttribute("eventos", eventos);
                         break;
@@ -76,6 +80,10 @@ public class ServletLogin extends HttpServlet {
                         break;
                     case 1:
                         jsp = "ServletListadoAdmin";
+                        session.setAttribute("user", usuario);
+                        break;
+                    case 4:
+                        jsp = "ServletTeleoperador";
                         session.setAttribute("user", usuario);
                         break;
                     default:

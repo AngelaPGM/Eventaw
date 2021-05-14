@@ -35,7 +35,6 @@ public class ServletListadoAdmin extends HttpServlet {
        String tipoFiltrado = request.getParameter("tipofiltrado");
        
        List <Usuario> listaUsuario = new ArrayList<>();
-       String Errores ="";
        List <Usuario> listaU;
        
        if(filtrado !=null && filtrado.length()>0){//Filtrado
@@ -57,7 +56,6 @@ public class ServletListadoAdmin extends HttpServlet {
                 }
            }
            }catch(Exception e){
-               Errores = "ID ERRONEO";
                listaUsuario = this.usuarioFacade.findAll();
            }
        }else{// Quiero mostrar todos
@@ -66,7 +64,6 @@ public class ServletListadoAdmin extends HttpServlet {
        }
        
        request.setAttribute("listaUsuario", listaUsuario);
-       request.setAttribute("errores",Errores);
        
        RequestDispatcher rd = request.getRequestDispatcher("paginaAdministrador.jsp");
        rd.forward(request, response);

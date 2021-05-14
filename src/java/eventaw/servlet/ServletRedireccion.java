@@ -5,11 +5,14 @@
  */
 package eventaw.servlet;
 
-import eventaw.dao.RolFacade;
-import eventaw.dao.UsuarioFacade;
-import eventaw.entity.Usuario;
+import eventaw.dao.ConversacionFacade;
+import eventaw.dao.MensajeFacade;
+import eventaw.entity.Conversacion;
+import eventaw.entity.Mensaje;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,50 +20,45 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-    
-    
 
-@WebServlet(name = "ServletCrudUsuario", urlPatterns = {"/ServletCrudUsuario"})
-public class ServletCrudUsuario extends HttpServlet {
+/**
+ *
+ * @author Gonzalo
+ */
+@WebServlet(name = "ServletRedireccion", urlPatterns = {"/ServletRedireccion"})
+public class ServletRedireccion extends HttpServlet {
 
     @EJB
-    private RolFacade rolFacade;
+    private MensajeFacade mensajeFacade;
 
     @EJB
-    private UsuarioFacade usuarioFacade;
-    
-    
-    
-    
+    private ConversacionFacade conversacionFacade;
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String borrar = request.getParameter("borrar");
-        String id = request.getParameter("id");
-        Usuario u = null;
+        String id = (String)request.getParameter("id");
+        Conversacion c = this.conversacionFacade.find(new Integer(id));
         
-        if(borrar!=null && borrar.equals("borrado")){ //Borrar
-                
-            u = this.usuarioFacade.find(new Integer(id));
-            usuarioFacade.remove(u);
-            response.sendRedirect("ServletListadoAdmin");
+        List<Mensaje> m = this.mensajeFacade.findByConver(c.getId());
         
-        } else { //Editar
-            if(id!=null && !id.equals("")){
-                u = this.usuarioFacade.find(new Integer(id));
-                
-                if(u.getRol().getId() == 2){
-                    request.setAttribute("u",u);
-                    RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp?editar=1");
-                    rd.forward(request, response);
-                }
-            }
-            
-            request.setAttribute("u",u);
-            RequestDispatcher rd = request.getRequestDispatcher("crearEditarUsuario.jsp");
-            rd.forward(request, response);
-            
+        if(m == null){
+            m = new ArrayList<>();
         }
         
+        request.setAttribute("c", c);
+        request.setAttribute("m", m);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

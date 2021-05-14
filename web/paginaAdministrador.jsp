@@ -59,7 +59,7 @@
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag"></div>
-                                <a class="login100-form-btn" style="text-decoration: none" href="crearEditarUsuario.jsp" >
+                                <a class="login100-form-btn" style="text-decoration: none" href="ServletCrudUsuario" >
                                     Nuevo usuario
                                 </a>
                             </div>                    
@@ -88,11 +88,10 @@
         </section>   
 
         <% List<Usuario> ListaUsuario = (List) request.getAttribute("listaUsuario");
-            String errores = (String) request.getAttribute("errores");
             Usuario user = (Usuario) session.getAttribute("user");
             String borrar = "borrado";
 
-            if (!ListaUsuario.isEmpty() || (errores != "")) {
+            if (!ListaUsuario.isEmpty()) {
         %>
 
         <div class="container m-t-20">
@@ -157,8 +156,6 @@
                 }
             %>
         </table>
-
-        <%= errores%> <br/>
         
         
                 <!-- EVENTOS  -->

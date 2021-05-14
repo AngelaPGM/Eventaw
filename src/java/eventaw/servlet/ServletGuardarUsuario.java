@@ -47,7 +47,6 @@ public class ServletGuardarUsuario extends HttpServlet {
         Boolean estoyEnEditar = false;
         Boolean hayError = false;
         Boolean correoExiste = false;
-        Boolean ContrasenaAnterior = false;
         
         
             
@@ -57,15 +56,15 @@ public class ServletGuardarUsuario extends HttpServlet {
          
          if(email!= null && !email.isEmpty()){
 
-            u = this.usuarioFacade.findByEmail(email);
-            if(u != null){
+            u = this.usuarioFacade.find(new Integer(id));
+            if(u != null && !u.getCorreo().equals(email) && this.usuarioFacade.findByEmail(email) != null){
                 correoExiste =true;
             }
-            u=null;
+            u = null;
          }
 
-        
-        if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){ //Campos vacios
+         
+        if((email.equals("")) || (rol == null)){ //Campos vacios
            
             if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
@@ -85,13 +84,18 @@ public class ServletGuardarUsuario extends HttpServlet {
             }
             hayError = true;
                    
-        }else if (!hayError && correoExiste && !estoyEnEditar) {
+        }else if (!hayError && correoExiste) {
                 
-                errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                if(estoyEnEditar){
+                    u = this.usuarioFacade.find(new Integer(id));
+                    errorEditar = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }else{
+                    errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }
                 
                 hayError = true;
                 
-        }else{ //Si no hay errores hacemos esto.
+        } else { //Si no hay errores hacemos esto.
             
             if(!estoyEnEditar){ //Crear
                 
@@ -103,14 +107,20 @@ public class ServletGuardarUsuario extends HttpServlet {
                 this.usuarioFacade.create(u);
                 
             }else{//Editar
-                
-                u = this.usuarioFacade.find(new Integer(id));
-                Rol r = this.rolFacade.find(new Integer(rol));
-                u.setCorreo(email);
-                u.setContrasenya(contrasena);
-                u.setRol(r);
-                this.usuarioFacade.edit(u);
-            
+                if(contrasena.equals("") && repcontrasena.equals("")){
+                    u = this.usuarioFacade.find(new Integer(id));
+                    Rol r = this.rolFacade.find(new Integer(rol));
+                    u.setCorreo(email);
+                    u.setRol(r);
+                    this.usuarioFacade.edit(u);
+                } else {
+                    u = this.usuarioFacade.find(new Integer(id));
+                    Rol r = this.rolFacade.find(new Integer(rol));
+                    u.setCorreo(email);
+                    u.setContrasenya(contrasena);
+                    u.setRol(r);
+                    this.usuarioFacade.edit(u);
+                }
             }
                 
         }
