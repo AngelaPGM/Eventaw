@@ -62,6 +62,10 @@ public class ServletLogin extends HttpServlet {
         if(usuario != null){
             if(usuario.getContrasenya().equals(password)){
                 if(null != usuario.getRol().getId()) switch (usuario.getRol().getId()) {
+                    case 1:
+                        jsp = "ServletListadoAdmin";
+                        session.setAttribute("user", usuario);
+                        break;
                     case 2:
                         jsp = "inicio.jsp";
                         session.setAttribute("user", usuario);
@@ -78,13 +82,13 @@ public class ServletLogin extends HttpServlet {
                         session.setAttribute("user", usuario);
                         request.setAttribute("eventos", usuario.getEventoList());
                         break;
-                    case 1:
-                        jsp = "ServletListadoAdmin";
-                        session.setAttribute("user", usuario);
-                        break;
                     case 4:
                         jsp = "ServletTeleoperador";
                         session.setAttribute("user", usuario);
+                        break;
+                    case 5:
+                        jsp = "ServletAnalistaEventos";
+                        session.setAttribute("analista", usuario);
                         break;
                     default:
                         break;

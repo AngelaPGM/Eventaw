@@ -64,7 +64,7 @@
         <div class="fondo-pagina">
             <div class="container-perfil">
                 <div class="wrap-registro" style=" margin-top: 3%">
-                    <form class="register-form" method="POST" action="ServletGuardarUsuarioEvento">
+                    <form class="register-form" method="POST" action="ServletGuardarUsuarioEvento?idUsuario=<%= user.getId() %>">
                         <span class="login-form-title">                       
                             Modificar perfil
                         </span>
@@ -124,13 +124,15 @@
                                 <div class="col-3">
                                     <select class="custom-select" name="sexo" required>
                                         <%
-                                            if (uEvento.getSexo().equals('M')) { %>
+                                            if (uEvento.getSexo().equals("M")) { 
+                                        %>
                                         <option selected value="M">Mujer</option>
                                         <option value="H">Hombre</option>
                                         <% } else { %>
                                         <option value="M">Mujer</option>
                                         <option selected value="H">Hombre</option>
-                                        <% }
+                                        <% 
+                                            }
                                         %>
 
                                     </select>

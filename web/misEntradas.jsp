@@ -76,20 +76,28 @@
         <%
             List<Entrada> entradasFuturas = new ArrayList();
             List<Entrada> entradasPasadas = new ArrayList();
+            Date todayDate = new Date();
+            String todayString = new SimpleDateFormat("dd/MM/yyyy").format(todayDate);
 
             if (request.getParameter("filtrado").equals("1")) {
 
                 entradasFuturas = (List<Entrada>) request.getAttribute("entradas");
-
+                
                 for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
-                    if (e.getEvento().getFecha().before(new Date())) {
-                        entradasPasadas.add(e);
+                    String fecha = new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha());
+                    if(!fecha.equals(todayString)){
+                        if (e.getEvento().getFecha().before(todayDate)) {
+                            entradasPasadas.add(e);
+                        }
                     }
                 }
             } else {
 
                 for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
-                    if (e.getEvento().getFecha().after(new Date())) {
+                    String fecha = new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha());
+                    if (e.getEvento().getFecha().after(todayDate)) {
+                        entradasFuturas.add(e);
+                    } else if(fecha.equals(todayString)) {
                         entradasFuturas.add(e);
                     } else {
                         entradasPasadas.add(e);

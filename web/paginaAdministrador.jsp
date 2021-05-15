@@ -4,6 +4,8 @@
     Author     : Fran
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="eventaw.entity.Evento"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -171,25 +173,27 @@
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag-azul"></div>
-                                <a class="login100-form-btn" style="text-decoration: none" href="crearEditarUsuario.jsp" >
+                                <a class="login100-form-btn" style="text-decoration: none" href="ServletCRUDEvento" >
                                     Nuevo evento
                                 </a>
                             </div>                    
                         </div>
                         <div class="col-5 wrap-input2 offset-2">
-                            <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoUsuario"/> 
+                            <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoEvento"/> 
                         </div>
                         <div class="col-1">
-                            <select name="tipofiltrado" class="custom-select">
+                            <select name="tipofiltrado2" class="custom-select">
                                 <option value="id">ID</option> 
-                                <option value="email">EMAIL</option>
-                                <option value="rol">ROL</option>
+                                <option value="titulo">TITULO</option>
+                                <option value="email">CREADOR</option>
+                                <option value="ciudad">CIUDAD</option>
+                                <option value="fecha">FECHA</option>
                             </select>
                         </div>
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag-azul"></div>
-                                <button class="login100-form-btn" value="FiltrarUsuario" >
+                                <button class="login100-form-btn" value="FiltrarEvento" >
                                     FILTRAR
                                 </button>
                             </div>                    
@@ -198,6 +202,76 @@
                 </form>
             </div>
         </section> 
+        <% List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
 
+            if (!listaEventos.isEmpty()) {
+        %>
+
+        <div class="container m-t-20">
+            <table class="center table table-striped align-middle" id="tabla-custom">
+                <tr>
+                    <th>ID</th>
+                    <th>TITULO</th>
+                    <th>DESCRIPCION</th>
+                    <th>CREADOR</th>
+                    <th>FECHA</th>  
+                    <th>CIUDAD</th>
+                    <th>PRECIO</th>            
+                    <th>AFORO</th>
+                    <th></th>
+                    <th></th> 
+                </tr>        
+
+                <%
+                    for (Evento e : listaEventos) {
+                %>   
+                <tr>
+                    <td><%= e.getId() %></td>
+                    <td><%= e.getTitulo() %></td>
+                    <td><%= e.getDescripcion() %></td>
+                    <td><%= e.getCreador().getCorreo() %></td>
+                    <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()) %></td>  
+                    <td><%= e.getCiudad() %></td>
+                    <td><%= e.getPrecio() %></td> 
+                    <td><%= e.getAforo() %></td> 
+                    <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
+                    <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
+                </tr>        
+                <%
+                    }
+                %>
+            </table>
+        </div>
+        <%
+        } else {
+        %>    
+        <form action="ServletListadoAdmin">
+
+            Filtrado:<input type="text" name="filtradoEvento" />
+            <select name="tipofiltrado2">
+                <option value="id">ID</option> 
+                <option value="titulo">TITULO</option>
+                <option value="email">CREADOR</option>
+                <option value="ciudad">CIUDAD</option>
+                <option value="fecha">FECHA</option>
+            </select>
+            <input type="submit" value="FiltrarEvento" />
+        </form>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>TITULO</th>
+                <th>DESCRIPCION</th>
+                <th>CREADOR</th>
+                <th>FECHA</th>  
+                <th>CIUDAD</th>
+                <th>PRECIO</th>            
+                <th>AFORO</th>                                 
+            </tr> 
+
+            <%
+                }
+            %>
+        </table>
     </body>
 </html>
