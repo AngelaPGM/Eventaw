@@ -47,6 +47,7 @@ public class ServletListadoEntradas extends HttpServlet {
        String nombreEntrada = request.getParameter("buscador");
        String fechaInicio = request.getParameter("fechaInicio");
        String fechaFinal = request.getParameter("fechaFinal");
+       Date today = new Date();
        
        List <Entrada> listaEntrada = new ArrayList<>();
        List <Entrada> listaE;
@@ -132,14 +133,20 @@ public class ServletListadoEntradas extends HttpServlet {
                 listaEntrada = this.entradaFacade.findById(usuario.getUsuarioevento().getId());
                 listaE = this.entradaFacade.findById(usuario.getUsuarioevento().getId());
                 for(Entrada e : listaEntrada){
-                    if(fechaFin.before(e.getEvento().getFecha())){
+                    if(fechaFin.before(e.getEvento().getFecha()) || e.getEvento().getFecha().before(new Date())){
                         listaE.remove(e);
                     }
                 }
                 listaEntrada = listaE;
-            }else{// Quiero mostrar todos
+            }else{// Quiero mostrar todas
                 listaEntrada = this.entradaFacade.findById(usuario.getUsuarioevento().getId());
-            
+                listaE = this.entradaFacade.findById(usuario.getUsuarioevento().getId());
+                for(Entrada e : listaEntrada){
+                    if(e.getEvento().getFecha().before(today)){
+                        listaE.remove(e);
+                    }
+                }
+                listaEntrada = listaE;
             }
        }catch(Exception e){
             listaEntrada = this.entradaFacade.findById(usuario.getUsuarioevento().getId());

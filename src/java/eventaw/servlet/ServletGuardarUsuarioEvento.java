@@ -46,7 +46,9 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("user");
+        String id = request.getParameter("idUsuario");
         Usuario u;
+        Usuarioevento uEvento = new Usuarioevento();
         String nombre = request.getParameter("nombre");
         String ape1 = request.getParameter("ape1");
         String ape2 = request.getParameter("ape2");
@@ -58,14 +60,21 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         String contrasena = request.getParameter("pass1");
         String repcontrasena = request.getParameter("pass2");
         String errorEditar = "";
+        String editar = "0";
         Boolean correoExiste = false;
         Boolean ContrasenaAnterior = false;
-        
          
+        
          if(email!= null && !email.isEmpty()){
             u = this.usuarioFacade.findByEmail(email);
-            if(u != null && !u.getCorreo().equals(usuario.getCorreo())){
-                correoExiste =true;
+            if(usuario.getId().equals(new Integer(id))){
+                if(u != null && !u.getCorreo().equals(usuario.getCorreo())){
+                    correoExiste =true;
+                }
+            } else {
+                if(u != null && !u.getCorreo().equals(this.usuarioFacade.find(new Integer(id)).getCorreo())){
+                    correoExiste =true;
+                }
             }
          }
             
@@ -88,9 +97,17 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         
                 } else {
                     try{
-                        Usuarioevento uEvento = usuario.getUsuarioevento();
-                        usuario.setCorreo(email);
-                        usuario.setContrasenya(contrasena);
+                        if(usuario.getId().equals(new Integer(id))){
+                            uEvento = usuario.getUsuarioevento();
+                            usuario.setCorreo(email);
+                            usuario.setContrasenya(contrasena);
+                            
+                            this.usuarioFacade.edit(usuario);
+                            session.setAttribute("user", usuario);
+                        } else {
+                            uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                            editar = "1";
+                        }
                         uEvento.setApellido1(ape1);
                         uEvento.setApellido2(ape2);
                         uEvento.setCiudad(ciudad);
@@ -99,19 +116,25 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                         uEvento.setNombre(nombre);
                         uEvento.setSexo(sexo);
                 
-                        this.usuarioFacade.edit(usuario);
+                        
                         this.usuarioeventoFacade.edit(uEvento);
-                
-                        session.setAttribute("user", usuario);
+                        
                     } catch (Exception e){
                         errorEditar = "Error en la fecha: " + e.getMessage();
                     }
                 }
-                
-            } else if(contrasena.equals("") && repcontrasena.equals("")) {
+            } else {//No cambiar contraseña
                 try{
-                    Usuarioevento uEvento = usuario.getUsuarioevento();
-                    usuario.setCorreo(email);
+                    if(usuario.getId().equals(new Integer(id))){
+                        uEvento = usuario.getUsuarioevento();
+                        usuario.setCorreo(email);
+                        
+                        this.usuarioFacade.edit(usuario);
+                        session.setAttribute("user", usuario);
+                    } else {
+                        uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                        editar = "1";
+                    }
                     uEvento.setApellido1(ape1);
                     uEvento.setApellido2(ape2);
                     uEvento.setCiudad(ciudad);
@@ -120,21 +143,17 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                     uEvento.setNombre(nombre);
                     uEvento.setSexo(sexo);
                 
-                    this.usuarioFacade.edit(usuario);
                     this.usuarioeventoFacade.edit(uEvento);
-                
-                    session.setAttribute("user", usuario);
+                    
+                    
                 } catch (Exception e){
                     errorEditar = "Error en la fecha: " + e.getMessage();
                 }
-            } else {
-                errorEditar = "Introduce ambas contraseñas";
-            }
+            } 
         }
-        
-
+        request.setAttribute("u", uEvento.getIdusuario());
         request.setAttribute("errorEditar", errorEditar);
-        RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp?editar=" + editar);
         rd.forward(request, response);
     }
 
