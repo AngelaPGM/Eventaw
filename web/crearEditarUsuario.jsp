@@ -18,7 +18,7 @@
     </head>
     <body>
 
-        <% String errorCrear = (String) request.getAttribute("errorCrear");
+        <%  String errorCrear = (String) request.getAttribute("errorCrear");
             String errorEditar = (String) request.getAttribute("errorEditar");
             Usuario yo = (Usuario) session.getAttribute("user");
             Usuario u = (Usuario) request.getAttribute("u");
@@ -63,6 +63,13 @@
 
                     <form class="register-form" method="POST" action="ServletGuardarUsuario">
                         <h1 class="bg-text">Nuevo Usuario</h1>
+                        <%
+                           if (errorCrear != "") {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>¡Error!</strong> <%= errorCrear%> </a>
+                        </div>
+                        <% }
+                        %>
                         <hr/>
                         <div class="row justify-content-around m-t-20">
                             <div class="col-11">
@@ -116,7 +123,6 @@
                                 </div>
                             </div>
                         </div>
-                        <%= errorCrear%>
                     </form>
 
 
@@ -130,7 +136,24 @@
                         Integer idRolU = rolU.getId();
                     %>
                     <form class="register-form" method="POST" action="ServletGuardarUsuario?id=<%= idU%>">
-                        <h1 class="bg-text">Editar datos</h1>            
+                        <h1 class="bg-text">Editar datos</h1>
+                        <%
+                           if (errorEditar != "") {
+                                if(errorEditar.equals("Sus datos han sido modificados correctamente")){
+                        %>
+                        <div class=" alert alert-success vertical-align-middle">
+                            <strong><%= errorEditar %></strong>
+                        </div>
+                        <% 
+                                } else {
+                        %>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>¡Error!</strong> <%= errorEditar %>
+                        </div>
+                        <% 
+                                }
+                            }
+                        %>
                         <hr/>
                         <div class="row justify-content-around m-t-20">
                             <div class="col-11">
@@ -152,10 +175,10 @@
                         </div>
                         <div class="row justify-content-around">
                             <div class="col-6  wrap-input2" style="width: 45%;">
-                                <input class="input2" type="password" name="contrasenia" required>
+                                <input class="input2" type="password" name="contrasenia">
                             </div>
                             <div class="col-6  wrap-input2" style="width: 45%;">
-                                <input class="input2" type="password" name="contrasenia1" required>
+                                <input class="input2" type="password" name="contrasenia1">
                             </div>
                         </div>
                         <%
@@ -174,6 +197,9 @@
                                 </select>
                             </div>
                         </div>
+                        <%
+                            }
+                        %>
                         <div class="row justify-content-center">
                             <div class="col-6">
                                 <div class="container-login100-form-btn p-t-30 justify-content-center">
@@ -186,11 +212,7 @@
                                 </div>
                             </div>
                         </div>
-                        <%= errorEditar%>
-                        <%
-                            }
-                        %>
-                    </form>    
+                    </form> 
                     <%
                         }
                     %>

@@ -59,8 +59,8 @@ public class ServletGuardarUsuario extends HttpServlet {
          
          if(email!= null && !email.isEmpty()){
 
-            u = this.usuarioFacade.find(new Integer(id));
-            if(u != null && !u.getCorreo().equals(email) && this.usuarioFacade.findByEmail(email) != null){
+            if(id!=null)u = this.usuarioFacade.find(new Integer(id));
+            if(u.getCorreo() != null && !u.getCorreo().equals(email) && this.usuarioFacade.findByEmail(email) != null){
                 correoExiste =true;
             }
             u = null;
