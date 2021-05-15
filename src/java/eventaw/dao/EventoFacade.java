@@ -57,4 +57,104 @@ public class EventoFacade extends AbstractFacade<Evento> {
             return q.getResultList();
         }
     }
+    
+    public List<Evento> eventosPorFiltro(Integer fechamayor, Integer fechamenor, Integer fechaigual, Integer preciomayor, Integer preciomenor, Integer precioigual, String ciudadevento){
+        List<Evento> res = null;
+        
+        Integer filtrosAct = 0;
+        String strQ = "SELECT e FROM Evento e ";
+        
+        if(fechamayor != null){
+            filtrosAct++;
+        }
+        if(fechamenor != null){
+            filtrosAct++;
+        }
+        if(fechaigual != null){
+            filtrosAct++;
+        }
+        if(preciomayor != null){
+            filtrosAct++;
+        }
+        if(preciomenor != null){
+            filtrosAct++;
+        }
+        if(precioigual != null){
+            filtrosAct++;
+        }
+        if(ciudadevento != null){
+            filtrosAct++;
+        }
+        
+        if(filtrosAct > 0){
+            strQ.concat( "WHERE ");
+            if(fechamayor != null){
+                strQ.concat("e.fecha > :fechamayor ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(fechamenor != null){
+                strQ.concat("e.fecha < :fechamenor ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(fechaigual != null){
+                strQ.concat("e.fecha > :fechaigual ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(preciomayor != null){
+                strQ.concat("e.precio > :preciomayor ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(preciomenor != null){
+                strQ.concat("e.precio > :preciomenor ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(precioigual != null){
+                strQ.concat("e.precio > :precioigual ");
+                filtrosAct--;
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            if(ciudadevento != null){
+                strQ.concat("e.ciudad > :ciudadevento ");
+                filtrosAct--;
+                //En teoria no se ejecuta este if, por ser el ultimo, pero lo dejo por si añado mas filtros
+                if(filtrosAct > 0){
+                    strQ.concat(" AND");
+                }
+            }
+            Query q;
+            List<Evento> aux;
+
+            q = this.em.createQuery(strQ);
+            q.setParameter("fechamayor", fechamayor);
+            q.setParameter("fechamenor", fechamenor);
+            q.setParameter("fechaigual", fechaigual);
+            q.setParameter("preciomayor", preciomayor);
+            q.setParameter("preciomenor", preciomenor);
+            q.setParameter("precioigual", precioigual);
+            q.setParameter("ciudadevento", ciudadevento);
+
+            res = q.getResultList();
+        }else{
+            res = this.findAll();
+        }
+        
+        return res;
+    }
 }

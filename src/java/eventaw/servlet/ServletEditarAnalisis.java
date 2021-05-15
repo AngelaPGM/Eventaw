@@ -5,13 +5,12 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.AnalisisFacade;
 import eventaw.dao.EventoFacade;
-import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Analisis;
 import eventaw.entity.Evento;
-import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -20,20 +19,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author angep
+ * @author rafa
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletEditarAnalisis", urlPatterns = {"/ServletEditarAnalisis"})
+public class ServletEditarAnalisis extends HttpServlet {
+
+    @EJB
+    private AnalisisFacade analisisFacade;
 
     @EJB
     private EventoFacade eventoFacade;
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,56 +44,32 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("pass");
-        Usuario usuario;
-        String jsp = "";
-        String errorLog = "";
-        List<Evento> eventos;
-        Date today = new Date();
-        HttpSession session = request.getSession();
         
-        usuario = this.usuarioFacade.findByEmail(email);
+        String id = request.getParameter("id");
+        List<Evento> listaEventos = null;
         
-        if(usuario != null){
-            if(usuario.getContrasenya().equals(password)){
-                if(null != usuario.getRol().getId()) switch (usuario.getRol().getId()) {
-                    case 1:
-                        jsp = "ServletListadoAdmin";
-                        session.setAttribute("user", usuario);
-                        break;
-                    case 2:
-                        jsp = "inicio.jsp";
-                        session.setAttribute("user", usuario);
-                        eventos = this.eventoFacade.findAll();
-                        for(Evento e : this.eventoFacade.findAll()){
-                            if(!e.getFecha().after(today)) eventos.remove(e);
-                        }   
-                        request.setAttribute("eventos", eventos);
-                        break;
-                    case 3:
-                        jsp = "inicioCreador.jsp";
-                        session.setAttribute("user", usuario);
-                        request.setAttribute("eventos", usuario.getEventoList());
-                        break;
-                    case 5:
-                        jsp = "ServletAnalistaEventos";
-                        session.setAttribute("analista", usuario);
-                    default:
-                        break;
-                } 
-            } else {
-                jsp = "login.jsp";
-                errorLog = "¡Contraseña incorrecta!";
-            }
-        } else {
-            jsp = "login.jsp";
-            errorLog = "¡Email incorrecto!";
+        if(id != null){ //Editar
+            Analisis a = this.analisisFacade.find(new Integer(id));
+            request.setAttribute("analisis", a);
+        
+            listaEventos = this.eventoFacade.eventosPorFiltro(a.getFechamayor(), a.getFechamenor(), a.getFechaigual(), a.getPreciomayor(), a.getPreciomenor(), a.getPrecioigual(), a.getCiudadevento());
         }
         
-        request.setAttribute("errorLog", errorLog);
+        if(listaEventos == null){
+            listaEventos = this.eventoFacade.findAll();
+        }
+        request.setAttribute("listaEventos", listaEventos);
+
         
-        RequestDispatcher rd = request.getRequestDispatcher(jsp);
+        //GET ANYOS
+        List<Evento> aux = this.eventoFacade.findAll();
+        List<Integer> anyos = null;
+        for(Evento e: aux){
+            anyos.add(e.getFecha().getYear());
+        }
+        request.setAttribute("anyos", anyos);
+                
+        RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
         rd.forward(request, response);
     }
 

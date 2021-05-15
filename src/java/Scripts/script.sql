@@ -18,7 +18,7 @@ CREATE TABLE EVENTO (
     id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     titulo VARCHAR(30) NOT NULL,
     descripcion VARCHAR(500) NOT NULL,
-ciudad              VARCHAR(45),
+    ciudad VARCHAR(45),
     fecha DATE NOT NULL,
     fechaCompra DATE NOT NULL,
     precio DOUBLE NOT NULL,
