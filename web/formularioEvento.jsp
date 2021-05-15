@@ -61,7 +61,7 @@
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
-                <li><a  href="ServletRedirectInicio">Inicio</a></li>
+                <li><a  href="inicioCreador.jsp">Inicio</a></li>
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="ServletCrudUsuario?id=<%= usuario.getId()%>">Mi perfil</a></li>
             </ul> 
@@ -71,11 +71,12 @@
             <div class="container-perfil">
                 <div class="wrap-registro justify-content-center text-center" >
                     <form class="register-form" method="POST" action="ServletGuardarEvento"> 
-                        <span class="bg-text" style="color: #7cc5e5">
+                        <span class="bg-text" style="color: #a64bf4">
                             <h1>
-
+                                Nuevo evento
                             </h1> 
                         </span>
+                        
                     </form>
                 </div>
             </div>
