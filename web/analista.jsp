@@ -19,12 +19,15 @@
         
         Usuario a = (Usuario)session.getAttribute("analista");
         
-        String string = a.getCorreo();
-        String[] parts = string.split("@");
-        if(parts.length > 0){
-            String part1 = parts[0]; // nickname
-            String part2 = parts[1]; // @gmail.com
+        if(a != null){
+            String string = a.getCorreo();
+            String[] parts = string.split("@");
+            if(parts.length > 0){
+                String part1 = parts[0]; // nickname
+                String part2 = parts[1]; // @gmail.com
+            }
         }
+        
         %>
     <body>
         <h1>Bienvenido</h1>

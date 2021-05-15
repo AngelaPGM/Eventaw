@@ -89,6 +89,7 @@ public class ServletLogin extends HttpServlet {
                     case 5:
                         jsp = "ServletAnalistaEventos";
                         session.setAttribute("analista", usuario);
+                        break;
                     default:
                         break;
                 } 

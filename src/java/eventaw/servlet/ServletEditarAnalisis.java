@@ -6,8 +6,10 @@
 package eventaw.servlet;
 
 import eventaw.dao.AnalisisFacade;
+import eventaw.dao.EntradaFacade;
 import eventaw.dao.EventoFacade;
 import eventaw.entity.Analisis;
+import eventaw.entity.Entrada;
 import eventaw.entity.Evento;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +28,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletEditarAnalisis", urlPatterns = {"/ServletEditarAnalisis"})
 public class ServletEditarAnalisis extends HttpServlet {
+
+    @EJB
+    private EntradaFacade entradaFacade;
 
     @EJB
     private AnalisisFacade analisisFacade;
@@ -47,27 +52,44 @@ public class ServletEditarAnalisis extends HttpServlet {
         
         String id = request.getParameter("id");
         List<Evento> listaEventos = null;
+        List<Entrada> listaEntradas = null;
         
         if(id != null){ //Editar
             Analisis a = this.analisisFacade.find(new Integer(id));
             request.setAttribute("analisis", a);
         
-            listaEventos = this.eventoFacade.eventosPorFiltro(a.getFechamayor(), a.getFechamenor(), a.getFechaigual(), a.getPreciomayor(), a.getPreciomenor(), a.getPrecioigual(), a.getCiudadevento());
+            listaEventos = this.eventoFacade.eventosPorFiltro(
+                    a.getFechamayor(), a.getFechamenor(), a.getFechaigual(), a.getPreciomayor(), a.getPreciomenor(), a.getPrecioigual(), a.getCiudadevento()
+            );
+            
+            //Get entradas from eventos
+            listaEntradas = this.entradaFacade.findAll();
+            for(Entrada e: listaEntradas){
+                if(!listaEventos.contains(e.getEvento()) ){
+                    listaEntradas.remove(e.getEvento());
+                }
+            }
+
         }else{ //Crear
             listaEventos = this.eventoFacade.findAll();
+            
+            //De las entradas sacamos eventos y usuarios
+            listaEntradas = this.entradaFacade.findAll();
         }
         
         request.setAttribute("listaEventos", listaEventos);
-
+        request.setAttribute("listaEntradas", listaEntradas);
         
         //GET ANYOS
-        List<Evento> aux = this.eventoFacade.findAll();
-        List<Integer> anyos = null;
-        for(Evento e: aux){
-            anyos.add(new Integer(2021));
+        /*
+        List anyos = null;
+        for(Evento e: listaEventos){
+            anyos.add(e.getFecha());
+
         }
         request.setAttribute("anyos", anyos);
-                
+        */
+        
         RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
         rd.forward(request, response);
     }

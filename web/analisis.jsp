@@ -15,11 +15,12 @@
     </head>
     <%
         List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
-        List<Integer> anyos = (List) request.getAttribute("anyos");
+        //List<Integer> anyos = (List) request.getAttribute("anyos");
         
         %>
     <body>
         <h1>Analisis </h1>
+        Eventos
         <table border="1">
             <thead>
                 <tr>
@@ -53,26 +54,57 @@
             Fecha >
             <select name="fechaMayor">
                 <%
-                    for(Integer a: anyos){
-                %>
-                <option><%= a.intValue() %></option>
-                <%}%>
+                    for(Evento e: listaEventos){
+                    %>
+                    <option><%=  e.getFecha() %></option>
+                <%
+                    }
+                    %>
             </select>
             <br>
             Fecha <
+            <select name="fechaMayor">
+                <%
+                    for(Evento e: listaEventos){
+                    %>
+                    <option><%=  e.getFecha() %></option>
+                <%
+                    }
+                    %>
+            </select>
             <br>
             Fecha =
+            <select name="fechaMayor">
+                <%
+                    for(Evento e: listaEventos){
+                    %>
+                    <option><%=  e.getFecha() %></option>
+                <%
+                    }
+                    %>
+            </select>
             <br>
             Precio >
+            <input type="text" name="precioMayor" value="" />
             <br>
             Precio <
+            <input type="text" name="precioMenor" value="" />
             <br>
             Precio =
+            <input type="text" name="precioIgual" value="" />
             <br>
             Ciudad
-            <select>
-                <option></option>
+             <select name="fechaMayor">
+                <%
+                    for(Evento e: listaEventos){
+                    %>
+                    <option><%=  e.getCiudad() %></option>
+                <%
+                    }
+                    %>
             </select>
+            <br>
+            <input type="submit" value="Crear analisis" />
         </form>
     </body>
     
