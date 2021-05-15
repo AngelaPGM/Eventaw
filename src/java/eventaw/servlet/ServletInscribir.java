@@ -13,6 +13,9 @@ import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -80,7 +83,17 @@ public class ServletInscribir extends HttpServlet {
         this.eventoFacade.edit(evento);
         this.usuarioFacade.edit(usuario);
         
-        request.setAttribute("eventos", this.eventoFacade.findAll());
+        List<Evento> eventos = this.eventoFacade.findAll();
+        List<Evento> aux = this.eventoFacade.findAll();
+        String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        for(Evento e : eventos){
+            if(!new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()).equals(today)){
+                if(!e.getFecha().after(new Date())) aux.remove(e);
+            }
+        }
+        eventos = aux;
+        
+        request.setAttribute("eventos", eventos);
         
         RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
         rd.forward(request, response);
