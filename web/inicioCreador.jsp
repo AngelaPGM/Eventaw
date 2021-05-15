@@ -29,7 +29,7 @@
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Usuario usuario = (Usuario) session.getAttribute("user");
 
-        List<Evento> misEventos = (List<Evento>) request.getAttribute("eventos");
+        List<Evento> misEventos = usuario.getEventoList();
     %>
     <body>
         <!-- Barra navegacion -->
