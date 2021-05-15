@@ -82,10 +82,10 @@
             if (request.getParameter("filtrado").equals("1")) {
 
                 entradasFuturas = (List<Entrada>) request.getAttribute("entradas");
-                
+
                 for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
                     String fecha = new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha());
-                    if(!fecha.equals(todayString)){
+                    if (!fecha.equals(todayString)) {
                         if (e.getEvento().getFecha().before(todayDate)) {
                             entradasPasadas.add(e);
                         }
@@ -97,19 +97,28 @@
                     String fecha = new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha());
                     if (e.getEvento().getFecha().after(todayDate)) {
                         entradasFuturas.add(e);
-                    } else if(fecha.equals(todayString)) {
+                    } else if (fecha.equals(todayString)) {
                         entradasFuturas.add(e);
                     } else {
                         entradasPasadas.add(e);
                     }
                 }
             }
-        %>
+         if (entradasFuturas.isEmpty() && entradasPasadas.isEmpty()) { %>
+        <div class="bg-text justify-content-center text-center" style="margin-top: 10%">
+            <h1 style="color: #9e9e9e"> Vaya, parece que a&uacute;n no tienes ninguna entrada  :(</h1>
+            <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
+        </div>
 
+        <% } else {
+        %>
+        
+        <!--  EVENTOS DISPONIBLES -->
+        <%
+            if (!entradasFuturas.isEmpty()) {
+        %>
         <div class="container m-t-30">
-            <%
-                if (!entradasFuturas.isEmpty()) {
-            %>
+            <h1 class="bg-text m-b-5" style="color:#b997f6">Eventos futuros</h1>
             <div class="table-responsive">
                 <table class="center table table-striped align-middle" id="tabla-custom">
                     <thead>
@@ -141,28 +150,26 @@
                             }
                         %>
                     </tbody>
-                </table> <br/>
-                <%
-                } else {
-                %>
-
-                <div class="bg-text justify-content-center text-center" style="margin-top: 10%">
-                    <h1 style="color: #9e9e9e"> Vaya, a&uacute;n no tienes ninguna entrada :(</h1>
-                    <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
-                </div>
-                <%
-                    }
-
-                    if (!entradasPasadas.isEmpty()) {
-                %>
-                <h1>Eventos a los que he asistido</h1>
-                <table border="1">
+                </table>
+            </div>
+        </div>
+        <%
+                } 
+            if (!entradasPasadas.isEmpty()) {
+        %>
+        <div class="container m-t-30">
+            <h1 class="bg-text m-b-5" style="color:#00dbde">Eventos a los que he asistido</h1>
+            <div class="table-responsive">
+                <table class="center table table-striped align-middle" id="tabla-custom2">
                     <thead>
                         <tr>
                             <th>EVENTO</th>
-                            <th>DESCRIPCION</th>
+                            <th>DESCRIPCI&Oacute;N</th>
                             <th>CIUDAD</th>
                             <th>FECHA</th>
+                            <th>FILA</th>
+                            <th>ASIENTO</th>
+                            <th>PRECIO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,6 +181,9 @@
                             <td><%= e.getEvento().getDescripcion()%></td>
                             <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
+                            <td><%= e.getNumfila()%></td>
+                            <td><%= e.getAsientofila()%></td>
+                            <td><%= new DecimalFormat("#0.00").format(e.getEvento().getPrecio())%> €</td>
                         </tr>
                         <%
                             }
@@ -181,9 +191,10 @@
                     </tbody>
                 </table>
                 <%
-                    }
+                    } }
                 %>
             </div>
-        </div>
+        </div> 
+
     </body>
 </html>

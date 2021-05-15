@@ -71,10 +71,15 @@
                         
                         <%
                             if (errorEditar != null && !errorEditar.equals("")) {%>
-                        <div class=" alert alert-danger vertical-align-middle">
-                            <strong>Error:</strong> <%= errorEditar%> </a>
+                        <div class=" alert alert-danger vertical-align-middle text-center" style="margin-top: 5px">
+                            <strong>Error:</strong> <%= errorEditar%> 
                         </div>
-                        <% }
+                            <% } else if (request.getAttribute("cambio") != null && (Boolean) request.getAttribute("cambio") == true) { %>
+
+                        <div class=" alert alert-success vertical-align-middle text-center" style="margin-top: 5px">
+                            <strong> Los cambios se han guardado satisfactoriamente. </strong>
+                        </div>
+<% }
                         %>
                         
                         <hr/>

@@ -65,7 +65,7 @@
                     <h1>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas)%>€ por su compra en el evento <%= evento.getTitulo()%></h1>
                     <%
                         if (numEntradas == 1.0) {
-                    %>ç
+                    %>
                         <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
                         <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
                         Seleccione su asiento: : <select name="asiento0">

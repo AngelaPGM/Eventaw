@@ -71,10 +71,10 @@
                             <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre y/o fecha"/> 
                         </div>
                         <div class="col-2 wrap-input2 wrap-separacion10" >
-                            <input class="input2"   type="date" id="start" name="fechaInicio" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                            <input class="input2"   type="date" id="start" name="fechaInicio"> 
                         </div>
                         <div class="col-2 wrap-input2 wrap-separacion10" >
-                            <input class="input2"   type="date" id="start" name="fechaFinal" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                            <input class="input2"   type="date" id="start" name="fechaFinal"> 
                         </div>
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">

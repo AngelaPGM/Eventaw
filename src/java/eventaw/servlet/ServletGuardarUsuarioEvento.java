@@ -63,6 +63,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         String editar = "0";
         Boolean correoExiste = false;
         Boolean ContrasenaAnterior = false;
+        Boolean cambio = false;
          
         
          if(email!= null && !email.isEmpty()){
@@ -92,13 +93,14 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                 }
                 
                 if (!(contrasena.equals(repcontrasena))){ // Contraseñas distintas.
-                    errorEditar = "Las contraseñas deben ser iguales.";
+                    errorEditar = "Las contraseñas no coinciden.";
                    
                 }else if(ContrasenaAnterior) {
             
-                    errorEditar = "Es la misma contraseña que tenias antes, por favor crea una nueva.";
+                    errorEditar = "Es la misma contraseña que tenías antes. Por favor, crea una nueva.";
         
                 } else {
+                    cambio = true;
                     try{
                         if(usuario.getId().equals(new Integer(id))){
                             uEvento = usuario.getUsuarioevento();
@@ -106,6 +108,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                             usuario.setContrasenya(contrasena);
                             this.usuarioFacade.edit(usuario);
                             session.setAttribute("user", usuario);
+                            
                         } else {
                             Usuario aux = this.usuarioFacade.find(new Integer(id));
                             uEvento = aux.getUsuarioevento();
@@ -142,6 +145,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                     editar = "1";
                 }
             } else {//No cambiar contraseña
+                cambio = true;
                 try{
                     if(usuario.getId().equals(new Integer(id))){
                         uEvento = usuario.getUsuarioevento();
@@ -174,6 +178,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         }
         request.setAttribute("u", uEvento.getIdusuario());
         request.setAttribute("errorEditar", errorEditar);
+        request.setAttribute("cambio", cambio);
         RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp?editar=" + editar);
         rd.forward(request, response);
     }
