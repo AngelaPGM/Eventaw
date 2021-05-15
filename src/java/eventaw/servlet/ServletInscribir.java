@@ -66,14 +66,14 @@ public class ServletInscribir extends HttpServlet {
             String asiento = partes[3];
             
             entrada.setId(0);
-            entrada.setUsuario(usuario);
+            entrada.setUsuario(usuario.getUsuarioevento());
             entrada.setEvento(evento);
             entrada.setNumfila(new Integer(fila));
             entrada.setAsientofila(new Integer(asiento));
             
             this.entradaFacade.create(entrada);
         
-            usuario.getEntradaList().add(entrada);
+            usuario.getUsuarioevento().getEntradaList().add(entrada);
             evento.getEntradaList().add(entrada);
         }
         

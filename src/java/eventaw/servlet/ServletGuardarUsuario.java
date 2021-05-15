@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,6 +37,8 @@ public class ServletGuardarUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("user");
         Usuario u = new Usuario();
         String id = request.getParameter("id");
         String email = request.getParameter("correo");
@@ -47,31 +50,24 @@ public class ServletGuardarUsuario extends HttpServlet {
         Boolean estoyEnEditar = false;
         Boolean hayError = false;
         Boolean correoExiste = false;
-        Boolean ContrasenaAnterior = false;
+        
+        
             
-         if(id !=null && !id.isEmpty()){ //Voy a editar o no.
+         if(id != null && !id.isEmpty()){ //Voy a editar o no.
                 estoyEnEditar = true;
-         }
-         
-         if(estoyEnEditar){
-             u = this.usuarioFacade.find(new Integer(id));
-             if(contrasena.equals(u.getContrasenya()) && contrasena.length()!=0){
-                 ContrasenaAnterior = true;
-             };
-             u=null;
          }
          
          if(email!= null && !email.isEmpty()){
 
-            u = this.usuarioFacade.findByEmail(email);
-            if(u != null){
+            u = this.usuarioFacade.find(new Integer(id));
+            if(u != null && !u.getCorreo().equals(email) && this.usuarioFacade.findByEmail(email) != null){
                 correoExiste =true;
             }
-            u=null;
+            u = null;
          }
 
-        
-        if((email == "") || (rol == null) || (repcontrasena.length() == 0) || (contrasena.length() == 0) ){ //Campos vacios
+         
+        if((email.equals(""))){ //Campos vacios
            
             if(estoyEnEditar){
                 u = this.usuarioFacade.find(new Integer(id));
@@ -91,18 +87,18 @@ public class ServletGuardarUsuario extends HttpServlet {
             }
             hayError = true;
                    
-        }else if(ContrasenaAnterior) {
-            
-            errorEditar = "Es la misma contraseña que tenias antes, por favor crea una nueva.";
-            hayError =true;
-        
         }else if (!hayError && correoExiste) {
                 
-                errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                if(estoyEnEditar){
+                    u = this.usuarioFacade.find(new Integer(id));
+                    errorEditar = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }else{
+                    errorCrear = "Este correo ya ha sido registrado, por favor pruebe con otro.";
+                }
                 
                 hayError = true;
                 
-        }else{ //Si no hay errores hacemos esto.
+        } else { //Si no hay errores hacemos esto.
             
             if(!estoyEnEditar){ //Crear
                 
@@ -114,20 +110,32 @@ public class ServletGuardarUsuario extends HttpServlet {
                 this.usuarioFacade.create(u);
                 
             }else{//Editar
-                
-                u = this.usuarioFacade.find(new Integer(id));
-                Rol r = this.rolFacade.find(new Integer(rol));
-                u.setCorreo(email);
-                u.setContrasenya(contrasena);
-                u.setRol(r);
-                this.usuarioFacade.edit(u);
-            
+                if(contrasena.equals("") && repcontrasena.equals("")){//Sin cambiar Contraseña
+                    u = this.usuarioFacade.find(new Integer(id));
+                    
+                    u.setCorreo(email);
+                    if(usuario.getRol().getId() == 1){
+                        Rol r = this.rolFacade.find(new Integer(rol));
+                        u.setRol(r);
+                    }
+                    this.usuarioFacade.edit(u);
+                } else {
+                    u = this.usuarioFacade.find(new Integer(id));
+                    u.setCorreo(email);
+                    u.setContrasenya(contrasena);
+                    if(usuario.getRol().getId() == 1){
+                        Rol r = this.rolFacade.find(new Integer(rol));
+                        u.setRol(r);
+                    }
+                    this.usuarioFacade.edit(u);
+                }
+                errorEditar = "Sus datos han sido modificados correctamente";
             }
                 
         }
         
 
-        if(hayError){
+        if(hayError || usuario.getRol().getId() != 1){
             
             request.setAttribute("u", u);
             request.setAttribute("errorCrear", errorCrear);

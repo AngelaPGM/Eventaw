@@ -10,6 +10,8 @@ import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -42,8 +44,15 @@ public class ServletRedirectInicio extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Evento> eventos;
+        Date today = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         
         eventos = this.eventoFacade.findAll();
+        for(Evento e : this.eventoFacade.findAll()){
+            if(!formato.format(e.getFecha()).equals(formato.format(today))){
+                if(!e.getFecha().after(today)) eventos.remove(e);
+            }
+        } 
         
         request.setAttribute("eventos", eventos);
         

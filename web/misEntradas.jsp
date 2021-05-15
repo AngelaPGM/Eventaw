@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.List"%>
@@ -36,8 +37,8 @@
             <ul>
                 <li><a href="ServletRedirectInicio">Inicio</a></li>
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
-                <li style="float:right"><a href="perfilUsuario.jsp">Mi perfil</a></li>
-                <li style="float:right"><a  class="active" href="misEntradas.jsp">Mis entradas</a></li>
+                <li style="float:right"><a href="perfilUsuario.jsp?editar=0">Mi perfil</a></li>
+                <li style="float:right"><a  class="active">Mis entradas</a></li>
             </ul> 
         </div>
 
@@ -48,25 +49,27 @@
                 <div class="bg-text">
                     <h1 style="font-size: 4rem"> Mis entradas</h1>
                 </div>
-                <div class="row justify-content-center m-t-30">
-                    <div class="col-4 wrap-input2 ">
-                        <input class="input2" type="text" name="buscador" placeholder="Buscar entradas por nombre y/o fecha"/> 
+                <form action="ServletListadoEntradas">
+                    <div class="row justify-content-center m-t-30">
+                        <div class="col-4 wrap-input2 ">
+                            <input class="input2" type="text" name="buscador" placeholder="Buscar entradas por nombre y/o fecha"/> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="fechaInicio" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        </div>
+                        <div class="col-2 wrap-input2 wrap-separacion10" >
+                            <input class="input2"   type="date" id="start" name="fechaFinal" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                        </div>
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn" value="Buscar">
+                                    Buscar
+                                </button>
+                            </div>                    
+                        </div>
                     </div>
-                    <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
-                    </div>
-                    <div class="col-2 wrap-input2 wrap-separacion10" >
-                        <input class="input2"   type="date" id="start" name="trip-start" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
-                    </div>
-                    <div class="col-2">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn" value="Buscar">
-                                Buscar
-                            </button>
-                        </div>                    
-                    </div>
-                </div>
+                </form>
             </div>
         </header>
 
@@ -74,25 +77,38 @@
             List<Entrada> entradasFuturas = new ArrayList();
             List<Entrada> entradasPasadas = new ArrayList();
 
-            for (Entrada e : usuario.getEntradaList()) {
-                if (e.getEvento().getFecha().after(new Date())) {
-                    entradasFuturas.add(e);
-                } else {
-                    entradasPasadas.add(e);
+            if (request.getParameter("filtrado").equals("1")) {
+
+                entradasFuturas = (List<Entrada>) request.getAttribute("entradas");
+
+                for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
+                    if (e.getEvento().getFecha().before(new Date())) {
+                        entradasPasadas.add(e);
+                    }
+                }
+            } else {
+
+                for (Entrada e : usuario.getUsuarioevento().getEntradaList()) {
+                    if (e.getEvento().getFecha().after(new Date())) {
+                        entradasFuturas.add(e);
+                    } else {
+                        entradasPasadas.add(e);
+                    }
                 }
             }
         %>
 
         <div class="container m-t-30">
+            <%
+                if (!entradasFuturas.isEmpty()) {
+            %>
             <div class="table-responsive">
-
-                <%
-                    if (!entradasFuturas.isEmpty()) {
-                %>
                 <table class="center table table-striped align-middle" id="tabla-custom">
                     <thead>
                         <tr>
                             <th>EVENTO</th>
+                            <th>DESCRIPCI&Oacute;N</th>
+                            <th>CIUDAD</th>
                             <th>FECHA</th>
                             <th>FILA</th>
                             <th>ASIENTO</th>
@@ -105,10 +121,13 @@
                         %>
                         <tr>
                             <td><%= e.getEvento().getTitulo()%></td>
+                            <td><%= e.getEvento().getDescripcion()%></td>
+                            <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
+
                             <td><%= e.getNumfila()%></td>
                             <td><%= e.getAsientofila()%></td>
-                            <td><%= e.getEvento().getPrecio() %> €</td>
+                            <td><%= new DecimalFormat("#0.00").format(e.getEvento().getPrecio())%> €</td>
                         </tr>
                         <%
                             }
@@ -119,7 +138,7 @@
                 } else {
                 %>
 
-                <div class="bg-text text-center" style="margin-top: 10%">
+                <div class="bg-text justify-content-center text-center" style="margin-top: 10%">
                     <h1 style="color: #9e9e9e"> Vaya, a&uacute;n no tienes ninguna entrada :(</h1>
                     <h1 style="color: #9e9e9e"> Cuando las tengas aparecer&aacute;n aqu&iacute;</h1>
                 </div>
@@ -134,6 +153,7 @@
                         <tr>
                             <th>EVENTO</th>
                             <th>DESCRIPCION</th>
+                            <th>CIUDAD</th>
                             <th>FECHA</th>
                         </tr>
                     </thead>
@@ -144,6 +164,7 @@
                         <tr>
                             <td><%= e.getEvento().getTitulo()%></td>
                             <td><%= e.getEvento().getDescripcion()%></td>
+                            <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
                         </tr>
                         <%

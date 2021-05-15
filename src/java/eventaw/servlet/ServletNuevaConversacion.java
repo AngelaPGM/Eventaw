@@ -5,15 +5,18 @@
  */
 package eventaw.servlet;
 
-import eventaw.dao.EventoFacade;
+import eventaw.dao.ConversacionFacade;
+import eventaw.dao.MensajeFacade;
 import eventaw.dao.UsuarioFacade;
-import eventaw.entity.Evento;
+import eventaw.entity.Conversacion;
+import eventaw.entity.Mensaje;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,13 +28,16 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author angep
+ * @author Gonzalo
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletNuevaConversacion", urlPatterns = {"/ServletNuevaConversacion"})
+public class ServletNuevaConversacion extends HttpServlet {
 
     @EJB
-    private EventoFacade eventoFacade;
+    private MensajeFacade mensajeFacade;
+
+    @EJB
+    private ConversacionFacade conversacionFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -47,64 +53,30 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("pass");
-        Usuario usuario;
-        String jsp = "";
-        String errorLog = "";
-        List<Evento> eventos;
-        Date today = new Date();
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         HttpSession session = request.getSession();
+        Usuario u = (Usuario)session.getAttribute("user");
         
-        usuario = this.usuarioFacade.findByEmail(email);
+        List<Usuario> tvops = this.usuarioFacade.findFiltradoByRol("TELEOPERADOR");
+        Integer total = tvops.size();
+        Random r = new Random();
+        Integer chosen = r.nextInt(total);
+        Usuario to = tvops.get(chosen);
         
-        if(usuario != null){
-            if(usuario.getContrasenya().equals(password)){
-                if(null != usuario.getRol().getId()) switch (usuario.getRol().getId()) {
-                    case 1:
-                        jsp = "ServletListadoAdmin";
-                        session.setAttribute("user", usuario);
-                        break;
-                    case 2:
-                        jsp = "inicio.jsp";
-                        session.setAttribute("user", usuario);
-                        eventos = this.eventoFacade.findAll();
-                        for(Evento e : this.eventoFacade.findAll()){
-                            if(!formato.format(e.getFecha()).equals(formato.format(today))){
-                                if(!e.getFecha().after(today)) eventos.remove(e);
-                            }
-                        }   
-                        request.setAttribute("eventos", eventos);
-                        break;
-                    case 3:
-                        jsp = "inicioCreador.jsp";
-                        session.setAttribute("user", usuario);
-                        request.setAttribute("eventos", usuario.getEventoList());
-                        break;
-                    case 4:
-                        jsp = "ServletTeleoperador";
-                        session.setAttribute("user", usuario);
-                        break;
-                    case 5:
-                        jsp = "ServletAnalistaEventos";
-                        session.setAttribute("analista", usuario);
-                    default:
-                        break;
-                } 
-            } else {
-                jsp = "login.jsp";
-                errorLog = "¡Contraseña incorrecta!";
-            }
-        } else {
-            jsp = "login.jsp";
-            errorLog = "¡Email incorrecto!";
-        }
+        Conversacion c = new Conversacion();
+        c.setUsuario(u);
+        c.setTeleoperador(to);
+        this.conversacionFacade.create(c);
         
-        request.setAttribute("errorLog", errorLog);
+        List<Mensaje> mensajes = new ArrayList<>();
+        c.setMensajeList(mensajes);
+        this.conversacionFacade.edit(c);
         
-        RequestDispatcher rd = request.getRequestDispatcher(jsp);
+        request.setAttribute("m", mensajes);
+        request.setAttribute("c", c);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         rd.forward(request, response);
+        //response.sendRedirect("ShoutServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

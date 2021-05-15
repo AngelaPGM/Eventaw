@@ -10,10 +10,7 @@ import eventaw.dao.UsuarioFacade;
 import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -58,6 +55,7 @@ public class ServletGuardarEvento extends HttpServlet {
         String id = request.getParameter("id");
         String titulo = request.getParameter("titulo");
         String desc = request.getParameter("desc");
+        String ciudad = request.getParameter("ciudad");
         String fecha = request.getParameter("fecha");
         String fechaCompra = request.getParameter("fechaCompra");
         String precio = request.getParameter("precio");
@@ -67,21 +65,25 @@ public class ServletGuardarEvento extends HttpServlet {
         String asientos = request.getParameter("asientos");
         String idCreador = request.getParameter("creador");
         
-        if(titulo==null || desc==null || fecha==null || fechaCompra==null || precio==null || aforo==null || max==null){
+        if(titulo==null || desc==null || fecha.equals("") || fechaCompra.equals("") || precio==null || aforo==null || max==null){
             error = "Hay campos obligatorios vacíos.";
             if(id != null){
                 e = this.eventoFacade.find(new Integer(id));
             }
             request.setAttribute("evento", e);
             request.setAttribute("error", error);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
+            rd.forward(request, response);
         }else{
             try{
                 if(id.equals("")){
                     e = new Evento();
                     e.setTitulo(titulo);
                     e.setDescripcion(desc);
-                    e.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
-                    e.setFechacompra(new SimpleDateFormat("dd/MM/yyyy").parse(fechaCompra));
+                    e.setCiudad(ciudad);
+                    e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
+                    e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
                     e.setPrecio(new Double(precio));
                     e.setAforo(new Integer(aforo));
                     e.setMaxentradasusuario(new Integer(max));
@@ -101,8 +103,9 @@ public class ServletGuardarEvento extends HttpServlet {
                     
                     e.setTitulo(titulo);
                     e.setDescripcion(desc);
-                    e.setFecha(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
-                    e.setFechacompra(new SimpleDateFormat("dd/MM/yyyy").parse(fechaCompra));
+                    e.setCiudad(ciudad);
+                    e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
+                    e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
                     e.setPrecio(new Double(precio));
                     e.setAforo(new Integer(aforo));
                     e.setMaxentradasusuario(new Integer(max));
@@ -117,8 +120,7 @@ public class ServletGuardarEvento extends HttpServlet {
             }catch(Exception exception){
                 log("Excepcion");
             }
-
-            request.setAttribute("evento", e);
+            
             session.setAttribute("user", usuario);
 
             if(usuario.getRol().getId() == 1){

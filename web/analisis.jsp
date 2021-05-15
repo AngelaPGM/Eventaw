@@ -15,6 +15,8 @@
     </head>
     <%
         List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
+        List<Integer> anyos = (List) request.getAttribute("anyos");
+        
         %>
     <body>
         <h1>Analisis </h1>
@@ -49,6 +51,13 @@
             <br>
         <form>
             Fecha >
+            <select name="fechaMayor">
+                <%
+                    for(Integer a: anyos){
+                %>
+                <option><%= a.intValue() %></option>
+                <%}%>
+            </select>
             <br>
             Fecha <
             <br>

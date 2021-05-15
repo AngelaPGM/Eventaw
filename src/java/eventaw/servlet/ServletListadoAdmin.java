@@ -5,11 +5,15 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -24,6 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletListadoAdmin extends HttpServlet {
 
     @EJB
+    private EventoFacade eventoFacade;
+
+    @EJB
     private UsuarioFacade usuarioFacade;
 
    
@@ -34,12 +41,19 @@ public class ServletListadoAdmin extends HttpServlet {
        String filtrado = request.getParameter("filtradoUsuario");
        String tipoFiltrado = request.getParameter("tipofiltrado");
        
+       String filtradoEvento = request.getParameter("filtradoEvento");
+       String tipoFiltrado2 = request.getParameter("tipofiltrado2");
+       
        List <Usuario> listaUsuario = new ArrayList<>();
-       String Errores ="";
        List <Usuario> listaU;
+       
+       List <Evento> listaEventos = new ArrayList<>();
+       List <Evento> listaE = null;
        
        if(filtrado !=null && filtrado.length()>0){//Filtrado
            try{
+           listaEventos = this.eventoFacade.findAll();
+               
            if(tipoFiltrado.equals("id")){
            
            listaUsuario.add(this.usuarioFacade.find(new Integer(filtrado)));
@@ -57,16 +71,44 @@ public class ServletListadoAdmin extends HttpServlet {
                 }
            }
            }catch(Exception e){
-               Errores = "ID ERRONEO";
                listaUsuario = this.usuarioFacade.findAll();
+               listaEventos = this.eventoFacade.findAll();
            }
-       }else{// Quiero mostrar todos
-            listaUsuario = this.usuarioFacade.findAll();
+       }else if(filtradoEvento !=null && filtradoEvento.length()>0){
             
+           try{
+               
+           listaUsuario = this.usuarioFacade.findAll();
+               
+           if(tipoFiltrado2.equals("id")){
+           
+                listaEventos.add(this.eventoFacade.find(new Integer(filtradoEvento)));
+               
+           }else if (tipoFiltrado2.equals("email")){
+                listaE = this.eventoFacade.findFiltradoByEmail(filtradoEvento);
+           }else if(tipoFiltrado2.equals("titulo")){
+                listaE = this.eventoFacade.findFiltradoByTitulo(filtradoEvento);
+           }else if(tipoFiltrado2.equals("ciudad")){
+                listaE = this.eventoFacade.findFiltradoByCiudad(filtradoEvento);
+           }else{//Fecha
+               Date f = new SimpleDateFormat("dd/MM/yyyy").parse(filtradoEvento);
+                listaE = this.eventoFacade.findFiltradoByFecha(f);
+           }
+           if(listaE != null && !listaE.isEmpty()){
+                    listaEventos = listaE;
+           }
+           }catch(Exception e){
+               listaUsuario = this.usuarioFacade.findAll();
+               listaEventos = this.eventoFacade.findAll();
+           }
+            
+       }else{
+           listaUsuario = this.usuarioFacade.findAll();
+           listaEventos = this.eventoFacade.findAll();
        }
        
        request.setAttribute("listaUsuario", listaUsuario);
-       request.setAttribute("errores",Errores);
+       request.setAttribute("listaEventos", listaEventos);
        
        RequestDispatcher rd = request.getRequestDispatcher("paginaAdministrador.jsp");
        rd.forward(request, response);

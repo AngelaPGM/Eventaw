@@ -64,8 +64,6 @@ public class Usuario implements Serializable {
     private List<Analisis> analisisList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "idusuario")
     private Usuarioevento usuarioevento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
-    private List<Entrada> entradaList;
     @JoinColumn(name = "ROL", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Rol rol;
@@ -144,15 +142,6 @@ public class Usuario implements Serializable {
 
     public void setUsuarioevento(Usuarioevento usuarioevento) {
         this.usuarioevento = usuarioevento;
-    }
-
-    @XmlTransient
-    public List<Entrada> getEntradaList() {
-        return entradaList;
-    }
-
-    public void setEntradaList(List<Entrada> entradaList) {
-        this.entradaList = entradaList;
     }
 
     public Rol getRol() {

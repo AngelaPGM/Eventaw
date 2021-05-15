@@ -5,12 +5,15 @@
  */
 package eventaw.servlet;
 
-import eventaw.dao.AnalisisFacade;
-import eventaw.dao.EventoFacade;
-import eventaw.entity.Analisis;
-import eventaw.entity.Evento;
+import eventaw.dao.ConversacionFacade;
+import eventaw.dao.MensajeFacade;
+import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Conversacion;
+import eventaw.entity.Mensaje;
+import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -22,16 +25,20 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author rafa
+ * @author Gonzalo
  */
-@WebServlet(name = "ServletEditarAnalisis", urlPatterns = {"/ServletEditarAnalisis"})
-public class ServletEditarAnalisis extends HttpServlet {
+@WebServlet(name = "ServletTeleoperador", urlPatterns = {"/ServletTeleoperador"})
+public class ServletTeleoperador extends HttpServlet {
 
     @EJB
-    private AnalisisFacade analisisFacade;
+    private UsuarioFacade usuarioFacade;
 
     @EJB
-    private EventoFacade eventoFacade;
+    private MensajeFacade mensajeFacade;
+
+
+    @EJB
+    private ConversacionFacade conversacionFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,30 +52,41 @@ public class ServletEditarAnalisis extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String id = request.getParameter("id");
-        List<Evento> listaEventos = null;
+        List<Conversacion> chats = null;
         
-        if(id != null){ //Editar
-            Analisis a = this.analisisFacade.find(new Integer(id));
-            request.setAttribute("analisis", a);
+        String id = (String)request.getParameter("id");
+        String borrar = (String)request.getParameter("borrar");
+        String filtro = (String)request.getParameter("filtro");
         
-            listaEventos = this.eventoFacade.eventosPorFiltro(a.getFechamayor(), a.getFechamenor(), a.getFechaigual(), a.getPreciomayor(), a.getPreciomenor(), a.getPrecioigual(), a.getCiudadevento());
-        }else{ //Crear
-            listaEventos = this.eventoFacade.findAll();
+        if(borrar != null && borrar.equals("borrar")){
+            Conversacion c = this.conversacionFacade.find(new Integer(id));
+            for(Mensaje m : c.getMensajeList()){
+                this.mensajeFacade.remove(m);
+            }
+            this.conversacionFacade.remove(c);
+            Usuario u = c.getUsuario();
+            Usuario to = c.getTeleoperador();
+            List<Conversacion> lu = u.getConversacionList();
+            lu.remove(c);
+            u.setConversacionList(lu);
+            List<Conversacion> lto = to.getConversacionList();
+            lto.remove(c);
+            to.setConversacionList(lto);
+            this.usuarioFacade.edit(u);
+            this.usuarioFacade.edit(to);
         }
         
-        request.setAttribute("listaEventos", listaEventos);
-
-        
-        //GET ANYOS
-        List<Evento> aux = this.eventoFacade.findAll();
-        List<Integer> anyos = null;
-        for(Evento e: aux){
-            anyos.add(new Integer(2021));
+        if(filtro != null){
+            chats = this.conversacionFacade.findByCorreo(filtro);
         }
-        request.setAttribute("anyos", anyos);
-                
-        RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
+        
+        if(chats == null){
+            chats = this.conversacionFacade.findAll();
+        }
+        
+        request.setAttribute("chats", chats);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("teleoperador.jsp");
         rd.forward(request, response);
     }
 

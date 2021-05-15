@@ -24,30 +24,59 @@
         <link rel="stylesheet" href="css/util.css">
     </head>
     <%
-        Usuario user = (Usuario) session.getAttribute("user");
+        String editar = request.getParameter("editar");
+        Usuario user = new Usuario();
+        
+        if(editar.equals("1")){
+            user = (Usuario) request.getAttribute("u");
+        } else {
+            user = (Usuario) session.getAttribute("user");
+            
+        }
+        
         Usuarioevento uEvento = (Usuarioevento) user.getUsuarioevento();
-
-        String errorLog = (String) request.getAttribute("errorLog");
+        
+        String errorEditar = (String) request.getAttribute("errorEditar");
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     %>
     <body>
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
+                <%
+                    if(!editar.equals("1")){
+                %>
                 <li><a href="ServletRedirectInicio">Inicio</a></li>
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a class="active" href="perfilUsuario.jsp">Mi perfil</a></li>
-                <li style="float:right"><a href="misEntradas.jsp">MIS ENTRADAS</a></li>
+                <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
+                <%
+                    } else {
+                %>
+                <li><a href="ServletListadoAdmin">Inicio</a></li>
+                <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a href="">Mi perfil</a></li>
+                <%
+                    }
+                %>
             </ul> 
         </div>
         <div class="fondo-pagina">
             <div class="container-perfil">
                 <div class="wrap-registro" style=" margin-top: 3%">
-                    <form class="register-form" method="POST" action="">
+                    <form class="register-form" method="POST" action="ServletGuardarUsuarioEvento?idUsuario=<%= user.getId() %>">
                         <span class="login-form-title">                       
                             Modificar perfil
                         </span>
-
+                        
+                        <%
+                            if (errorEditar != null && !errorEditar.equals("")) {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>Error:</strong> <%= errorEditar%> </a>
+                        </div>
+                        <% }
+                        %>
+                        
                         <hr/>
 
                         <div class="row justify-content-around p-t-5">
@@ -132,7 +161,7 @@
                                     <input class="input2" type="password" name="pass1">
                                 </div>
                                 <div class="col-6  wrap-input2" style="width: 45%;">
-                                    <input class="input2" type="password" name="pass2" required>
+                                    <input class="input2" type="password" name="pass2">
                                 </div>
                             </div>
 

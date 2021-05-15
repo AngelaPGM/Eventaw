@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -18,21 +19,32 @@
     <body>
         <%
             String borrado = "borrado";
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Usuario  usuario = (Usuario)session.getAttribute("user");
             
             List<Evento> misEventos;
             misEventos = (List<Evento>) request.getAttribute("eventos");
         %>
-        <h1>Mis Eventos</h1>
+        <h1>Mis Eventos <a href="ServletCierreSesion">Cerrar Sesión</a></h1>
         
-        <input type="text" name="buscador" value="Buscar Eventos" /> <input type="submit" value="Buscar" name="buscarBoton" />
+        Mi correo: <%= usuario.getCorreo() %> <br/>
+        <a href="ServletCrudUsuario?id=<%= usuario.getId() %>">Modificar mis datos</a>
         <br/>
         <br/>
         
+        <form action="ServletListadoEventos">
+            <input type="text" name="buscador" value="" /> 
+        <input class="input2"   type="date" id="start" name="fechaInicio" min="<%=formato.format(new Date())%>" max="2040-12-31">
+        <input class="input2"   type="date" id="start" name="fechaFinal" min="<%=formato.format(new Date())%>" max="2040-12-31">
+        <input type="submit" value="Buscar" name="buscarBoton" />
+        </form>
+        <br/>
         <table border="1">
             <thead>
                 <tr>
                     <th>TITULO</th>
                     <th>DESCRIPCION</th>
+                    <th>CIUDAD</th>
                     <th>FECHA</th>
                     <th>FECHA_LIMITE_COMPRA</th>
                     <th>PRECIO</th>
@@ -49,6 +61,7 @@
                 <tr>
                     <td><%= e.getTitulo() %></td>
                     <td><%= e.getDescripcion() %></td>
+                    <td><%= e.getCiudad() %></td>
                     <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()) %></td>
                     <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFechacompra()) %></td>
                     <td><%= e.getPrecio() %></td>

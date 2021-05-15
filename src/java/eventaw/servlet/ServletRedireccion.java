@@ -5,12 +5,13 @@
  */
 package eventaw.servlet;
 
-import eventaw.dao.AnalisisFacade;
-import eventaw.dao.EventoFacade;
-import eventaw.entity.Analisis;
-import eventaw.entity.Evento;
+import eventaw.dao.ConversacionFacade;
+import eventaw.dao.MensajeFacade;
+import eventaw.entity.Conversacion;
+import eventaw.entity.Mensaje;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -22,16 +23,16 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author rafa
+ * @author Gonzalo
  */
-@WebServlet(name = "ServletEditarAnalisis", urlPatterns = {"/ServletEditarAnalisis"})
-public class ServletEditarAnalisis extends HttpServlet {
+@WebServlet(name = "ServletRedireccion", urlPatterns = {"/ServletRedireccion"})
+public class ServletRedireccion extends HttpServlet {
 
     @EJB
-    private AnalisisFacade analisisFacade;
+    private MensajeFacade mensajeFacade;
 
     @EJB
-    private EventoFacade eventoFacade;
+    private ConversacionFacade conversacionFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,31 +45,19 @@ public class ServletEditarAnalisis extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = (String)request.getParameter("id");
+        Conversacion c = this.conversacionFacade.find(new Integer(id));
         
-        String id = request.getParameter("id");
-        List<Evento> listaEventos = null;
+        List<Mensaje> m = this.mensajeFacade.findByConver(c.getId());
         
-        if(id != null){ //Editar
-            Analisis a = this.analisisFacade.find(new Integer(id));
-            request.setAttribute("analisis", a);
-        
-            listaEventos = this.eventoFacade.eventosPorFiltro(a.getFechamayor(), a.getFechamenor(), a.getFechaigual(), a.getPreciomayor(), a.getPreciomenor(), a.getPrecioigual(), a.getCiudadevento());
-        }else{ //Crear
-            listaEventos = this.eventoFacade.findAll();
+        if(m == null){
+            m = new ArrayList<>();
         }
         
-        request.setAttribute("listaEventos", listaEventos);
-
+        request.setAttribute("c", c);
+        request.setAttribute("m", m);
         
-        //GET ANYOS
-        List<Evento> aux = this.eventoFacade.findAll();
-        List<Integer> anyos = null;
-        for(Evento e: aux){
-            anyos.add(new Integer(2021));
-        }
-        request.setAttribute("anyos", anyos);
-                
-        RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
         rd.forward(request, response);
     }
 

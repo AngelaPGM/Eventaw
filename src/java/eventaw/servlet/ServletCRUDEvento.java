@@ -5,8 +5,11 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.EntradaFacade;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
+import eventaw.dao.UsuarioeventoFacade;
+import eventaw.entity.Entrada;
 import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
@@ -27,6 +30,12 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletCRUDEvento", urlPatterns = {"/ServletCRUDEvento"})
 public class ServletCRUDEvento extends HttpServlet {
+
+    @EJB
+    private UsuarioeventoFacade usuarioeventoFacade;
+
+    @EJB
+    private EntradaFacade entradaFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -62,6 +71,13 @@ public class ServletCRUDEvento extends HttpServlet {
             if(borrar.equals("borrado")){
                 Integer eID = new Integer(id);
                 evento = this.eventoFacade.find(eID);
+                
+                for(Entrada e : evento.getEntradaList()){
+                    this.entradaFacade.remove(e);
+                    e.getUsuario().getEntradaList().remove(e);
+                    this.usuarioeventoFacade.edit(e.getUsuario());
+                }
+                
                 this.eventoFacade.remove(evento);
                 
                 if(usuario.getRol().getId() == 1){
