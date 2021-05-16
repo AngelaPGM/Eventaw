@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author angep
+ * @author rafa
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
@@ -33,7 +33,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             public Usuario findByEmail(String email){
         Query q;
         List<Usuario> aux;
-        
+    
         q = this.em.createNamedQuery("Usuario.findByCorreo");
         q.setParameter("correo", email);
         aux = q.getResultList();
@@ -42,7 +42,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return null;
         } else {
             return aux.get(0);
-        }
+}
     }
     
     public List<Usuario> findFiltradoByRol(String rol){

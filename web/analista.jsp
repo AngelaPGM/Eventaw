@@ -43,7 +43,7 @@
                     %>
                 <tr>
                     <td><%= anal.getNombre() %></td>
-                    <td><a href="ServletEditarAnalisis?id=<%= anal.getAnalisisid() %>">Editar</a></td>
+                    <td><a href="ServletEditarAnalisis?id=<%= anal.getAnalisisid() %>">Ver</a></td>
                     <td><a href="ServletBorrarAnalisis?id=<%= anal.getAnalisisid() %>">Borrar</a></td>
                 </tr>
                 <%

@@ -15,7 +15,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author angep
+ * @author rafa
  */
 @Stateless
 public class EventoFacade extends AbstractFacade<Evento> {
@@ -34,7 +34,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
     public List<Evento> findByCreator(Integer idCreador){
         Query q;
         List<Evento> aux;
-
+    
         q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador");
         q.setParameter("idCreador", idCreador);
         aux = q.getResultList();
@@ -42,7 +42,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
             return aux;
         } else {
             return q.getResultList();
-        }
+}
     }
     
     public List<Evento> filterByName(String nombreEvento){
