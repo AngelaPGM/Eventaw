@@ -84,7 +84,7 @@ public class ServletEditarAnalisis extends HttpServlet {
         request.setAttribute("listaEventos", listaEventos);
         request.setAttribute("listaEntradas", listaEntradas);
         
-        //GET ANYOS
+        /*
         List<Integer> anyos = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         for(Evento e: listaEventos){
@@ -93,6 +93,7 @@ public class ServletEditarAnalisis extends HttpServlet {
             anyos.add(i);
         }
         request.setAttribute("anyos", anyos);
+        */
         
         RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
         rd.forward(request, response);

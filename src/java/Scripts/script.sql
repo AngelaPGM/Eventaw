@@ -91,12 +91,13 @@ CREATE TABLE MENSAJE (
   FOREIGN KEY (conversacion) REFERENCES CONVERSACION
 );
 
+DROP TABLE ANALISIS;
 CREATE TABLE ANALISIS (
     analisisId    INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     nombre        VARCHAR(30),
-    fechaMayor    INTEGER,
-    fechaMenor    INTEGER,
-    fechaIgual    INTEGER,
+    fechaMayor    DATE,
+    fechaMenor    DATE,
+    fechaIgual    DATE,
     precioMayor   INTEGER,
     precioMenor   INTEGER,
     precioIgual   INTEGER, 
