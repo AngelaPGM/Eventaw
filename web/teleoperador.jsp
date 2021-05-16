@@ -79,6 +79,8 @@
                 <tr>
                     <th>Teleoperador</th>
                     <th>Usuario</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <%
                     for (Conversacion c : chats) {
