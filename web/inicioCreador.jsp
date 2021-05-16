@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="eventaw.entity.Etiqueta"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -98,9 +99,10 @@
                         <th>COMPRA HASTA</th>
                         <th>PRECIO</th>
                         <th>AFORO</th>
-                        <th>ENTRADAS/USUARIO</th>
+                        <th>ENTRADAS POR USUARIO</th>
                         <th>Nº FILAS</th>
-                        <th>ASIENTOS/FILA</th>
+                        <th>ASIENTOS POR FILA</th>
+                        <th>ETIQUETAS</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -115,11 +117,15 @@
                         <td><%= e.getCiudad()%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFechacompra())%></td>
-                        <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %> € </td>
+                        <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %>€ </td>
                         <td><%= e.getAforo()%></td>
                         <td><%= e.getMaxentradasusuario()%></td>
                         <td><%= (e.getNumfilas()==null?"-":e.getNumfilas()) %></td>
                         <td><%= (e.getAsientosfila()==null?"-":e.getAsientosfila()) %></td>
+                        <td> <% for(Etiqueta etiqueta: e.getEtiquetaList()) { %>
+                            <%= etiqueta.getNombre() %><br/>
+                     <%   }
+                            %></td>
                         <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
                         <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrado%>">BORRAR</a></td>
                     </tr>
