@@ -26,7 +26,6 @@
     </head>
     <%
         String borrado = "borrado";
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Usuario usuario = (Usuario) session.getAttribute("user");
 
         List<Evento> misEventos = usuario.getEventoList();
@@ -118,8 +117,8 @@
                         <td><%= e.getPrecio()%></td>
                         <td><%= e.getAforo()%></td>
                         <td><%= e.getMaxentradasusuario()%></td>
-                        <td><%= e.getNumfilas()%></td>
-                        <td><%= e.getAsientosfila()%></td>
+                        <td><%= (e.getNumfilas()==null?"-":e.getNumfilas()) %></td>
+                        <td><%= (e.getAsientosfila()==null?"-":e.getAsientosfila()) %></td>
                         <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
                         <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrado%>">BORRAR</a></td>
                     </tr>

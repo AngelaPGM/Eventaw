@@ -175,6 +175,9 @@ button:hover {
 .wrap-separacion10 {
     margin-left: 10px;
 }
+.wrap-separacion15 {
+    margin-left: 15px;
+}
 
 .label-input100 {
     font-family: Poppins-Regular;
@@ -506,5 +509,6 @@ button:hover {
     background-color: #7cc5e5;
     color:white;
 }
+
 
 

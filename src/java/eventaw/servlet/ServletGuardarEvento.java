@@ -5,12 +5,20 @@
  */
 package eventaw.servlet;
 
+import eventaw.dao.EtiquetaFacade;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
+import eventaw.entity.Etiqueta;
 import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,6 +34,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletGuardarEvento", urlPatterns = {"/ServletGuardarEvento"})
 public class ServletGuardarEvento extends HttpServlet {
+
+    @EJB
+    private EtiquetaFacade etiquetaFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -44,89 +55,153 @@ public class ServletGuardarEvento extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         Evento e = null;
         Usuario usuario;
         HttpSession session = request.getSession();
-        
-        usuario = (Usuario)session.getAttribute("user");
-        
+
+        usuario = (Usuario) session.getAttribute("user");
+
         String error = "";
         String id = request.getParameter("id");
-        String titulo = request.getParameter("titulo");
-        String desc = request.getParameter("desc");
-        String ciudad = request.getParameter("ciudad");
+        String titulo = new String(request.getParameter("titulo").getBytes("ISO-8859-1"), "UTF8");
+        String desc = new String(request.getParameter("desc").getBytes("ISO-8859-1"), "UTF8");
+        String ciudad = new String(request.getParameter("ciudad").getBytes("ISO-8859-1"), "UTF8");
+        String[] etiquetas = request.getParameterValues("etiquetas");
         String fecha = request.getParameter("fecha");
         String fechaCompra = request.getParameter("fechaCompra");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFecha = new Date();
+        Date dateFechaCompra = new Date();
+
+        try {
+            dateFecha = formato.parse(fecha);
+            dateFechaCompra = formato.parse(fechaCompra);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletGuardarEvento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         String precio = request.getParameter("precio");
         String aforo = request.getParameter("aforo");
         String max = request.getParameter("max");
         String numFilas = request.getParameter("numFilas");
         String asientos = request.getParameter("asientos");
         String idCreador = request.getParameter("creador");
-        
-        if(titulo==null || desc==null || fecha.equals("") || fechaCompra.equals("") || precio==null || aforo==null || max==null){
+        String nuevaEtiqueta = request.getParameter("nuevaEtiqueta");
+
+        if (titulo.equals("") || desc.equals("") || fecha.equals("") || fechaCompra.equals("") || precio.equals("") || aforo.equals("") || max.equals("")) {
             error = "Hay campos obligatorios vacíos.";
-            if(id != null){
-                e = this.eventoFacade.find(new Integer(id));
-            }
-            request.setAttribute("evento", e);
-            request.setAttribute("error", error);
-            
-            RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
-            rd.forward(request, response);
-        }else{
-            try{
-                if(id.equals("")){
-                    e = new Evento();
-                    e.setTitulo(titulo);
-                    e.setDescripcion(desc);
-                    e.setCiudad(ciudad);
-                    e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
-                    e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
-                    e.setPrecio(new Double(precio));
-                    e.setAforo(new Integer(aforo));
-                    e.setMaxentradasusuario(new Integer(max));
-                    if(!numFilas.equals("")) e.setNumfilas(new Integer(numFilas));
-                    if(!asientos.equals("")) e.setAsientosfila(new Integer(asientos));
-                    Usuario creador = this.usuarioFacade.find(new Integer(idCreador));
-                    e.setCreador(creador);
-                    
-                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().add(e);
-                    
-                    this.eventoFacade.create(e);
-                    this.usuarioFacade.edit(usuario);
-                }else{
-                    e = this.eventoFacade.find(new Integer(id));
-                    
-                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().remove(e);
-                    
-                    e.setTitulo(titulo);
-                    e.setDescripcion(desc);
-                    e.setCiudad(ciudad);
-                    e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
-                    e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
-                    e.setPrecio(new Double(precio));
-                    e.setAforo(new Integer(aforo));
-                    e.setMaxentradasusuario(new Integer(max));
-                    if(!numFilas.equals("")) e.setNumfilas(new Integer(numFilas));
-                    if(!asientos.equals("")) e.setAsientosfila(new Integer(asientos));
-                    
-                    if(usuario.getId() == e.getCreador().getId())usuario.getEventoList().add(e);
-                    
-                    this.eventoFacade.edit(e);
-                    this.usuarioFacade.edit(usuario);
+
+        } else {
+            if (nuevaEtiqueta.equals("") && etiquetas == null) {
+                error = "Selecciona al menos una etiqueta";
+
+            } else if (dateFechaCompra.after(dateFecha)) {
+                error = "La fecha límite de compra no puede ser posterior a la fecha del evento.";
+
+            } else {
+                try {
+                    if (id.equals("")) {
+                        e = new Evento();
+                        e.setId(0);
+                        e.setTitulo(titulo);
+                        e.setDescripcion(desc);
+                        e.setCiudad(ciudad);
+                        e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
+                        e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
+                        e.setPrecio(new Double(precio));
+                        e.setAforo(new Integer(aforo));
+                        e.setMaxentradasusuario(new Integer(max));
+                        if (!numFilas.equals("")) {
+                            e.setNumfilas(new Integer(numFilas));
+                        }
+                        if (!asientos.equals("")) {
+                            e.setAsientosfila(new Integer(asientos));
+                        }
+                        List<Etiqueta> lista = new ArrayList();
+                        if (!(nuevaEtiqueta.equals(""))) {
+                            if (this.etiquetaFacade.findByNombre(nuevaEtiqueta) == null) { //No existe la etiqueta nueva
+                                Etiqueta nueva = new Etiqueta();
+                                nueva.setNombre(nuevaEtiqueta);
+
+                                this.etiquetaFacade.create(nueva);
+                                lista.add(nueva);
+                            } else { //Ya existe la etiqueta
+                                error = "Ya existe una etiqueta con ese nombre. Por favor, selecciónala.";
+                            }
+
+                        }
+                        if (error.equals("")) {
+                            Usuario creador = this.usuarioFacade.find(new Integer(idCreador));
+                            e.setCreador(creador);
+
+                            if (etiquetas != null) {
+                                for (String etiqueta : etiquetas) {
+                                    Etiqueta etiq = this.etiquetaFacade.findByNombre(etiqueta);
+                                    lista.add(etiq);
+                                }
+                            }
+
+                            e.setEtiquetaList(lista);
+
+                            if (usuario.getId() == e.getCreador().getId()) {
+                                usuario.getEventoList().add(e);
+                            }
+
+                            this.eventoFacade.create(e);
+                            this.usuarioFacade.edit(usuario);
+                        }
+
+                    } else {
+                        e = this.eventoFacade.find(new Integer(id));
+
+                        if (usuario.getId() == e.getCreador().getId()) {
+                            usuario.getEventoList().remove(e);
+                        }
+
+                        e.setTitulo(titulo);
+                        e.setDescripcion(desc);
+                        e.setCiudad(ciudad);
+                        e.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(fecha));
+                        e.setFechacompra(new SimpleDateFormat("yyyy-MM-dd").parse(fechaCompra));
+                        e.setPrecio(new Double(precio));
+                        e.setAforo(new Integer(aforo));
+                        e.setMaxentradasusuario(new Integer(max));
+                        if (!numFilas.equals("")) {
+                            e.setNumfilas(new Integer(numFilas));
+                        }
+                        if (!asientos.equals("")) {
+                            e.setAsientosfila(new Integer(asientos));
+                        }
+
+                        if (usuario.getId() == e.getCreador().getId()) {
+                            usuario.getEventoList().add(e);
+                        }
+
+                        this.eventoFacade.edit(e);
+                        this.usuarioFacade.edit(usuario);
+                    }
+
+                } catch (Exception exception) {
+                    System.out.println("ERRORRRRRRRRRRRRRRRRRRRRRRR: " + exception.getMessage());
                 }
-            }catch(Exception exception){
-                log("Excepcion");
             }
-            
+
             session.setAttribute("user", usuario);
 
-            if(usuario.getRol().getId() == 1){
+            if (!("".equals(error))) {
+                if (id != null && !(id.equals(""))) {
+                    e = this.eventoFacade.find(new Integer(id));
+                }
+                request.setAttribute("evento", e);
+                request.setAttribute("error", error);
+                request.setAttribute("etiquetas", this.etiquetaFacade.findAll());
+                RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
+                rd.forward(request, response);
+            } else if (usuario.getRol().getId() == 1) {
                 RequestDispatcher rd = request.getRequestDispatcher("ServletListadoAdmin");
                 rd.forward(request, response);
-            } else if(usuario.getRol().getId() == 3) {
+            } else if (usuario.getRol().getId() == 3) {
                 request.setAttribute("eventos", usuario.getEventoList());
                 RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
                 rd.forward(request, response);
@@ -134,7 +209,7 @@ public class ServletGuardarEvento extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
