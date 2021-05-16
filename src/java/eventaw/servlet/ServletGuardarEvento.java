@@ -195,7 +195,7 @@ public class ServletGuardarEvento extends HttpServlet {
                     }
 
                 } catch (Exception exception) {
-                    System.out.println("ERRORRRRRRRRRRRRRRRRRRRRRRR: " + exception.getMessage());
+                    log(exception.getMessage());
                 }
             }
 

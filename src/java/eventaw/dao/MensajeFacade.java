@@ -34,7 +34,7 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
     public List<Mensaje> findByConver(Integer id){
         List<Mensaje> res;
         Query q;
-        q = this.em.createQuery("SELECT m FROM Mensaje m WHERE m.conversacion.id = :id ORDER BY m.fecha DESC");
+        q = this.em.createQuery("SELECT m FROM Mensaje m WHERE m.conversacion.id = :id ORDER BY m.fecha");
         q.setParameter("id", id);
         
         res = q.getResultList();
