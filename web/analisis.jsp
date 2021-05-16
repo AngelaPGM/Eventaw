@@ -4,6 +4,7 @@
     Author     : rafa
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="eventaw.entity.Analisis"%>
 <%@page import="eventaw.entity.Entrada"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -18,16 +19,35 @@
     <%
         List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
         List<Entrada> listaEntradas = (List) request.getAttribute("listaEntradas");
-        List<Integer> anyos = (List) request.getAttribute("anyos");
+        //List<Integer> anyos = (List) request.getAttribute("anyos");
 
         //Si estamos editando un analisis recuperamos los datos
         Analisis a = (Analisis) request.getAttribute("analisis");
         String nombreA = "";
         String servlet;
-        if(a != null){
+        
+        //Value
+        Date fechaMayor, fechaMenor, fechaIgual;
+        Integer precioMayor, precioMenor, precioIgual;
+        String ciudad;
+        Integer edadMayor, edadMenor, edadIgual;
+        String sexo;
+        
+        if(a != null){  //Editar
             nombreA = a.getNombre();
             servlet = "ServletGuardarAnalisis?id="+a.getAnalisisid();
-        }else{
+            
+            fechaMayor = a.getFechamayor();
+            fechaMenor = a.getFechamenor();
+            fechaIgual = a.getFechaigual();
+            precioMayor = a.getPreciomayor();
+            precioMenor = a.getEdadmenor();
+            precioIgual = a.getPrecioigual();
+            //ciudad
+            edadMayor = a.getEdadmayor();
+            edadMenor = a.getEdadmenor();
+            edadIgual = a.getEdadigual();
+        }else{          //Crear
             servlet = "ServletGuardarAnalisis";
         }
         String str = "";
@@ -73,55 +93,25 @@
             Filtros evento
             <br>
             Fecha >
-            <select name="fechaMayor">
-                <option>---</option>
-                <%
-                    for(Integer i: anyos){
-                    %>
-                    <option><%=  i.intValue() %></option>
-                <%
-                    }
-                    %>
-            </select>
+            <input type="date" name="fechaMayor" value="" />
             <br>
             Fecha <
-            <select name="fechaMenor">
-                <option>---</option>
-                <%
-                    for(Integer i: anyos){
-                        if(a!=null && i.equals(a.getFechamenor()) ){
-                            str = "selected";
-                        }
-                    %>
-                    <option <%=str%> ><%= i.intValue() %></option>
-                <%
-                    }
-                    %>
-            </select>
+            <input type="date" name="fechaMenor" value="" />
             <br>
             Fecha =
-            <select name="fechaIgual">
-                <option>---</option>
-                <%
-                    for(Integer i: anyos){
-                    %>
-                    <option><%= i.intValue() %></option>
-                <%
-                    }
-                    %>
-            </select>
+            <input type="date" name="fechaIgual" value="" />
             <br>
             Precio >
-            <input type="number" name="precioMayor" value="" />
+            <input type="number" name="precioMayor" <% if(a != null){%>value="<%= a.getPreciomayor() %>"<%}%> />
             <br>
             Precio <
-            <input type="number" name="precioMenor" value="" />
+            <input type="number" name="precioMenor" <% if(a != null){%>value="<%= a.getPreciomenor() %>"<%}%> />
             <br>
             Precio =
-            <input type="number" name="precioIgual" value="" />
+            <input type="number" name="precioIgual" <% if(a != null){%>value="<%= a.getPrecioigual() %>"<%}%> />
             <br>
             Ciudad
-             <select name="fechaMayor">
+             <select name="ciudad">
                 <option>---</option>
                 <%
                     for(Evento e: listaEventos){
@@ -135,13 +125,13 @@
             Filtros usuario
             <br>
             Edad >
-            <input type="number" name="edadMayor" value="" />
+            <input type="number" name="edadMayor" <% if(a != null){%>value="<%= a.getEdadmayor() %>"<%}%> />
             <br>
             Edad <
-            <input type="number" name="edadMenor" value="" />
+            <input type="number" name="edadMenor" <% if(a != null){%>value="<%= a.getEdadmenor() %>"<%}%> />
             <br>
             Edad =
-            <input type="number" name="edadIgual" value="" />
+            <input type="number" name="edadIgual" <% if(a != null){%>value="<%= a.getEdadigual() %>"<%}%> />
             <br>
             <input type="radio" id="male" name="sexo" value="H">
             <label for="male">H</label>
