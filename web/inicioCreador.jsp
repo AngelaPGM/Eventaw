@@ -127,8 +127,8 @@
                             <%= etiqueta.getNombre() %><br/>
                      <%   }
                             %></td>
-                        <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
-                        <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrado%>">BORRAR</a></td>
+                        <td><a class="btn  btn-primary" style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
+                        <td><a class="btn  btn-primary" style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrado%>">BORRAR</a></td>
                     </tr>
                     <%
                         }
