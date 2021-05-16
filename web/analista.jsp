@@ -95,8 +95,8 @@
             %>
             <tr>
                 <td><%= anal.getNombre()%></td>
-                <td><a href="ServletEditarAnalisis?id=<%= anal.getAnalisisid()%>">Editar</a></td>
-                <td><a href="ServletBorrarAnalisis?id=<%= anal.getAnalisisid()%>">Borrar</a></td>
+                <td><a class="btn  btn-primary" href="ServletEditarAnalisis?id=<%= anal.getAnalisisid()%>">Editar</a></td>
+                <td><a class="btn  btn-primary" href="ServletBorrarAnalisis?id=<%= anal.getAnalisisid()%>">Borrar</a></td>
             </tr>
             <%
                 }

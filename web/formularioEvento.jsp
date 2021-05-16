@@ -171,7 +171,7 @@
                             </div>
                         </div>
                         <hr/>
-                        <div class="row p-l-20" style="color: #a64bf4; font-size: 1.2rem"> Etiquetas: </div>
+                        <div class="row p-l-20" style="color: #a64bf4; font-size: 1.2rem"> Etiquetas: (selecciona al menos una) </div>
                         <div class="row p-l-20 justify-content-around" style="font-size:1.2rem">                           
                             <%
                                 for (Etiqueta e : etiquetas) {%>
