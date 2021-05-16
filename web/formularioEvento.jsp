@@ -158,7 +158,7 @@
                         </div>
                         <div class="row p-b-20 justify-content-around">
                             <div class="col-2 wrap-input2">
-                                <input class="input2 text-center" type="number" min="0" name="precio"  value="<%=precio%>" required>
+                                <input class="input2 text-center" type="number" min="0" name="precio" step="0.01" value="<%=precio%>" required>
                             </div>
                             <div class="col-2 wrap-input2 ">
                                 <input class="input2 text-center" type="number" name="aforo" min="1" value="<%=aforo%>" required>
