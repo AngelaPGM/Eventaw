@@ -61,7 +61,7 @@
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
-                <li><a class="active">Inicio</a></li>
+                <li><a <a href="ServletAnalistaEventos">Inicio</a></li>
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
             </ul> 
         </div>
