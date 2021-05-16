@@ -10,6 +10,10 @@ import eventaw.entity.Analisis;
 import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -60,14 +64,20 @@ public class ServletGuardarAnalisis extends HttpServlet {
         String edadIgual = request.getParameter("edadIgual");
         //CiudadUsuario
         String sexo = request.getParameter("sexo");
+        if(sexo == null) sexo = "";
         
-        if(id != null || !(id.isEmpty())){  //Edita
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        
+        if(id != null){  //Edita
             a = this.analisisFacade.find(new Integer(id));
             
             if(!(nombre == null || nombre.isEmpty())) a.setNombre(nombre);
-            if(!(fechaMayor == "---" || fechaMayor.isEmpty())) a.setFechamayor(new Integer(fechaMayor));
-            if(!(fechaMenor == "---" || fechaMenor.isEmpty())) a.setFechamenor(new Integer(fechaMenor));
-            if(!(fechaIgual == "---" || fechaIgual.isEmpty())) a.setFechaigual(new Integer(fechaIgual));
+            try {
+                if(!(fechaMayor == null)) a.setFechamayor(formato.parse(fechaMayor));
+                if(!(fechaMenor == null)) a.setFechamayor(formato.parse(fechaMenor));
+                if(!(fechaIgual == null)) a.setFechamayor(formato.parse(fechaIgual));
+            } catch (ParseException ex) {
+            }
             if(!(precioMayor == null || precioMayor.isEmpty())) a.setPreciomayor(new Integer(precioMayor));
             if(!(precioMenor == null || precioMenor.isEmpty())) a.setPreciomenor(new Integer(precioMenor));
             if(!(precioIgual == null || precioIgual.isEmpty())) a.setPrecioigual(new Integer(precioIgual));
@@ -81,9 +91,12 @@ public class ServletGuardarAnalisis extends HttpServlet {
             a = new Analisis();
             
             if(!(nombre == null || nombre.isEmpty())) a.setNombre(nombre);
-            if(!"---".equals(fechaMayor)) a.setFechamayor(new Integer(fechaMayor));
-            if(!"---".equals(fechaMenor)) a.setFechamenor(new Integer(fechaMenor));
-            if(!"---".equals(fechaIgual)) a.setFechaigual(new Integer(fechaIgual));
+            try {
+                if(!(fechaMayor == null)) a.setFechamayor(formato.parse(fechaMayor));
+                if(!(fechaMenor == null)) a.setFechamayor(formato.parse(fechaMenor));
+                if(!(fechaIgual == null)) a.setFechamayor(formato.parse(fechaIgual));
+            } catch (ParseException ex) {
+            }
             if(!(precioMayor == null || precioMayor.isEmpty())) a.setPreciomayor(new Integer(precioMayor));
             if(!(precioMenor == null || precioMenor.isEmpty())) a.setPreciomenor(new Integer(precioMenor));
             if(!(precioIgual == null || precioIgual.isEmpty())) a.setPrecioigual(new Integer(precioIgual));
@@ -97,7 +110,8 @@ public class ServletGuardarAnalisis extends HttpServlet {
         }
         
         String rdTo = "ServletEditarAnalisis?id=" + id;
-        RequestDispatcher rd = request.getRequestDispatcher("ServletAnalistaEventos");
+        RequestDispatcher rd = request.getRequestDispatcher(rdTo);
+        //RequestDispatcher rd = request.getRequestDispatcher("ServletAnalistaEventos");
         rd.forward(request, response);
     }
 

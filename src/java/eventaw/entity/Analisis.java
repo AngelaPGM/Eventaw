@@ -6,6 +6,7 @@
 package eventaw.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -53,11 +56,14 @@ public class Analisis implements Serializable {
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "FECHAMAYOR")
-    private Integer fechamayor;
+    @Temporal(TemporalType.DATE)
+    private Date fechamayor;
     @Column(name = "FECHAMENOR")
-    private Integer fechamenor;
+    @Temporal(TemporalType.DATE)
+    private Date fechamenor;
     @Column(name = "FECHAIGUAL")
-    private Integer fechaigual;
+    @Temporal(TemporalType.DATE)
+    private Date fechaigual;
     @Column(name = "PRECIOMAYOR")
     private Integer preciomayor;
     @Column(name = "PRECIOMENOR")
@@ -103,27 +109,27 @@ public class Analisis implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getFechamayor() {
+    public Date getFechamayor() {
         return fechamayor;
     }
 
-    public void setFechamayor(Integer fechamayor) {
+    public void setFechamayor(Date fechamayor) {
         this.fechamayor = fechamayor;
     }
 
-    public Integer getFechamenor() {
+    public Date getFechamenor() {
         return fechamenor;
     }
 
-    public void setFechamenor(Integer fechamenor) {
+    public void setFechamenor(Date fechamenor) {
         this.fechamenor = fechamenor;
     }
 
-    public Integer getFechaigual() {
+    public Date getFechaigual() {
         return fechaigual;
     }
 
-    public void setFechaigual(Integer fechaigual) {
+    public void setFechaigual(Date fechaigual) {
         this.fechaigual = fechaigual;
     }
 

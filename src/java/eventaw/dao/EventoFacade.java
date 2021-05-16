@@ -6,6 +6,8 @@
 package eventaw.dao;
 
 import eventaw.entity.Evento;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -130,14 +132,17 @@ public class EventoFacade extends AbstractFacade<Evento> {
         }
     }
     
-    public List<Evento> eventosPorFiltro(Integer fechamayor, Integer fechamenor, Integer fechaigual, Integer preciomayor, Integer preciomenor, Integer precioigual, String ciudadevento){
+    public List<Evento> eventosPorFiltro(Date fechamayor, Date fechamenor, Date fechaigual, Integer preciomayor, Integer preciomenor, Integer precioigual, String ciudadevento){
         List<Evento> res = null;
         
-        Integer filtrosAct = 0;
+        int filtrosAct = 0;
         String strQ = "SELECT e FROM Evento e ";
+        
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         
         if(fechamayor != null){
             filtrosAct++;
+            //fechamayor = formato.parse(fechamayor);
         }
         if(fechamenor != null){
             filtrosAct++;
@@ -158,56 +163,57 @@ public class EventoFacade extends AbstractFacade<Evento> {
             filtrosAct++;
         }
         
+        
         if(filtrosAct > 0){
-            strQ.concat( "WHERE ");
+            strQ+="WHERE ";
             if(fechamayor != null){
-                strQ.concat("e.fecha > :fechamayor ");
+                strQ+="e.fecha > :fechamayor ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             if(fechamenor != null){
-                strQ.concat("e.fecha < :fechamenor ");
+                strQ+="e.fecha < :fechamenor ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             if(fechaigual != null){
-                strQ.concat("e.fecha > :fechaigual ");
+                strQ+="e.fecha = :fechaigual ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             if(preciomayor != null){
-                strQ.concat("e.precio > :preciomayor ");
+                strQ+="e.precio > :preciomayor ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND";
                 }
             }
             if(preciomenor != null){
-                strQ.concat("e.precio > :preciomenor ");
+                strQ+="e.precio < :preciomenor ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             if(precioigual != null){
-                strQ.concat("e.precio > :precioigual ");
+                strQ+="e.precio = :precioigual ";
                 filtrosAct--;
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             if(ciudadevento != null){
-                strQ.concat("e.ciudad > :ciudadevento ");
+                strQ+="e.ciudad > :ciudadevento ";
                 filtrosAct--;
                 //En teoria no se ejecuta este if, por ser el ultimo, pero lo dejo por si añado mas filtros
                 if(filtrosAct > 0){
-                    strQ.concat(" AND");
+                    strQ+=" AND ";
                 }
             }
             Query q;
@@ -217,9 +223,9 @@ public class EventoFacade extends AbstractFacade<Evento> {
             q.setParameter("fechamayor", fechamayor);
             q.setParameter("fechamenor", fechamenor);
             q.setParameter("fechaigual", fechaigual);
-            q.setParameter("preciomayor", preciomayor);
-            q.setParameter("preciomenor", preciomenor);
-            q.setParameter("precioigual", precioigual);
+            q.setParameter("preciomayor", preciomayor+"");
+            q.setParameter("preciomenor", preciomenor+"");
+            q.setParameter("precioigual", precioigual+"");
             q.setParameter("ciudadevento", ciudadevento);
 
             res = q.getResultList();

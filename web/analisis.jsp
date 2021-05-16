@@ -4,6 +4,7 @@
     Author     : rafa
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="eventaw.entity.Analisis"%>
 <%@page import="eventaw.entity.Entrada"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -30,10 +31,28 @@
         Analisis a = (Analisis) request.getAttribute("analisis");
         String nombreA = "";
         String servlet;
+        
+        Date fechaMayor, fechaMenor, fechaIgual;
+        Integer precioMayor, precioMenor, precioIgual;
+        String ciudad;
+        Integer edadMayor, edadMenor, edadIgual;
+        String sexo;
+        
         if (a != null) {
             nombreA = a.getNombre();
-            servlet = "ServletGuardarAnalisis?id=" + a.getAnalisisid();
-        } else {
+            servlet = "ServletGuardarAnalisis?id="+a.getAnalisisid();
+            
+            fechaMayor = a.getFechamayor();
+            fechaMenor = a.getFechamenor();
+            fechaIgual = a.getFechaigual();
+            precioMayor = a.getPreciomayor();
+            precioMenor = a.getEdadmenor();
+            precioIgual = a.getPrecioigual();
+            //ciudad
+            edadMayor = a.getEdadmayor();
+            edadMenor = a.getEdadmenor();
+            edadIgual = a.getEdadigual();
+        }else{          //Crear
             servlet = "ServletGuardarAnalisis";
         }
         String str = "";
