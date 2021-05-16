@@ -110,6 +110,7 @@ public class ServletListadoAdmin extends HttpServlet {
        
        request.setAttribute("listaUsuario", listaUsuario);
        request.setAttribute("listaEventos", listaEventos);
+       request.setAttribute("todosEventos", this.eventoFacade.findAll());
        
        RequestDispatcher rd = request.getRequestDispatcher("paginaAdministrador.jsp");
        rd.forward(request, response);
