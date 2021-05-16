@@ -136,30 +136,28 @@
 
         <!-- EVENTOS  -->  
 
-        <section id="eventos">
+        <section id="eventos" >
             <div class="container m-t-50 p-b-100">
-
                 <div class="row">
                     <div class="col-sm-10 col-md-7">
                         <h1 class="bg-text" style=" color:#7cc5e5;"> Eventos disponibles: </h1>
                     </div>
                 </div>
+                <form action="ServletListadoAdmin">
+                    <div class="row m-t-10">
+                        <div class="col-2">
+                            <div class="wrap-login100-form-btn">
+                                <div class="botones-pag-azul"></div>
+                                <a class="login100-form-btn" style="text-decoration: none" href="ServletCRUDEvento" >
+                                    Nuevo evento
+                                </a>
+                            </div>                    
+                        </div>
 
-                <div class="row m-t-10">
-                    <div class="col-2">
-                        <div class="wrap-login100-form-btn">
-                            <div class="botones-pag-azul"></div>
-                            <a class="login100-form-btn" style="text-decoration: none" href="ServletCRUDEvento" >
-                                Nuevo evento
-                            </a>
-                        </div>                    
-                    </div>
+                        <%
+                            if (!listaEventos.isEmpty()) {
+                        %>    
 
-                    <% 
-
-                        if (!listaEventos.isEmpty()) {
-                    %>    
-                    <form action="ServletListadoAdmin">
                         <div class="col-5 wrap-input2 offset-2">
                             <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoEvento"/> 
                         </div>
@@ -180,61 +178,61 @@
                                 </button>
                             </div>                    
                         </div>
-                        </form>
-                </div>
-                
+                </form>
             </div>
-        </section> 
 
-
-        <div class="container m-t-20">
-            <table class="center table table-striped align-middle" id="tabla-custom2">
-                <tr>
-                    <th>ID</th>
-                    <th>TITULO</th>
-                    <th>DESCRIPCION</th>
-                    <th>CREADOR</th>
-                    <th>FECHA</th>  
-                    <th>CIUDAD</th>
-                    <th>PRECIO</th>            
-                    <th>AFORO</th>
-                    <th></th>
-                    <th></th> 
-                </tr>        
-
-                <%
-                    for (Evento e : listaEventos) {
-                %>   
-                <tr>
-                    <td><%= e.getId()%></td>
-                    <td><%= e.getTitulo()%></td>
-                    <td><%= e.getDescripcion()%></td>
-                    <td><%= e.getCreador().getCorreo()%></td>
-                    <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>  
-                    <td><%= e.getCiudad()%></td>
-                    <td><%= e.getPrecio()%></td> 
-                    <td><%= e.getAforo()%></td> 
-                    <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
-                    <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
-                </tr>  
-
-                <%
-                    }
-                %>
-            </table>
         </div>
-        <%
-        } else {
-        %>    
-        
-        <div class="col offset-2 bg-text" style="color:#9e9e9e"> Actualmente no hay eventos en el sistema. </div>
-                
-    </div>   
-            </div>
-        </section> 
-        <%
-            }
-        %>
+    </section> 
 
-    </body>
+
+    <div class="container m-t-20">
+        <table class="center table table-striped align-middle" id="tabla-custom2">
+            <tr>
+                <th>ID</th>
+                <th>TITULO</th>
+                <th>DESCRIPCION</th>
+                <th>CREADOR</th>
+                <th>FECHA</th>  
+                <th>CIUDAD</th>
+                <th>PRECIO</th>            
+                <th>AFORO</th>
+                <th></th>
+                <th></th> 
+            </tr>        
+
+            <%
+                for (Evento e : listaEventos) {
+            %>   
+            <tr>
+                <td><%= e.getId()%></td>
+                <td><%= e.getTitulo()%></td>
+                <td><%= e.getDescripcion()%></td>
+                <td><%= e.getCreador().getCorreo()%></td>
+                <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>  
+                <td><%= e.getCiudad()%></td>
+                <td><%= e.getPrecio()%></td> 
+                <td><%= e.getAforo()%></td> 
+                <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
+                <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
+            </tr>  
+
+            <%
+                }
+            %>
+        </table>
+    </div>
+    <%
+    } else {
+    %>    
+
+    <div class="col offset-2 bg-text" style="color:#9e9e9e"> Actualmente no hay eventos en el sistema. </div>
+
+</div>   
+</div>
+</section> 
+<%
+    }
+%>
+
+</body>
 </html>

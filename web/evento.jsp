@@ -30,16 +30,16 @@
         Evento evento = (Evento) request.getAttribute("evento");
         Usuario user = (Usuario) session.getAttribute("user");
         List<Entrada> entradasUsuario = user.getUsuarioevento().getEntradaList();
-        int entradasLibres = evento.getAforo()-evento.getEntradaList().size();
+        int entradasLibres = evento.getAforo() - evento.getEntradaList().size();
         int contador = 0;
-        
-        for(Entrada e: entradasUsuario) {
-            if(e.getEvento().equals(evento)) {
+
+        for (Entrada e : entradasUsuario) {
+            if (e.getEvento().equals(evento)) {
                 contador++;
             }
         }
-        
-        int puedeComprar = evento.getMaxentradasusuario()-contador;
+
+        int puedeComprar = evento.getMaxentradasusuario() - contador;
     %>
     <body>
         <!-- Barra navegacion -->
@@ -69,12 +69,12 @@
                         </div>
                         <div class="row justify-content-center" >
                             <p class="m-b-10">
-                                    Nota: tendr&aacute;s que confirmar la compra en la siguiente ventana.
-                                </p>
+                                Nota: tendr&aacute;s que confirmar la compra en la siguiente ventana.
+                            </p>
                             <div class="col-2">
                                 <select  class="custom-select text-center justify-content-center" style="padding: 5px" name="numEntradas">
-                                    <%  
-                                        if(entradasLibres < puedeComprar) {
+                                    <%
+                                        if (entradasLibres < puedeComprar) {
                                             puedeComprar = entradasLibres;
                                         }
                                         for (int i = 1; i <= puedeComprar; i++) {
@@ -85,12 +85,12 @@
                                     %>
                                 </select>
                             </div>
-                                <div class="col-2">
-                                    <input class="btn btn-primary" style="border-radius: 40px; background-color: #7cc5e5; border-color: #7cc5e5" 
-                                           type="submit" value="RESERVAR" name="inscribir" />
-                                </div>
+                            <div class="col-2">
+                                <input class="btn btn-primary" style="border-radius: 40px; background-color: #7cc5e5; border-color: #7cc5e5" 
+                                       type="submit" value="RESERVAR" name="inscribir" />
+                            </div>
                         </div>
-                                
+
                     </form>
                 </div>
             </div>
