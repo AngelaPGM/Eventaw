@@ -88,17 +88,29 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         }else{ //Si no hay errores hacemos esto.
             if(!contrasena.equals("") && !repcontrasena.equals("")){
                 
-                if(contrasena.equals(usuario.getContrasenya()) && contrasena.length()!=0){
-                    ContrasenaAnterior = true;
+                if(!usuario.getId().equals(new Integer(id))){
+                    if(contrasena.equals(this.usuarioFacade.find(new Integer(id)).getContrasenya()) && contrasena.length()!=0){
+                        ContrasenaAnterior = true;
+                    }
+                }else {
+                    if(contrasena.equals(usuario.getContrasenya()) && contrasena.length()!=0){
+                        ContrasenaAnterior = true;
+                    }
                 }
                 
                 if (!(contrasena.equals(repcontrasena))){ // Contraseñas distintas.
                     errorEditar = "Las contraseñas no coinciden.";
-                   
+                    uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                    if(!usuario.getId().equals(new Integer(id))){
+                        editar = "1";
+                    }
                 }else if(ContrasenaAnterior) {
             
                     errorEditar = "Es la misma contraseña que tenías antes. Por favor, crea una nueva.";
-        
+                    uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                    if(!usuario.getId().equals(new Integer(id))){
+                        editar = "1";
+                    }
                 } else {
                     cambio = true;
                     try{
