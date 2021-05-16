@@ -6,10 +6,12 @@
 package eventaw.servlet;
 
 import eventaw.dao.EntradaFacade;
+import eventaw.dao.EtiquetaFacade;
 import eventaw.dao.EventoFacade;
 import eventaw.dao.UsuarioFacade;
 import eventaw.dao.UsuarioeventoFacade;
 import eventaw.entity.Entrada;
+import eventaw.entity.Etiqueta;
 import eventaw.entity.Evento;
 import eventaw.entity.Usuario;
 import java.io.IOException;
@@ -30,6 +32,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletCRUDEvento", urlPatterns = {"/ServletCRUDEvento"})
 public class ServletCRUDEvento extends HttpServlet {
+
+    @EJB
+    private EtiquetaFacade etiquetaFacade;
 
     @EJB
     private UsuarioeventoFacade usuarioeventoFacade;
@@ -66,6 +71,8 @@ public class ServletCRUDEvento extends HttpServlet {
         String borrar = request.getParameter("borrar");
         String id = request.getParameter("id");
         usuario = (Usuario) session.getAttribute("user");
+        
+        List<Etiqueta> etiquetas = this.etiquetaFacade.findAll();
         
         if(borrar!=null){
             if(borrar.equals("borrado")){
@@ -106,6 +113,7 @@ public class ServletCRUDEvento extends HttpServlet {
             }
             request.setAttribute("evento", evento);
             request.setAttribute("error", error);
+            request.setAttribute("etiquetas", etiquetas);
 
             RequestDispatcher rd = request.getRequestDispatcher("formularioEvento.jsp");
             rd.forward(request, response);

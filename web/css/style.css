@@ -175,6 +175,9 @@ button:hover {
 .wrap-separacion10 {
     margin-left: 10px;
 }
+.wrap-separacion15 {
+    margin-left: 15px;
+}
 
 .label-input100 {
     font-family: Poppins-Regular;
@@ -452,6 +455,16 @@ button:hover {
     border-color: #fc00ff;
 }
 
+.btn-primaryazul {
+    color: #fff;
+    background-color: #268ebc;
+    border-color: #268ebc;
+}
+.btn-primaryazul:hover {
+    color: #fff;
+    background-color: #fc00ff;
+    border-color: #fc00ff;
+}
 
 
 
@@ -503,8 +516,9 @@ button:hover {
 
 #tabla-custom2 td, #tabla-custom2 th {
     padding: 5px;
-    background-color: #00dbde;
+    background-color: #7cc5e5;
     color:white;
 }
+
 
 

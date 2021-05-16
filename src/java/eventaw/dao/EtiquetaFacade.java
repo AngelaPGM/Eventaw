@@ -6,13 +6,15 @@
 package eventaw.dao;
 
 import eventaw.entity.Etiqueta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
- * @author rafa
+ * @author angep
  */
 @Stateless
 public class EtiquetaFacade extends AbstractFacade<Etiqueta> {
@@ -29,4 +31,15 @@ public class EtiquetaFacade extends AbstractFacade<Etiqueta> {
         super(Etiqueta.class);
     }
     
+    public Etiqueta findByNombre(String nombre) {
+        Query q = em.createNamedQuery("Etiqueta.findByNombre");
+        q.setParameter("nombre", nombre);
+        List<Etiqueta> aux = q.getResultList();
+        
+        if(aux.isEmpty()) {
+            return null;
+        } else {
+        return (Etiqueta) aux.get(0);
+        }
+    }
 }

@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="eventaw.entity.Etiqueta"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="eventaw.entity.Usuario"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -40,6 +41,7 @@
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="perfilUsuario.jsp?editar=0">Mi perfil</a></li>
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
+                <li style="float:right"><a href="ServletNuevaConversacion">CHAT TELEOPERADOR</a></li>
             </ul> 
         </div>
 
@@ -71,10 +73,10 @@
                             <input class="input2" type="text" name="buscadorNombre" placeholder="Buscar eventos por nombre y/o fecha"/> 
                         </div>
                         <div class="col-2 wrap-input2 wrap-separacion10" >
-                            <input class="input2"   type="date" id="start" name="fechaInicio" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                            <input class="input2"   type="date" id="start" name="fechaInicio"> 
                         </div>
                         <div class="col-2 wrap-input2 wrap-separacion10" >
-                            <input class="input2"   type="date" id="start" name="fechaFinal" min="<%=formato.format(new Date())%>" max="2040-12-31"> 
+                            <input class="input2"   type="date" id="start" name="fechaFinal"> 
                         </div>
                         <div class="col-2">
                             <div class="wrap-login100-form-btn">
@@ -93,8 +95,7 @@
         <div class="container m-t-30">
             <div class="row justify-content-center m-t-10">
                 <div class="col-12">
-                    <%
-                        if(!eventos.isEmpty()) { %>
+                    <%                        if (!eventos.isEmpty()) { %>
 
                     <table class="center table table-striped align-middle" id="tabla-custom" style="font-size:1.2rem">
                         <thead>
@@ -106,6 +107,7 @@
                                 <th>PLAZAS DISPONIBLES</th>
                                 <th>PRECIO</th>
                                 <th>COMPRA HASTA</th>
+                                <th>ETIQUETAS</th>
                                 <th>COMPRAR ENTRADA</th>
                             </tr>
                         </thead>
@@ -125,7 +127,7 @@
                                     plazasDisp = ev.getAforo() - ev.getEntradaList().size();
                                 %>
                                 <td> <%=  plazasDisp == 0 ? "Aforo completo" : plazasDisp%> </td>
-                                <td>  <%= new DecimalFormat("#0.00").format(ev.getPrecio()) %> € </td>
+                                <td>  <%= new DecimalFormat("#0.00").format(ev.getPrecio())%> € </td>
                                 <td>  <%
                                     if (ev.getFechacompra().after(new Date())) {%>
                                     <%= formato.format(ev.getFechacompra())%>
@@ -133,33 +135,39 @@
                                     PLAZO ACABADO
                                     <% }
                                     %>  </td>
+                                <td> <% for (Etiqueta etiqueta : ev.getEtiquetaList()) {%>
+                                    <%= etiqueta.getNombre()%><br/>
+                                    <%   }
+                                    %></td>
                                 <td>  <%
                                     if (ev.getFechacompra().after(new Date()) && plazasDisp > 0) {
-                                        //QUIZA SE PODRIA AÑADIR AQUI UNA COMPROBACION DE QUE EL USUARIO NO TIENE EL MAX DE ENTRADAS
+
                                     %>
 
                                     <a class="btn  btn-primary"
-                                       href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> </td>  
+                                       href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> 
                                     <% } else { %>
-                        <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
-                           href=""> COMPRAR</a> </td>  
-                        <% }
-                        %>
-                        </tr>
-                        <%
-                            }
-                        %>
+                                    <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
+                                       href=""> COMPRAR</a> 
+                                    <% }
+                                    %>
+                                </td>      
+                            </tr>
+                            <%
+                                }
+                            %>
                         </tbody>
                     </table>
-                                                    
-                      <%  } else { %>
-                <div class="bg-text justify-content-center text-center">
-                    <h1 style="color: #9e9e9e"> Actualmente no hay eventos disponibles</h1>
-                </div>
-<% }
-                        %>
+
+                    <%  } else { %>
+                    <div class="bg-text justify-content-center text-center">
+                        <h1 style="color: #9e9e9e"> Actualmente no hay eventos disponibles</h1>
+                    </div>
+                    <% }
+                    %>
                 </div>
             </div>
         </div>
+        <div class="container p-b-100"></div>
     </body>
 </html>

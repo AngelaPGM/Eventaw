@@ -49,7 +49,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.titulo LIKE :titulo");
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE lower(e.titulo) LIKE lower(:titulo)");
         q.setParameter("titulo", '%' + nombreEvento + '%');
         aux = q.getResultList();
         if(aux.isEmpty()){
@@ -63,7 +63,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador and e.titulo LIKE :titulo");
+        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador and lower(e.titulo) LIKE lower(:titulo)");
         q.setParameter("idCreador", idCreador);
         q.setParameter("titulo", '%' + nombreEvento + '%');
         aux = q.getResultList();
@@ -78,7 +78,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.creador.correo LIKE :correo");
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE lower(e.creador.correo) LIKE lower(:correo)");
         q.setParameter("correo", '%' + filtro + '%');
         aux = q.getResultList();
         if(aux.isEmpty()){
@@ -92,7 +92,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.titulo LIKE :titulo");
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE lower(e.titulo) LIKE lower(:titulo)");
         q.setParameter("titulo", '%' + filtro + '%');
         aux = q.getResultList();
         if(aux.isEmpty()){
@@ -106,7 +106,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.ciudad LIKE :ciudad");
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE lower(e.ciudad) LIKE lower(:ciudad)");
         q.setParameter("ciudad", '%' + filtro + '%');
         aux = q.getResultList();
         if(aux.isEmpty()){
@@ -120,7 +120,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("SELECT e FROM Evento e WHERE e.fecha = :fecha");
+        q = this.em.createQuery("SELECT e FROM Evento e WHERE lower(e.fecha) = lower(:fecha)");
         q.setParameter("fecha", filtro);
         aux = q.getResultList();
         if(aux.isEmpty()){

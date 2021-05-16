@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="eventaw.entity.Etiqueta"%>
 <%@page import="java.util.TreeMap"%>
@@ -33,9 +34,8 @@
     <%
         Evento evento = (Evento) request.getAttribute("evento");
         Double numEntradas = (Double) request.getAttribute("numEntradas");
+        String error = (String) request.getAttribute("error");
         Map<Integer, List<Integer>> asientos = new TreeMap();
-
-
     %>
     <body>
         <!-- Barra navegacion -->
@@ -47,67 +47,86 @@
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
             </ul> 
         </div>
-        <%      for (int i = 1; i <= evento.getNumfilas(); i++) {
-                List<Integer> aux = new ArrayList();
-                for (int j = 1; j <= evento.getAsientosfila(); j++) {
-                    aux.add(j);
-                }
-                asientos.put(i, aux);
-            }
 
-            for (Entrada e : evento.getEntradaList()) {
-                asientos.get(e.getNumfila()).remove(e.getAsientofila());
-            }
-        %>
-        <h1>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas)%> por su inscripción en el evento: <%= evento.getTitulo()%></h1>
-        <%
-            if (numEntradas == 1.0) {
-        %>
-        <form action="ServletInscribir">
-            <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
-            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
-            Seleccione su asiento: : <select name="asiento0">
-                <%
-                    for (Integer i : asientos.keySet()) {
-                        for (Integer j : asientos.get(i)) {
-                %>
-                <option>Fila: <%= i%> Asiento: <%= j%></option>
-                <%
-                        }
-                    }
-                %>
-            </select>
-            <input type="submit" value="Aceptar" name="aceptar" />
-        </form>
-        <%
-        } else {
-        %>
-        <form action="ServletInscribir">
-            <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
-            <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
+        <div class="fondo-pagina">
+            <div class="container-perfil">
+                <div class="wrap-registro justify-content-center text-center" >
+                    <form class="register-form" action="ServletInscribir">
+                        <span class="bg-text" style="color: #7cc5e5">
+                            <h1><%= evento.getTitulo()%></h1>
+                            <h4><%= evento.getDescripcion()%></h4> 
+                            <h4 style="padding-top: 1%;">en <%= evento.getCiudad()%> el <%= new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha())%></h4>
+                        </span>
+                        
+                        <%
+                            if (error != null && !("".equals(error))) {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>Error:</strong> <%= error%> </a>
+                        </div>
+                        <% }
+                        %>
+                        
+                        <hr/>
+                        <%      for (int i = 1; i <= evento.getNumfilas(); i++) {
+                                List<Integer> aux = new ArrayList();
+                                for (int j = 1; j <= evento.getAsientosfila(); j++) {
+                                    aux.add(j);
+                                }
+                                asientos.put(i, aux);
+                            }
 
-            Seleccione sus asientos: <br/>
-            <%
-                for (int i = 0; i < numEntradas; i++) {
-            %>
-            <select name="asiento<%= i%>">
-                <%
-                    for (Integer j : asientos.keySet()) {
-                        for (Integer k : asientos.get(j)) {
-                %>
-                <option>Fila: <%= j%> Asiento: <%= k%></option>
-                <%
-                        }
-                    }
-                %>
-            </select><br/>
-            <%
-                }
-            %>
-            <input type="submit" value="Aceptar" name="aceptar" />
-        </form>
-        <%
-            }
-        %>
+                            for (Entrada e : evento.getEntradaList()) {
+                                asientos.get(e.getNumfila()).remove(e.getAsientofila());
+                            }
+                        %>
+                        <span class="bg-text">
+                            <h4>Se le realizará un cobro de <%= new DecimalFormat("#0.00").format(evento.getPrecio() * numEntradas)%>€ </h4>
+                        </span>
+                        
+                    <form action="ServletInscribir">
+                        <input type="hidden" name="idEvento" value="<%= evento.getId()%>" />
+                        <input type="hidden" name="numEntradas" value="<%= new DecimalFormat("#0").format(numEntradas)%>" />
+
+                        <span class="bg-text m-b-50">
+                            <h4> Seleccione sus asientos: </h4> 
+                        </span>
+                        
+                        
+                        <%
+                            for (int i = 0; i < numEntradas; i++) {
+                        %>
+                        <div class="row justify-content-center m-t-10" >
+                        <div class="col-4"><select class="custom-select" style="padding:10px" name="asiento<%= i%>">
+                            <%
+                                for (Integer j : asientos.keySet()) {
+                                    for (Integer k : asientos.get(j)) {
+                            %>
+                            <option>Fila: <%= j%> Asiento: <%= k%></option>
+                            <%
+                                    }
+                                }
+                            %>
+                        </select></div></div>
+                        <%
+                            }
+                        %>
+                        <div class="row justify-content-center">
+                                <div class="col-4">
+                                    <div class="container-login100-form-btn p-t-20 justify-content-center">
+                                        <div class="wrap-login100-form-btn">
+                                            <div class="login100-form-bgbtn"></div>
+                                            <button class="login100-form-btn">
+                                                PAGAR
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>

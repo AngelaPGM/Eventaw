@@ -41,6 +41,7 @@ public class ServletAceptaPago extends HttpServlet {
         String idEvento = request.getParameter("idEvento");
         String numEntradas = request.getParameter("numEntradas");
         Evento evento;
+        String error = "";
         Double num;
         
         evento = this.eventoFacade.find(new Integer(idEvento));
@@ -49,8 +50,14 @@ public class ServletAceptaPago extends HttpServlet {
         request.setAttribute("evento", evento);
         request.setAttribute("numEntradas", num);
         
-        RequestDispatcher rd = request.getRequestDispatcher("aceptarPago.jsp");
-        rd.forward(request, response);
+        if(evento.getAsientosfila() == null || evento.getNumfilas() == null){
+            RequestDispatcher rd = request.getRequestDispatcher("ServletInscribir");
+            rd.forward(request, response);
+        } else {
+            request.setAttribute("error", error);
+            RequestDispatcher rd = request.getRequestDispatcher("aceptarPago.jsp");
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

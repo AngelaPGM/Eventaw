@@ -63,6 +63,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         String editar = "0";
         Boolean correoExiste = false;
         Boolean ContrasenaAnterior = false;
+        Boolean cambio = false;
          
         
          if(email!= null && !email.isEmpty()){
@@ -87,18 +88,31 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         }else{ //Si no hay errores hacemos esto.
             if(!contrasena.equals("") && !repcontrasena.equals("")){
                 
-                if(contrasena.equals(usuario.getContrasenya()) && contrasena.length()!=0){
-                    ContrasenaAnterior = true;
+                if(!usuario.getId().equals(new Integer(id))){
+                    if(contrasena.equals(this.usuarioFacade.find(new Integer(id)).getContrasenya()) && contrasena.length()!=0){
+                        ContrasenaAnterior = true;
+                    }
+                }else {
+                    if(contrasena.equals(usuario.getContrasenya()) && contrasena.length()!=0){
+                        ContrasenaAnterior = true;
+                    }
                 }
                 
                 if (!(contrasena.equals(repcontrasena))){ // Contraseñas distintas.
-                    errorEditar = "Las contraseñas deben ser iguales.";
-                   
+                    errorEditar = "Las contraseñas no coinciden.";
+                    uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                    if(!usuario.getId().equals(new Integer(id))){
+                        editar = "1";
+                    }
                 }else if(ContrasenaAnterior) {
             
-                    errorEditar = "Es la misma contraseña que tenias antes, por favor crea una nueva.";
-        
+                    errorEditar = "Es la misma contraseña que tenías antes. Por favor, crea una nueva.";
+                    uEvento = this.usuarioFacade.find(new Integer(id)).getUsuarioevento();
+                    if(!usuario.getId().equals(new Integer(id))){
+                        editar = "1";
+                    }
                 } else {
+                    cambio = true;
                     try{
                         if(usuario.getId().equals(new Integer(id))){
                             uEvento = usuario.getUsuarioevento();
@@ -106,6 +120,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                             usuario.setContrasenya(contrasena);
                             this.usuarioFacade.edit(usuario);
                             session.setAttribute("user", usuario);
+                            
                         } else {
                             Usuario aux = this.usuarioFacade.find(new Integer(id));
                             uEvento = aux.getUsuarioevento();
@@ -142,6 +157,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
                     editar = "1";
                 }
             } else {//No cambiar contraseña
+                cambio = true;
                 try{
                     if(usuario.getId().equals(new Integer(id))){
                         uEvento = usuario.getUsuarioevento();
@@ -174,6 +190,7 @@ public class ServletGuardarUsuarioEvento extends HttpServlet {
         }
         request.setAttribute("u", uEvento.getIdusuario());
         request.setAttribute("errorEditar", errorEditar);
+        request.setAttribute("cambio", cambio);
         RequestDispatcher rd = request.getRequestDispatcher("perfilUsuario.jsp?editar=" + editar);
         rd.forward(request, response);
     }

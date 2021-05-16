@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author rafa
+ * @author angep
  */
 @Stateless
 public class EntradaFacade extends AbstractFacade<Entrada> {
@@ -33,7 +33,7 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
         public List<Entrada> findById(Integer id){
         Query q;
         List<Entrada> aux;
-    
+
         q = this.em.createQuery("select e from Entrada e where e.usuario.id = :id");
         q.setParameter("id", id);
         aux = q.getResultList();
@@ -42,14 +42,14 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
             return null;
         } else {
             return aux;
-}
+        }
     }
 
     public List<Entrada> filterByNameAndId (String nombreEntrada, Integer usuarioId){
         Query q;
         List<Entrada> aux;
 
-        q = this.em.createQuery("SELECT e FROM Entrada e WHERE e.evento.titulo LIKE :entrada AND e.usuario.id = :usuarioId");
+        q = this.em.createQuery("SELECT e FROM Entrada e WHERE lower(e.evento.titulo) LIKE lower(:entrada) AND e.usuario.id = :usuarioId");
         q.setParameter("entrada", '%' + nombreEntrada + '%');
         q.setParameter("usuarioId", usuarioId);
         aux = q.getResultList();

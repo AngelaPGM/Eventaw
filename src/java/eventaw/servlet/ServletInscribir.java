@@ -14,6 +14,7 @@ import eventaw.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -53,50 +54,80 @@ public class ServletInscribir extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario)session.getAttribute("user");
+        Usuario usuario = (Usuario) session.getAttribute("user");
         String idevento = request.getParameter("idEvento");
         Integer numEntradas = new Integer(request.getParameter("numEntradas"));
+        String error = "";
         Evento evento;
-        
+
         evento = this.eventoFacade.find(new Integer(idevento));
-        
-        for(int i=0; i<numEntradas; i++){
-            Entrada entrada = new Entrada();
-            
-            String asientoSeleccionado = request.getParameter("asiento" + i);
-            String[] partes = asientoSeleccionado.split(" ");
-            String fila = partes[1];
-            String asiento = partes[3];
-            
-            entrada.setId(0);
-            entrada.setUsuario(usuario.getUsuarioevento());
-            entrada.setEvento(evento);
-            entrada.setNumfila(new Integer(fila));
-            entrada.setAsientofila(new Integer(asiento));
-            
-            this.entradaFacade.create(entrada);
-        
-            usuario.getUsuarioevento().getEntradaList().add(entrada);
-            evento.getEntradaList().add(entrada);
+
+        List<String> asientos = new ArrayList();
+        for (int i = 0; i < numEntradas; i++) {
+            asientos.add(request.getParameter("asiento" + i));
         }
-        
-        this.eventoFacade.edit(evento);
-        this.usuarioFacade.edit(usuario);
-        
-        List<Evento> eventos = this.eventoFacade.findAll();
-        List<Evento> aux = this.eventoFacade.findAll();
-        String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
-        for(Evento e : eventos){
-            if(!new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()).equals(today)){
-                if(!e.getFecha().after(new Date())) aux.remove(e);
+
+        for (int i = 0; i < asientos.size(); i++) {
+            String aux = asientos.get(i);
+            for (int j = i + 1; j < asientos.size(); j++) {
+                if (aux.equals(asientos.get(j))) {
+                    error = "No puede seleccionar el mismo asiento varias veces";
+                }
             }
         }
-        eventos = aux;
-        
-        request.setAttribute("eventos", eventos);
-        
-        RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-        rd.forward(request, response);
+
+        if (error.equals("")) {
+            for (int i = 0; i < numEntradas; i++) {
+                Entrada entrada = new Entrada();
+
+                entrada.setId(0);
+                entrada.setUsuario(usuario.getUsuarioevento());
+                entrada.setEvento(evento);
+
+                if (evento.getAsientosfila() != null && evento.getNumfilas() != null) {
+                    String asientoSeleccionado = asientos.get(i);
+                    String[] partes = asientoSeleccionado.split(" ");
+                    String fila = partes[1];
+                    String asiento = partes[3];
+
+                    entrada.setNumfila(new Integer(fila));
+                    entrada.setAsientofila(new Integer(asiento));
+                }
+
+                this.entradaFacade.create(entrada);
+
+                usuario.getUsuarioevento().getEntradaList().add(entrada);
+                evento.getEntradaList().add(entrada);
+            }
+
+            this.eventoFacade.edit(evento);
+            this.usuarioFacade.edit(usuario);
+
+            List<Evento> eventos = this.eventoFacade.findAll();
+            List<Evento> aux = this.eventoFacade.findAll();
+            String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+            for (Evento e : eventos) {
+                if (!new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()).equals(today)) {
+                    if (!e.getFecha().after(new Date())) {
+                        aux.remove(e);
+                    }
+                }
+            }
+            eventos = aux;
+
+            request.setAttribute("eventos", eventos);
+
+            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+            rd.forward(request, response);
+        } else {
+            Double d = new Double(numEntradas);
+            request.setAttribute("evento", evento);
+            request.setAttribute("numEntradas", d);
+            request.setAttribute("error", error);
+            RequestDispatcher rd = request.getRequestDispatcher("aceptarPago.jsp");
+            rd.forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
