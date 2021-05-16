@@ -101,7 +101,7 @@ public class ServletGuardarEvento extends HttpServlet {
 
             } else {
                 try {
-                    if (id.equals("")) {
+                    if (id.equals("") || id.equals("0")) {
                         e = new Evento();
                         e.setId(0);
                         e.setTitulo(titulo);

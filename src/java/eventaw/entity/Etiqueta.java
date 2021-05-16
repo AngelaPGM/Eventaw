@@ -42,9 +42,7 @@ public class Etiqueta implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", length = 45, nullable = false)
     private String nombre;
     @ManyToMany(mappedBy = "etiquetaList")
     private List<Evento> eventoList;
