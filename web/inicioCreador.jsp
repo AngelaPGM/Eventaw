@@ -39,6 +39,7 @@
                 <li><a class="active">Inicio</a></li>
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="ServletCrudUsuario?id=<%= usuario.getId()%>">Mi perfil</a></li>
+                <li style="float:right"><a href="ServletNuevaConversacion">CHAT TELEOPERADOR</a></li>
             </ul> 
         </div>
             

@@ -40,6 +40,7 @@
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="perfilUsuario.jsp?editar=0">Mi perfil</a></li>
                 <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
+                <li style="float:right"><a href="ServletNuevaConversacion">CHAT TELEOPERADOR</a></li>
             </ul> 
         </div>
 
