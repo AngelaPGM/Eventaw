@@ -115,14 +115,14 @@
                     <td><%= u.getCorreo()%></td>
                     <td><%= u.getContrasenya()%></td>            
                     <td><%= u.getRol().getTipo()%></td>      
-                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>">EDITAR</a></td>
+                    <td><a class="btn  btn-primary" href="ServletCrudUsuario?id=<%= u.getId()%>">EDITAR</a></td>
                     <%
                         if (user.getId() != u.getId()) {
                     %>
-                    <td><a style="color: white" href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
-                    <%
-                    } else {
-                    %>
+                    <td><a class="btn  btn-primary" href="ServletCrudUsuario?id=<%= u.getId()%>&borrar=<%= borrar%>">BORRAR</a></td>  
+                        <%
+                        } else {
+                        %>
                     <td></td>
                     <%
                         }
@@ -211,10 +211,10 @@
                 <td><%= e.getCreador().getCorreo()%></td>
                 <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>  
                 <td><%= e.getCiudad()%></td>
-                <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %>€ </td>
+                <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio())%>€ </td>
                 <td><%= e.getAforo()%></td> 
-                <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
-                <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
+                <td><a class="btn  btn-primaryazul" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
+                <td><a class="btn  btn-primaryazul"  href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
             </tr>  
 
             <%
