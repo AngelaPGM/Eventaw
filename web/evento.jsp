@@ -69,8 +69,9 @@
                         </div>
                         <div class="row justify-content-center" >
                             <p class="m-b-10">
-                                Nota: tendr&aacute;s que confirmar la compra en la siguiente ventana.
+                                Nota: para los eventos con distribuci&oacute;n de filas <br/>tendr&aacute;s que confirmar la compra en la siguiente ventana.
                             </p>
+                            
                             <div class="col-2">
                                 <select  class="custom-select text-center justify-content-center" style="padding: 5px" name="numEntradas">
                                     <%
