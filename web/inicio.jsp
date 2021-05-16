@@ -147,15 +147,15 @@
                                     <a class="btn  btn-primary"
                                        href="ServletEvento?id=<%= ev.getId()%>"> COMPRAR</a> 
                                     <% } else { %>
-                        <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
-                           href=""> COMPRAR</a> 
-                        <% }
-                        %>
-                    </td>      
-                    </tr>
-                        <%
-                            }
-                        %>
+                                    <a class="btn  btn-primary disabled" style="background-color:gray; border-color: gray"
+                                       href=""> COMPRAR</a> 
+                                    <% }
+                                    %>
+                                </td>      
+                            </tr>
+                            <%
+                                }
+                            %>
                         </tbody>
                     </table>
 
@@ -168,5 +168,6 @@
                 </div>
             </div>
         </div>
+        <div class="container p-b-100"></div>
     </body>
 </html>
