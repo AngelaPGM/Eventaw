@@ -4,6 +4,7 @@
     Author     : Pepe
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -114,7 +115,7 @@
                         <td><%= e.getCiudad()%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFechacompra())%></td>
-                        <td><%= e.getPrecio()%></td>
+                        <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %> € </td>
                         <td><%= e.getAforo()%></td>
                         <td><%= e.getMaxentradasusuario()%></td>
                         <td><%= (e.getNumfilas()==null?"-":e.getNumfilas()) %></td>
