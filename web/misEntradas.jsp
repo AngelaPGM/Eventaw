@@ -142,8 +142,8 @@
                             <td><%= e.getEvento().getCiudad()%></td>
                             <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getEvento().getFecha())%></td>
 
-                            <td><%= e.getNumfila()%></td>
-                            <td><%= e.getAsientofila()%></td>
+                            <td><%= (e.getNumfila()==null?"-":e.getNumfila())%></td>
+                            <td><%= (e.getAsientofila()==null?"-":e.getAsientofila())%></td>
                             <td><%= new DecimalFormat("#0.00").format(e.getEvento().getPrecio())%> €</td>
                         </tr>
                         <%

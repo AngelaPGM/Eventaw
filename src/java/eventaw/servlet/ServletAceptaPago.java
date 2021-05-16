@@ -49,8 +49,13 @@ public class ServletAceptaPago extends HttpServlet {
         request.setAttribute("evento", evento);
         request.setAttribute("numEntradas", num);
         
-        RequestDispatcher rd = request.getRequestDispatcher("aceptarPago.jsp");
-        rd.forward(request, response);
+        if(evento.getAsientosfila() == null || evento.getNumfilas() == null){
+            RequestDispatcher rd = request.getRequestDispatcher("ServletInscribir");
+            rd.forward(request, response);
+        } else {
+            RequestDispatcher rd = request.getRequestDispatcher("aceptarPago.jsp");
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
