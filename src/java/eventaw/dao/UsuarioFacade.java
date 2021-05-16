@@ -49,7 +49,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         Query q;
         List<Usuario> res;
 
-        q = this.em.createQuery("SELECT u FROM Usuario u WHERE u.rol.tipo LIKE :rol");
+        q = this.em.createQuery("SELECT u FROM Usuario u WHERE lower(u.rol.tipo) LIKE lower(:rol)");
         q.setParameter("rol", '%' + rol + '%');
         res = q.getResultList();
 
@@ -64,7 +64,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         Query q;
         List<Usuario> res;
 
-        q = this.em.createQuery("SELECT u FROM Usuario u WHERE u.correo LIKE :correo ");
+        q = this.em.createQuery("SELECT u FROM Usuario u WHERE lower(u.correo) LIKE lower(:correo) ");
         q.setParameter("correo", '%' + email + '%');
         res = q.getResultList();
 

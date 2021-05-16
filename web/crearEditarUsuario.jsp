@@ -46,7 +46,7 @@
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
-                <li><a href="inicioCreador.jsp">Inicio</a></li>
+                <li><a href="ServletListadoEventos">Inicio</a></li>
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a class="active">Mi perfil</a></li>
             </ul> 

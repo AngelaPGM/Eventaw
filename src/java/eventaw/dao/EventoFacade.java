@@ -63,7 +63,7 @@ public class EventoFacade extends AbstractFacade<Evento> {
         Query q;
         List<Evento> aux;
 
-        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador and e.titulo LIKE :titulo");
+        q = this.em.createQuery("select e from Evento e where e.creador.id = :idCreador and lower(e.titulo) LIKE lower(:titulo)");
         q.setParameter("idCreador", idCreador);
         q.setParameter("titulo", '%' + nombreEvento + '%');
         aux = q.getResultList();

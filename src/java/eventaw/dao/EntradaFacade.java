@@ -49,7 +49,7 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
         Query q;
         List<Entrada> aux;
 
-        q = this.em.createQuery("SELECT e FROM Entrada e WHERE e.evento.titulo LIKE :entrada AND e.usuario.id = :usuarioId");
+        q = this.em.createQuery("SELECT e FROM Entrada e WHERE lower(e.evento.titulo) LIKE lower(:entrada) AND e.usuario.id = :usuarioId");
         q.setParameter("entrada", '%' + nombreEntrada + '%');
         q.setParameter("usuarioId", usuarioId);
         aux = q.getResultList();

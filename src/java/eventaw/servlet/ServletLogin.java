@@ -80,6 +80,8 @@ public class ServletLogin extends HttpServlet {
                     case 3:
                         jsp = "inicioCreador.jsp";
                         session.setAttribute("user", usuario);
+                        List<Evento> listaEventos = usuario.getEventoList();
+                        request.setAttribute("eventos", listaEventos);
                         break;
                     case 4:
                         jsp = "ServletTeleoperador";

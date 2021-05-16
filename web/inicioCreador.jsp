@@ -29,7 +29,7 @@
         String borrado = "borrado";
         Usuario usuario = (Usuario) session.getAttribute("user");
 
-        List<Evento> misEventos = usuario.getEventoList();
+        List<Evento> misEventos = (List<Evento>) request.getAttribute("eventos");
     %>
     <body>
         <!-- Barra navegacion -->
