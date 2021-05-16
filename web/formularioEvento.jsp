@@ -171,12 +171,12 @@
                             </div>
                         </div>
                         <hr/>
-                        <div class="row p-l-20" style="color: #a64bf4; font-size: 1.2rem"> Etiquetas: </div>
+                        <div class="row p-l-20" style="color: #a64bf4; font-size: 1.2rem"> Etiquetas: (selecciona al menos una) </div>
                         <div class="row p-l-20 justify-content-around" style="font-size:1.2rem">                           
                             <%
                                 for (Etiqueta e : etiquetas) {%>
                             <div class="col-2"> <label class="container"><%= e.getNombre()%>
-                                    <input type="checkbox" name="etiquetas" value="<%= e.getNombre()%>">
+                                    <input type="checkbox" name="etiquetas" value="<%= e.getNombre()%>" <% if(evento != null && evento.getEtiquetaList().contains(e)){ %> checked <% } %>>
                                     <span class="checkmark"></span>
                                 </label></div>
                                 <% }
