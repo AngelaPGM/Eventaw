@@ -7,10 +7,7 @@ package eventaw.servlet;
 
 import eventaw.dao.AnalisisFacade;
 import eventaw.entity.Analisis;
-import eventaw.entity.Evento;
-import eventaw.entity.Usuario;
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,14 +15,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author rafa
  */
-@WebServlet(name = "ServletAnalistaEventos", urlPatterns = {"/ServletAnalistaEventos"})
-public class ServletAnalistaEventos extends HttpServlet {
+@WebServlet(name = "ServletBorrarAnalisis", urlPatterns = {"/ServletBorrarAnalisis"})
+public class ServletBorrarAnalisis extends HttpServlet {
 
     @EJB
     private AnalisisFacade analisisFacade;
@@ -41,13 +37,14 @@ public class ServletAnalistaEventos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Integer id = new Integer(request.getParameter("id"));
         
-        //Se muestran todos los analisis a cualquier analista
-        List<Analisis> listaAnalisis = this.analisisFacade.findAll();
-        request.setAttribute("listaAnalisis", listaAnalisis);
+        Analisis a = this.analisisFacade.find(id);
+        this.analisisFacade.remove(a);
         
-        RequestDispatcher rd = request.getRequestDispatcher("analista.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("ServletAnalistaEventos");
         rd.forward(request, response);
+        
         
     }
 

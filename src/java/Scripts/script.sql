@@ -92,9 +92,8 @@ CREATE TABLE MENSAJE (
 );
 
 CREATE TABLE ANALISIS (
-    analisisId    INTEGER,
+    analisisId    INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     nombre        VARCHAR(30),
-    analista      INTEGER,
     fechaMayor    INTEGER,
     fechaMenor    INTEGER,
     fechaIgual    INTEGER,
@@ -107,6 +106,5 @@ CREATE TABLE ANALISIS (
     edadMenor     INTEGER,
     edadIgual     INTEGER,
     sexo          VARCHAR (1),
-    PRIMARY KEY (analisisId),
-    FOREIGN KEY (analista) REFERENCES USUARIO
+    PRIMARY KEY (analisisId)
 );

@@ -4,6 +4,8 @@
     Author     : rafa
 --%>
 
+<%@page import="eventaw.entity.Analisis"%>
+<%@page import="eventaw.entity.Entrada"%>
 <%@page import="eventaw.entity.Evento"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,34 +17,49 @@
     </head>
     <%
         List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
-        //List<Integer> anyos = (List) request.getAttribute("anyos");
-        
+        List<Entrada> listaEntradas = (List) request.getAttribute("listaEntradas");
+        List<Integer> anyos = (List) request.getAttribute("anyos");
+
+        //Si estamos editando un analisis recuperamos los datos
+        Analisis a = (Analisis) request.getAttribute("analisis");
+        String nombreA = "";
+        String servlet;
+        if(a != null){
+            nombreA = a.getNombre();
+            servlet = "ServletGuardarAnalisis?id="+a.getAnalisisid();
+        }else{
+            servlet = "ServletGuardarAnalisis";
+        }
+        String str = "";
         %>
     <body>
-        <h1>Analisis </h1>
         Eventos
         <table border="1">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Titulo</th>
-                    <th>Descripcion</th>
-                    <th>Ciudad</th>
+                    <th>ID Evento</th>
+                    <th>Ciudad Evento</th>
                     <th>Fecha</th>
                     <th>Precio</th>
+                    <th>ID Comprador</th>
+                    <th>Ciudad Comprador</th>
+                    <th>Edad</th>
+                    <th>Sexo</th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    for(Evento e: listaEventos){
+                    for(Entrada e: listaEntradas){
                     %>
                 <tr>
-                    <td><%= e.getId() %></td>
-                    <td><%= e.getTitulo() %></td>
-                    <td><%= e.getDescripcion() %></td>
-                    <td><%= e.getCiudad() %></td>
-                    <td><%= e.getFecha() %></td>
-                    <td><%= e.getPrecio() %></td>
+                    <td></td>
+                    <td><%= e.getEvento().getCiudad() %></td>
+                    <td><%= e.getEvento().getFecha() %></td>
+                    <td><%= e.getEvento().getPrecio() %></td>
+                    <td></td>
+                    <td><%= e.getUsuario().getCiudad() %></td>
+                    <td><%= e.getUsuario().getFechanacimiento() %></td>
+                    <td><%= e.getUsuario().getSexo() %></td>
                 </tr>
                 <%
                     }
@@ -50,51 +67,62 @@
             </tbody>
         </table>
             <br>
-        <form>
+            <form method="POST" action="<%= servlet %>">
+            Analisis: <input type="text" name="nombreAnalisis" value="<%= nombreA %>" />
+            <br>
+            Filtros evento
+            <br>
             Fecha >
             <select name="fechaMayor">
+                <option>---</option>
                 <%
-                    for(Evento e: listaEventos){
+                    for(Integer i: anyos){
                     %>
-                    <option><%=  e.getFecha() %></option>
+                    <option><%=  i.intValue() %></option>
                 <%
                     }
                     %>
             </select>
             <br>
             Fecha <
-            <select name="fechaMayor">
+            <select name="fechaMenor">
+                <option>---</option>
                 <%
-                    for(Evento e: listaEventos){
+                    for(Integer i: anyos){
+                        if(a!=null && i.equals(a.getFechamenor()) ){
+                            str = "selected";
+                        }
                     %>
-                    <option><%=  e.getFecha() %></option>
+                    <option <%=str%> ><%= i.intValue() %></option>
                 <%
                     }
                     %>
             </select>
             <br>
             Fecha =
-            <select name="fechaMayor">
+            <select name="fechaIgual">
+                <option>---</option>
                 <%
-                    for(Evento e: listaEventos){
+                    for(Integer i: anyos){
                     %>
-                    <option><%=  e.getFecha() %></option>
+                    <option><%= i.intValue() %></option>
                 <%
                     }
                     %>
             </select>
             <br>
             Precio >
-            <input type="text" name="precioMayor" value="" />
+            <input type="number" name="precioMayor" value="" />
             <br>
             Precio <
-            <input type="text" name="precioMenor" value="" />
+            <input type="number" name="precioMenor" value="" />
             <br>
             Precio =
-            <input type="text" name="precioIgual" value="" />
+            <input type="number" name="precioIgual" value="" />
             <br>
             Ciudad
              <select name="fechaMayor">
+                <option>---</option>
                 <%
                     for(Evento e: listaEventos){
                     %>
@@ -104,7 +132,23 @@
                     %>
             </select>
             <br>
-            <input type="submit" value="Crear analisis" />
+            Filtros usuario
+            <br>
+            Edad >
+            <input type="number" name="edadMayor" value="" />
+            <br>
+            Edad <
+            <input type="number" name="edadMenor" value="" />
+            <br>
+            Edad =
+            <input type="number" name="edadIgual" value="" />
+            <br>
+            <input type="radio" id="male" name="sexo" value="H">
+            <label for="male">H</label>
+            <input type="radio" id="female" name="sexo" value="M">
+            <label for="female">M</label>
+            <br>
+            <input type="submit" value="Guardar analisis" />
         </form>
     </body>
     

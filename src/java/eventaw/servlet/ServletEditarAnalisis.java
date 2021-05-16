@@ -13,6 +13,8 @@ import eventaw.entity.Entrada;
 import eventaw.entity.Evento;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -21,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -54,7 +57,7 @@ public class ServletEditarAnalisis extends HttpServlet {
         List<Evento> listaEventos = null;
         List<Entrada> listaEntradas = null;
         
-        if(id != null){ //Editar
+        if(id != null){     //Recupera datos
             Analisis a = this.analisisFacade.find(new Integer(id));
             request.setAttribute("analisis", a);
         
@@ -63,6 +66,7 @@ public class ServletEditarAnalisis extends HttpServlet {
             );
             
             //Get entradas from eventos
+            //ELIMINAR DUPLICADOS
             listaEntradas = this.entradaFacade.findAll();
             for(Entrada e: listaEntradas){
                 if(!listaEventos.contains(e.getEvento()) ){
@@ -70,7 +74,7 @@ public class ServletEditarAnalisis extends HttpServlet {
                 }
             }
 
-        }else{ //Crear
+        }else{              //Datos completos
             listaEventos = this.eventoFacade.findAll();
             
             //De las entradas sacamos eventos y usuarios
@@ -81,14 +85,14 @@ public class ServletEditarAnalisis extends HttpServlet {
         request.setAttribute("listaEntradas", listaEntradas);
         
         //GET ANYOS
-        /*
-        List anyos = null;
+        List<Integer> anyos = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
         for(Evento e: listaEventos){
-            anyos.add(e.getFecha());
-
+            cal.setTime(e.getFecha());
+            Integer i = cal.get(Calendar.YEAR);
+            anyos.add(i);
         }
         request.setAttribute("anyos", anyos);
-        */
         
         RequestDispatcher rd = request.getRequestDispatcher("analisis.jsp");
         rd.forward(request, response);
