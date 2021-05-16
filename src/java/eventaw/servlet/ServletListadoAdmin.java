@@ -55,9 +55,10 @@ public class ServletListadoAdmin extends HttpServlet {
            listaEventos = this.eventoFacade.findAll();
                
            if(tipoFiltrado.equals("id")){
-           
-           listaUsuario.add(this.usuarioFacade.find(new Integer(filtrado)));
-               
+               if(this.usuarioFacade.find(new Integer(filtrado)) != null){
+                    
+                   listaUsuario.add(this.usuarioFacade.find(new Integer(filtrado)));
+               }
            }else if (tipoFiltrado.equals("email")){
                 listaU = this.usuarioFacade.findFiltradoByEmail(filtrado);
            if(listaU != null && !listaU.isEmpty()){
@@ -81,9 +82,9 @@ public class ServletListadoAdmin extends HttpServlet {
            listaUsuario = this.usuarioFacade.findAll();
                
            if(tipoFiltrado2.equals("id")){
-           
-                listaEventos.add(this.eventoFacade.find(new Integer(filtradoEvento)));
-               
+                if(this.eventoFacade.find(new Integer(filtradoEvento)) != null){
+                    listaEventos.add(this.eventoFacade.find(new Integer(filtradoEvento)));
+                }
            }else if (tipoFiltrado2.equals("email")){
                 listaE = this.eventoFacade.findFiltradoByEmail(filtradoEvento);
            }else if(tipoFiltrado2.equals("titulo")){
