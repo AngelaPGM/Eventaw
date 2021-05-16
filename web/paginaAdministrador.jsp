@@ -30,7 +30,9 @@
     <%
         List<Usuario> ListaUsuario = (List) request.getAttribute("listaUsuario");
         List<Evento> listaEventos = (List) request.getAttribute("listaEventos");
+        List<Evento> todosEventos = (List) request.getAttribute("todosEventos");
         Usuario user = (Usuario) session.getAttribute("user");
+        
         String borrar = "borrado";
     %>
     <body>
@@ -157,13 +159,13 @@
                         </div>
 
                         <%
-                            if (!listaEventos.isEmpty()) {
+                            if (!todosEventos.isEmpty()) {
                         %>    
 
-                        <div class="col-5 wrap-input2 offset-2">
+                        <div class="col-5 wrap-input2 offset-1">
                             <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoEvento"/> 
                         </div>
-                        <div class="col-1">
+                        <div class="col-2" >
                             <select name="tipofiltrado2" class="custom-select">
                                 <option value="id">ID</option> 
                                 <option value="titulo">TITULO</option>
