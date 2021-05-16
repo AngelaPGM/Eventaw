@@ -176,7 +176,7 @@
                             <%
                                 for (Etiqueta e : etiquetas) {%>
                             <div class="col-2"> <label class="container"><%= e.getNombre()%>
-                                    <input type="checkbox" name="etiquetas" value="<%= e.getNombre()%>">
+                                    <input type="checkbox" name="etiquetas" value="<%= e.getNombre()%>" <% if(evento != null && evento.getEtiquetaList().contains(e)){ %> checked <% } %>>
                                     <span class="checkmark"></span>
                                 </label></div>
                                 <% }

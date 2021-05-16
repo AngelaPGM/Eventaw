@@ -127,6 +127,7 @@ public class ServletGuardarEvento extends HttpServlet {
                             error = "Si rellena Nº filas o Asientos por fila, también ha de rellenar el otro";
                         }
                         List<Etiqueta> lista = new ArrayList();
+                        e.setEtiquetaList(lista);
                         if (!(nuevaEtiqueta.equals(""))) {
                             if (this.etiquetaFacade.findByNombre(nuevaEtiqueta) == null) { //No existe la etiqueta nueva
                                 Etiqueta nueva = new Etiqueta();
@@ -152,9 +153,9 @@ public class ServletGuardarEvento extends HttpServlet {
 
                             e.setEtiquetaList(lista);
 
-                            if (usuario.getId() == e.getCreador().getId()) {
-                                usuario.getEventoList().add(e);
-                            }
+                        if (usuario.getId() == e.getCreador().getId()) {
+                            usuario.getEventoList().add(e);
+                        }
 
                             this.eventoFacade.create(e);
                             this.usuarioFacade.edit(usuario);
@@ -191,12 +192,40 @@ public class ServletGuardarEvento extends HttpServlet {
                             error = "Si rellena Nº filas o Asientos por fila, también ha de rellenar el otro";
                         }
 
-                        if (usuario.getId() == e.getCreador().getId()) {
-                            usuario.getEventoList().add(e);
-                        }
+                        List<Etiqueta> lista = new ArrayList();
+                        if (!(nuevaEtiqueta.equals(""))) {
+                            if (this.etiquetaFacade.findByNombre(nuevaEtiqueta) == null) { //No existe la etiqueta nueva
+                                Etiqueta nueva = new Etiqueta();
+                                nueva.setNombre(nuevaEtiqueta);
 
-                        this.eventoFacade.edit(e);
-                        this.usuarioFacade.edit(usuario);
+                                this.etiquetaFacade.create(nueva);
+                                lista.add(nueva);
+                            } else { //Ya existe la etiqueta
+                                error = "Ya existe una etiqueta con ese nombre. Por favor, selecciónala.";
+                            }
+
+                        }
+                        if (error.equals("")) {
+                            Usuario creador = this.usuarioFacade.find(new Integer(idCreador));
+                            e.setCreador(creador);
+
+                            if (etiquetas != null) {
+                                for (String etiqueta : etiquetas) {
+                                    Etiqueta etiq = this.etiquetaFacade.findByNombre(etiqueta);
+                                    lista.add(etiq);
+                                }
+                            }
+
+                            e.setEtiquetaList(lista);
+                        
+                            
+                            if (usuario.getId() == e.getCreador().getId()) {
+                                usuario.getEventoList().add(e);
+                            }
+
+                            this.eventoFacade.edit(e);
+                            this.usuarioFacade.edit(usuario);
+                        }
                     }
 
                 } catch (Exception exception) {
