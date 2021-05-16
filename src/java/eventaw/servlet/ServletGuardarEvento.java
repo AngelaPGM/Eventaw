@@ -184,6 +184,9 @@ public class ServletGuardarEvento extends HttpServlet {
                             } else {
                                 error = "El aforo ha de ser igual al nº filas por el nº de asientos por fila";
                             }
+                        } else if(numFilas.equals("") && asientos.equals("")) {
+                            e.setNumfilas(null);
+                            e.setAsientosfila(null);
                         } else {
                             error = "Si rellena Nº filas o Asientos por fila, también ha de rellenar el otro";
                         }
