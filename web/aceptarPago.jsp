@@ -34,6 +34,7 @@
     <%
         Evento evento = (Evento) request.getAttribute("evento");
         Double numEntradas = (Double) request.getAttribute("numEntradas");
+        String error = (String) request.getAttribute("error");
         Map<Integer, List<Integer>> asientos = new TreeMap();
     %>
     <body>
@@ -56,6 +57,15 @@
                             <h4><%= evento.getDescripcion()%></h4> 
                             <h4 style="padding-top: 1%;">en <%= evento.getCiudad()%> el <%= new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha())%></h4>
                         </span>
+                        
+                        <%
+                            if (error != null && !("".equals(error))) {%>
+                        <div class=" alert alert-danger vertical-align-middle">
+                            <strong>Error:</strong> <%= error%> </a>
+                        </div>
+                        <% }
+                        %>
+                        
                         <hr/>
                         <%      for (int i = 1; i <= evento.getNumfilas(); i++) {
                                 List<Integer> aux = new ArrayList();

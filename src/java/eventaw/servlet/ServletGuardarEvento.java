@@ -173,11 +173,17 @@ public class ServletGuardarEvento extends HttpServlet {
                         e.setPrecio(new Double(precio));
                         e.setAforo(new Integer(aforo));
                         e.setMaxentradasusuario(new Integer(max));
-                        if (!numFilas.equals("")) {
-                            e.setNumfilas(new Integer(numFilas));
-                        }
-                        if (!asientos.equals("")) {
-                            e.setAsientosfila(new Integer(asientos));
+                        if (!numFilas.equals("") && !asientos.equals("")) {
+                            Integer x = new Integer(numFilas);
+                            Integer y = new Integer(asientos);
+                            if(x*y == new Integer(aforo)){
+                                e.setNumfilas(new Integer(numFilas));
+                                e.setAsientosfila(new Integer(asientos));
+                            } else {
+                                error = "El aforo ha de ser igual al nº filas por el nº de asientos por fila";
+                            }
+                        } else {
+                            error = "Si rellena Nº filas o Asientos por fila, también ha de rellenar el otro";
                         }
 
                         if (usuario.getId() == e.getCreador().getId()) {
