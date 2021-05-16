@@ -23,8 +23,8 @@
         <link rel="stylesheet" href="css/util.css">
     </head>
     <%
-        Usuario user = (Usuario)session.getAttribute("user");
-        List<Conversacion> chats = (List<Conversacion>)request.getAttribute("chats");
+        Usuario user = (Usuario) session.getAttribute("user");
+        List<Conversacion> chats = (List<Conversacion>) request.getAttribute("chats");
         String borrar = "borrar";
     %>
     <body>
@@ -35,7 +35,7 @@
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
             </ul> 
         </div>
-        
+
         <!-- Imagen fondo -->
         <header class="header-inicio text-center text-white">
             <div class="bg-text">
@@ -47,21 +47,19 @@
                 </div>
             </div>
         </header>
-        
+
         <!-- CONVERSACIONES  -->
-        <section id="usuarios">
-            <div class="container m-t-30">
-                <div class="row">
-                    <div class="col-sm-10 col-md-7 offset-2">
-                        <h1 class="bg-text" style=" color:#b997f6;"> Conversaciones: </h1>
-                    </div>
-                </div>
-                <form action="ServletTeleoperador">
-                    <div class="row m-t-10">
-                        <div class="col-5 wrap-input2 offset-2">
+        <section id="usuarios" class="m-t-30">
+        <div class="container">
+            <form action="ServletTeleoperador">
+            <div class="row">
+                <div class="col-4">
+                            <h1 class="bg-text" style=" color:#b997f6;"> Conversaciones: </h1>
+                        </div>
+                <div class="col-4 wrap-input2 offset-2">
                             <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoUsuario"/> 
                         </div>
-                        <div class="col-2">
+                <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag"></div>
                                 <button class="login100-form-btn" value="Filtrar" >
@@ -69,11 +67,12 @@
                                 </button>
                             </div>                    
                         </div>
-                    </div>
-                </form>
             </div>
-        </section>
+            </form>
+        </div>
+       </section> 
         
+
         <!-- TABLA CONVERSACIONES -->
         <div class="container m-t-20">
             <table class="center table table-striped align-middle" id="tabla-custom">
@@ -82,13 +81,13 @@
                     <th>Usuario</th>
                 </tr>
                 <%
-                    for(Conversacion c : chats){
+                    for (Conversacion c : chats) {
                 %>
                 <tr>
-                    <td><%= c.getTeleoperador().getCorreo() %></td>
-                    <td><%= c.getUsuario().getCorreo() %></td>
-                    <td><a href="ServletRedireccion?id=<%= c.getId() %>">Ver</a></td>
-                    <td><a href="ServletTeleoperador?id=<%= c.getId() %>&borrar=<%= borrar %>">Eliminar</a></td>
+                    <td><%= c.getTeleoperador().getCorreo()%></td>
+                    <td><%= c.getUsuario().getCorreo()%></td>
+                    <td><a href="ServletRedireccion?id=<%= c.getId()%>">Ver</a></td>
+                    <td><a href="ServletTeleoperador?id=<%= c.getId()%>&borrar=<%= borrar%>">Eliminar</a></td>
                 </tr>
                 <%
                     }
