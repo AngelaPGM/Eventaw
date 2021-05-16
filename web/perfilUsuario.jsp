@@ -84,7 +84,6 @@
                         %>
                         
                         <hr/>
-
                         <div class="row justify-content-around p-t-5">
                             <div class="col-3 text-center">Nombre:</div>
                             <div class="col-4 text-center">Primer apellido:</div>
@@ -99,7 +98,7 @@
                                     <input class="input2" type="text" name="ape1" value="<%= uEvento.getApellido1()%>" required>
                                 </div>
                                 <div class="col-4 wrap-input2 ">
-                                    <input class="input2" type="text" name="ape2" value="<%= uEvento.getApellido2()%>">
+                                    <input class="input2" type="text" name="ape2" value="<%= (uEvento.getApellido2()==null?"":uEvento.getApellido2())%>">
                                 </div>
                             </div>
 

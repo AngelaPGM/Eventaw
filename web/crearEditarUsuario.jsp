@@ -30,7 +30,7 @@
                 errorEditar = "";
             }
 
-            if (yo.getId() == 1) {
+            if (yo.getRol().getId() == 1) {
         %>   
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
@@ -47,8 +47,13 @@
         <div class="topnav fixed-top">
             <ul>
                 <li><a href="ServletListadoEventos">Inicio</a></li>
-                <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>                   
                 <li style="float:right"><a class="active">Mi perfil</a></li>
+                <%
+                    if (yo.getRol().getId() == 3) { %>
+                <li style="float:right"><a href="ServletNuevaConversacion">CHAT TELEOPERADOR</a></li>
+                    <%  }
+                    %>
             </ul> 
         </div>
         <%
@@ -64,7 +69,7 @@
                     <form class="register-form" method="POST" action="ServletGuardarUsuario">
                         <h1 class="bg-text">Nuevo Usuario</h1>
                         <%
-                           if (errorCrear != "") {%>
+                            if (errorCrear != "") {%>
                         <div class=" alert alert-danger vertical-align-middle">
                             <strong>¡Error!</strong> <%= errorCrear%> </a>
                         </div>
@@ -138,19 +143,19 @@
                     <form class="register-form" method="POST" action="ServletGuardarUsuario?id=<%= idU%>">
                         <h1 class="bg-text">Editar datos</h1>
                         <%
-                           if (errorEditar != "") {
-                                if(errorEditar.equals("Sus datos han sido modificados correctamente")){
+                            if (errorEditar != "") {
+                                if (errorEditar.equals("Sus datos han sido modificados correctamente")) {
                         %>
                         <div class=" alert alert-success vertical-align-middle">
-                            <strong><%= errorEditar %></strong>
+                            <strong><%= errorEditar%></strong>
                         </div>
-                        <% 
-                                } else {
+                        <%
+                        } else {
                         %>
                         <div class=" alert alert-danger vertical-align-middle">
-                            <strong>¡Error!</strong> <%= errorEditar %>
+                            <strong>¡Error!</strong> <%= errorEditar%>
                         </div>
-                        <% 
+                        <%
                                 }
                             }
                         %>

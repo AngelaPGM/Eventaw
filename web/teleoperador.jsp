@@ -25,6 +25,7 @@
     <%
         Usuario user = (Usuario) session.getAttribute("user");
         List<Conversacion> chats = (List<Conversacion>) request.getAttribute("chats");
+        List<Conversacion> todosChats = (List<Conversacion>) request.getAttribute("todosChats");
         String borrar = "borrar";
     %>
     <body>
@@ -43,7 +44,6 @@
                     <h1 style="font-size: 4rem"> Bienvenido de nuevo, </h1>
                     <h2 style="font-size: 3rem"> teleoperador</h2>
                     <a class="btn btn-primary btn-xl rounded-pill mt-5" href="#ancla">Ver conversaciones</a>
-
                 </div>
             </div>
         </header>
@@ -55,10 +55,13 @@
             <div class="row">
                 <div class="col-4">
                             <h1 class="bg-text" style=" color:#b997f6;"> Conversaciones: </h1>
-                        </div>
+                </div>
+                <%
+                    if(!todosChats.isEmpty()) {
+                    %>
                 <div class="col-4 wrap-input2 offset-2">
                             <input class="input2" type="text" placeholder="Introduzca el filtro..." name="filtradoUsuario"/> 
-                        </div>
+                </div>
                 <div class="col-2">
                             <div class="wrap-login100-form-btn">
                                 <div class="botones-pag"></div>
@@ -67,6 +70,7 @@
                                 </button>
                             </div>                    
                         </div>
+                <% } %>
             </div>
             </form>
         </div>
@@ -75,6 +79,13 @@
 
         <!-- TABLA CONVERSACIONES -->
         <div class="container m-t-20">
+            <%
+                if(todosChats.isEmpty()) { %>
+                <div class="row text-center">
+                <div class="col bg-text" style="color:#9e9e9e"> Actualmente no tienes conversaciones. </div>
+                </div>
+             <%   } else { %>
+              
             <table class="center table table-striped align-middle" id="tabla-custom">
                 <tr>
                     <th>Teleoperador</th>
@@ -95,6 +106,9 @@
                     }
                 %>
             </table>
+                  
+               <% }
+                %>
         </div>        
 
     </body>

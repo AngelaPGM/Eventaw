@@ -85,6 +85,7 @@ public class ServletTeleoperador extends HttpServlet {
         }
         
         request.setAttribute("chats", chats);
+        request.setAttribute("todosChats", this.conversacionFacade.findAll());
         
         RequestDispatcher rd = request.getRequestDispatcher("teleoperador.jsp");
         rd.forward(request, response);

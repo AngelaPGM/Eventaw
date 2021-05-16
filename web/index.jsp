@@ -28,13 +28,30 @@
         Conversacion c = (Conversacion) request.getAttribute("c");
         Usuario user = (Usuario) session.getAttribute("user");
         List<Mensaje> mensajes = (List<Mensaje>) request.getAttribute("m");
+
+        String inicio = "";
+        if (user.getRol().getId() == 2) { //usuarioevento
+            inicio = "ServletRedirectInicio";
+        } else if (user.getRol().getId() == 3) { //creador
+            inicio = "ServletListadoEventos";
+        } else if (user.getRol().getId() == 4) { //teleoperador
+            inicio = "ServletTeleoperador";
+        }
     %>
     <body onload="getMessages();">
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
-            <ul>
-                <li><a href="ServletTeleoperador">Inicio</a></li>
+            <ul>                
+                <li><a href="<%= inicio%> ">Inicio</a></li>
                 <li style="float:right"><a  href="ServletCierreSesion">Cerrar sesión</a></li>
+                    <%
+                        if (user.getRol().getId() == 3) {%>
+                <li style="float:right"><a href="ServletCrudUsuario?id=<%= user.getId()%>">Mi perfil</a></li>
+                    <%   } else if (user.getRol().getId() == 2) { %>
+                <li style="float:right"><a href="perfilUsuario.jsp?editar=0">Mi perfil</a></li>
+                <li style="float:right"><a href="misEntradas.jsp?filtrado=0">MIS ENTRADAS</a></li>
+                    <% }
+                    %>
                 <li style="float:right"><a class="active">CHAT TELEOPERADOR</a></li>
             </ul> 
         </div>
@@ -46,10 +63,10 @@
                         Conversaci&oacute;n
                     </span>                                                             
                     <form class="login-form">
-                    <%
-                        if (user.getId() == c.getUsuario().getId() || user.getId() == c.getTeleoperador().getId()) {
-                    %>
-                    <input type="hidden" id="id" name="id" value="<%= c.getId()%>"/>
+                        <%
+                            if (user.getId() == c.getUsuario().getId() || user.getId() == c.getTeleoperador().getId()) {
+                        %>
+                        <input type="hidden" id="id" name="id" value="<%= c.getId()%>"/>
                         <input type="hidden" id="name" name="name" value="<%= user.getCorreo()%>"/>
                         <div class="row">
                             <div class="col-9">
@@ -60,59 +77,59 @@
                             <div class="col-3">
                                 <div class="wrap-login100-form-btn">
                                     <div class="botones-pag"></div>
-                                    <a class="login100-form-btn" type="button" onclick="postMessage();" value="Enviar" />Enviar</a></div>
+                                    <a class="login100-form-btn" type="button" style="text-decoration: none"  onclick="postMessage();" value="Enviar" />Enviar</a></div>
                             </div> 
                         </div>  
-                    
-                    <%
-                        }
-                    %>
-                    <div id="content">
-                        <% if (application.getAttribute("messages") != null) {%>
-                        <div class="row" style="padding-top: 10px"> <%= application.getAttribute("messages")%> </div>                      
-                        <% }%>
-                    </div>
-                    <div class="section" style="padding: 10px;">
-                    <%
-                        for (Mensaje m : mensajes) {
-                    %>
-                    <div class="row" style="padding-top: 20px"><%= m.getEmisor().getCorreo()%> </b><%= new SimpleDateFormat("dd/MM/yyyy hh:mm").format(m.getFecha())%></div>
-                    <div class="row"> <%= m.getContenido()%></div>
+
                         <%
                             }
                         %>
-                    </div>
-                    <script>
-                        function postMessage() {
-                            var xmlhttp = new XMLHttpRequest();
-                            //xmlhttp.open("POST", "shoutServlet?t="+new Date(), false);
-                            xmlhttp.open("POST", "shoutServlet", false);
-                            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                            var idText = escape(document.getElementById("id").value);
-                            var nameText = escape(document.getElementById("name").value);
-                            var messageText = escape(document.getElementById("message").value);
-                            document.getElementById("message").value = "";
-                            xmlhttp.send("id=" + idText + "&name=" + nameText + "&message=" + messageText);
-                        }
-                        var messagesWaiting = false;
-                        function getMessages() {
-                            if (!messagesWaiting) {
-                                messagesWaiting = true;
-                                var xmlhttp = new XMLHttpRequest();
-                                xmlhttp.onreadystatechange = function () {
-                                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                                        messagesWaiting = false;
-                                        var contentElement = document.getElementById("content");
-                                        contentElement.innerHTML = xmlhttp.responseText + contentElement.innerHTML;
-                                    }
+                        <div id="content">
+                            <% if (application.getAttribute("messages") != null) {%>
+                            <div class="row" style="padding-top: 10px"> <%= application.getAttribute("messages")%> </div>                      
+                            <% }%>
+                        </div>
+                        <div class="section" style="padding: 10px;">
+                            <%
+                                for (Mensaje m : mensajes) {
+                            %>
+                            <div class="row" style="padding-top: 20px"><%= m.getEmisor().getCorreo()%> </b><%= new SimpleDateFormat("dd/MM/yyyy hh:mm").format(m.getFecha())%></div>
+                            <div class="row"> <%= m.getContenido()%></div>
+                            <%
                                 }
-                                //xmlhttp.open("GET", "shoutServlet?t="+new Date(), true);
-                                xmlhttp.open("GET", "shoutServlet", true);
-                                xmlhttp.send();
+                            %>
+                        </div>
+                        <script>
+                            function postMessage() {
+                                var xmlhttp = new XMLHttpRequest();
+                                //xmlhttp.open("POST", "shoutServlet?t="+new Date(), false);
+                                xmlhttp.open("POST", "shoutServlet", false);
+                                xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                                var idText = escape(document.getElementById("id").value);
+                                var nameText = escape(document.getElementById("name").value);
+                                var messageText = escape(document.getElementById("message").value);
+                                document.getElementById("message").value = "";
+                                xmlhttp.send("id=" + idText + "&name=" + nameText + "&message=" + messageText);
                             }
-                        }
-                        setInterval(getMessages, 1000);
-                    </script>
+                            var messagesWaiting = false;
+                            function getMessages() {
+                                if (!messagesWaiting) {
+                                    messagesWaiting = true;
+                                    var xmlhttp = new XMLHttpRequest();
+                                    xmlhttp.onreadystatechange = function () {
+                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                            messagesWaiting = false;
+                                            var contentElement = document.getElementById("content");
+                                            contentElement.innerHTML = xmlhttp.responseText + contentElement.innerHTML;
+                                        }
+                                    }
+                                    //xmlhttp.open("GET", "shoutServlet?t="+new Date(), true);
+                                    xmlhttp.open("GET", "shoutServlet", true);
+                                    xmlhttp.send();
+                                }
+                            }
+                            setInterval(getMessages, 1000);
+                        </script>
                     </form>
                 </div>
             </div>
