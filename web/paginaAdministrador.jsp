@@ -4,6 +4,7 @@
     Author     : Fran
 --%>
 
+<%@page import="eventaw.entity.Etiqueta"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Evento"%>
@@ -190,13 +191,14 @@
         <table class="center table table-striped align-middle" id="tabla-custom2">
             <tr>
                 <th>ID</th>
-                <th>TITULO</th>
-                <th>DESCRIPCION</th>
+                <th>T&Iacute;TULO</th>
+                <th>DESCRIPCI&Oacute;N</th>
                 <th>CREADOR</th>
                 <th>FECHA</th>  
                 <th>CIUDAD</th>
                 <th>PRECIO</th>            
                 <th>AFORO</th>
+                <th>ETIQUETAS</th>
                 <th></th>
                 <th></th> 
             </tr>        
@@ -213,6 +215,10 @@
                 <td><%= e.getCiudad()%></td>
                 <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio())%>€ </td>
                 <td><%= e.getAforo()%></td> 
+                <td> <% for(Etiqueta etiqueta: e.getEtiquetaList()) { %>
+                            <%= etiqueta.getNombre() %><br/>
+                     <%   }
+                            %></td>
                 <td><a class="btn  btn-primaryazul" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
                 <td><a class="btn  btn-primaryazul"  href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
             </tr>  

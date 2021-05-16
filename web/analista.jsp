@@ -26,19 +26,19 @@
     </head>
     <%
         List<Analisis> listaAnalisis = (List) request.getAttribute("listaAnalisis");
-        
-        Usuario a = (Usuario)session.getAttribute("analista");
-        
-        if(a != null){
+
+        Usuario a = (Usuario) session.getAttribute("analista");
+
+        if (a != null) {
             String string = a.getCorreo();
             String[] parts = string.split("@");
-            if(parts.length > 0){
+            if (parts.length > 0) {
                 String part1 = parts[0]; // nickname
                 String part2 = parts[1]; // @gmail.com
             }
         }
-        
-        %>
+
+    %>
     <body>
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
@@ -58,51 +58,64 @@
                 </div>
             </div>
         </header>
-        
+
         <!-- ANALISIS  -->
         <section id="usuarios">
-            <div class="container m-t-30 offset-2">
-                <div class="row">
-                    <div class="col-sm-10 col-md-7">
+            <div class="container m-t-30">
+                <div class="row justify-content-around">
+                    <div class="col-4">
                         <h1 class="bg-text" style=" color:#b997f6;"> Análisis: </h1>
                     </div>
+                    <div class="col-3">
+                        <div class="wrap-login100-form-btn">
+                            <div class="botones-pag"></div>
+                            <a class="login100-form-btn" style="text-decoration: none" href="ServletEditarAnalisis" >
+                                Crear Análisis
+                            </a>
+                        </div> 
+                    </div>
                 </div>
-                
-            </div>
-            
-          
-            <div class="col-2" style="margin-left: 67%">
-                <div class="wrap-login100-form-btn">
-                    <div class="botones-pag-azul"></div>
-                        <a class="login100-form-btn" style="text-decoration: none" href="ServletEditarAnalisis" >
-                                    Crear Análisis
-                        </a>
-                </div>                    
-            </div>
-            
-            
-        </section>   
-        
-        <!-- TABLA ANALISIS -->
-        <div class="container m-t-20">
-            <table class="center table table-striped align-middle" id="tabla-custom">
-                <tr>
-                    <th>Análisis</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <%
-                    for(Analisis anal: listaAnalisis){
-                    %>
-                <tr>
-                    <td><%= anal.getNombre() %></td>
-                    <td><a href="ServletEditarAnalisis?id=<%= anal.getAnalisisid() %>">Editar</a></td>
-                    <td><a href="ServletBorrarAnalisis?id=<%= anal.getAnalisisid() %>">Borrar</a></td>
-                </tr>
-                <%
-                    }
-                    %>
-            </table>
+            </div> 
         </div>
-    </body>
+    </section>
+
+    <!-- TABLA ANALISIS -->
+
+    <div class="container m-t-20 justify-content-center">
+         <% if(!listaAnalisis.isEmpty()) { %>
+        <table class="center table table-striped align-middle" id="tabla-custom">
+            <tr>
+                <th>Análisis</th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+            <%  
+                for (Analisis anal : listaAnalisis) {
+            %>
+            <tr>
+                <td><%= anal.getNombre()%></td>
+                <td><a href="ServletEditarAnalisis?id=<%= anal.getAnalisisid()%>">Editar</a></td>
+                <td><a href="ServletBorrarAnalisis?id=<%= anal.getAnalisisid()%>">Borrar</a></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+        <% } else { %>
+        <div class="row text-center m-t-50">
+            <span class="bg-text"  style="color:#9e9e9e">
+                <h1>A&uacute;n no tienes an&aacute;lisis.</h1>
+            </span>
+        </div>
+        <div class="row text-center">
+            <span class="bg-text" style="color:#9e9e9e">
+                <h2>Cuando crees uno aparecer&aacute; aqu&iacute;</h2>
+            </span>
+        </div>
+            <%    }
+            %>
+    </div>
+    <div class="container p-b-100"></div>
+</body>
 </html>
