@@ -99,8 +99,8 @@
                 <tr>
                     <td><%= c.getTeleoperador().getCorreo()%></td>
                     <td><%= c.getUsuario().getCorreo()%></td>
-                    <td><a href="ServletRedireccion?id=<%= c.getId()%>">Ver</a></td>
-                    <td><a href="ServletTeleoperador?id=<%= c.getId()%>&borrar=<%= borrar%>">Eliminar</a></td>
+                    <td><a class="btn  btn-primary" href="ServletRedireccion?id=<%= c.getId()%>">Ver</a></td>
+                    <td><a class="btn  btn-primary" href="ServletTeleoperador?id=<%= c.getId()%>&borrar=<%= borrar%>">Eliminar</a></td>
                 </tr>
                 <%
                     }
