@@ -4,6 +4,7 @@
     Author     : Fran
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="eventaw.entity.Evento"%>
 <%@page import="eventaw.entity.Usuario"%>
@@ -137,7 +138,7 @@
         <!-- EVENTOS  -->  
 
         <section id="eventos" >
-            <div class="container m-t-50 p-b-100">
+            <div class="container m-t-50">
                 <div class="row">
                     <div class="col-sm-10 col-md-7">
                         <h1 class="bg-text" style=" color:#7cc5e5;"> Eventos disponibles: </h1>
@@ -210,7 +211,7 @@
                 <td><%= e.getCreador().getCorreo()%></td>
                 <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>  
                 <td><%= e.getCiudad()%></td>
-                <td><%= e.getPrecio()%></td> 
+                <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %>€ </td>
                 <td><%= e.getAforo()%></td> 
                 <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
                 <td><a style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrar%>">BORRAR</a></td> 
@@ -233,6 +234,6 @@
 <%
     }
 %>
-
+<div class="container p-b-100"></div>
 </body>
 </html>
