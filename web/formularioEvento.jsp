@@ -58,7 +58,20 @@
 
     %>
     <body>
-
+        <%
+            if(usuario.getId() == 1){
+        %>
+        <!-- Barra navegacion -->
+        <div class="topnav fixed-top">
+            <ul>
+                <li><a  href="ServletListadoAdmin">Inicio</a></li>
+                <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
+                <li style="float:right"><a href="ServletCrudUsuario?id=<%= usuario.getId()%>">Mi perfil</a></li>
+            </ul> 
+        </div>
+        <%
+            } else {
+        %>
         <!-- Barra navegacion -->
         <div class="topnav fixed-top">
             <ul>
@@ -66,8 +79,10 @@
                 <li style="float:right"><a href="ServletCierreSesion">Cerrar sesión</a></li>
                 <li style="float:right"><a href="ServletCrudUsuario?id=<%= usuario.getId()%>">Mi perfil</a></li>
             </ul> 
-        </div>
-
+        </div>    
+        <%
+            }
+        %>
         <div class="fondo-pagina">
             <div class="container-perfil">
                 <div class="wrap-registro justify-content-center text-center" style="width: 1200px">
