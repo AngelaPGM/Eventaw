@@ -63,16 +63,20 @@ public class ServletInscribir extends HttpServlet {
         for(int i=0; i<numEntradas; i++){
             Entrada entrada = new Entrada();
             
-            String asientoSeleccionado = request.getParameter("asiento" + i);
-            String[] partes = asientoSeleccionado.split(" ");
-            String fila = partes[1];
-            String asiento = partes[3];
-            
             entrada.setId(0);
             entrada.setUsuario(usuario.getUsuarioevento());
             entrada.setEvento(evento);
-            entrada.setNumfila(new Integer(fila));
-            entrada.setAsientofila(new Integer(asiento));
+            
+            if(evento.getAsientosfila() != null && evento.getNumfilas() != null){
+                String asientoSeleccionado = request.getParameter("asiento" + i);
+                String[] partes = asientoSeleccionado.split(" ");
+                String fila = partes[1];
+                String asiento = partes[3];
+            
+                entrada.setNumfila(new Integer(fila));
+                entrada.setAsientofila(new Integer(asiento));
+            }
+            
             
             this.entradaFacade.create(entrada);
         
