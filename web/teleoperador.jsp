@@ -94,15 +94,17 @@
                     <th></th>
                 </tr>
                 <%
-                    for (Conversacion c : chats) {
+                    if(chats!=null){  
+                        for (Conversacion c : chats) {
                 %>
                 <tr>
-                    <td><%= c.getTeleoperador().getCorreo()%></td>
-                    <td><%= c.getUsuario().getCorreo()%></td>
-                    <td><a class="btn  btn-primary" href="ServletRedireccion?id=<%= c.getId()%>">Ver</a></td>
-                    <td><a class="btn  btn-primary" href="ServletTeleoperador?id=<%= c.getId()%>&borrar=<%= borrar%>">Eliminar</a></td>
+                            <td><%= c.getTeleoperador().getCorreo()%></td>
+                            <td><%= c.getUsuario().getCorreo()%></td>
+                            <td><a class="btn  btn-primary" href="ServletRedireccion?id=<%= c.getId()%>">Ver</a></td>
+                            <td><a class="btn  btn-primary" href="ServletTeleoperador?id=<%= c.getId()%>&borrar=<%= borrar%>">Eliminar</a></td>
                 </tr>
                 <%
+                        }
                     }
                 %>
             </table>

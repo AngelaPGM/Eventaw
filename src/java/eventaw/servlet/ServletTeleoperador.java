@@ -56,7 +56,7 @@ public class ServletTeleoperador extends HttpServlet {
         
         String id = (String)request.getParameter("id");
         String borrar = (String)request.getParameter("borrar");
-        String filtro = (String)request.getParameter("filtro");
+        String filtro = (String)request.getParameter("filtradoUsuario");
         
         if(borrar != null && borrar.equals("borrar")){
             Conversacion c = this.conversacionFacade.find(new Integer(id));
@@ -78,11 +78,10 @@ public class ServletTeleoperador extends HttpServlet {
         
         if(filtro != null){
             chats = this.conversacionFacade.findByCorreo(filtro);
-        }
-        
-        if(chats == null){
+        }else{
             chats = this.conversacionFacade.findAll();
         }
+        
         
         request.setAttribute("chats", chats);
         request.setAttribute("todosChats", this.conversacionFacade.findAll());
