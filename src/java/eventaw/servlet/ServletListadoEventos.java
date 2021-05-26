@@ -145,6 +145,7 @@ public class ServletListadoEventos extends HttpServlet {
        }
        
        request.setAttribute("eventos", listaEvento);
+        request.setAttribute("todosEventos", this.eventoFacade.findAll());
        
        RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
        rd.forward(request, response);

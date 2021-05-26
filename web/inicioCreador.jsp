@@ -31,6 +31,7 @@
         Usuario usuario = (Usuario) session.getAttribute("user");
 
         List<Evento> misEventos = (List<Evento>) request.getAttribute("eventos");
+        List<Evento> todosEventos = (List<Evento>) request.getAttribute("todosEventos");
     %>
     <body>
         <!-- Barra navegacion -->
@@ -42,7 +43,7 @@
                 <li style="float:right"><a href="ServletNuevaConversacion">CHAT TELEOPERADOR</a></li>
             </ul> 
         </div>
-            
+
         <!-- Imagen fondo -->
         <header class="header-inicio text-center text-white" style="height: 60vh;">
             <div class="bg-text">
@@ -57,7 +58,7 @@
 
         <section id="eventos">
             <%
-            if (!misEventos.isEmpty()) { %>
+                if (!todosEventos.isEmpty()) { %>
 
             <div class="container m-t-30">
                 <div class="row">
@@ -89,6 +90,13 @@
                 </form>
             </div>
         </section>
+        <%
+                if (misEventos.isEmpty()) { %>
+        <div class="container justify-content-center text-center" style="margin-top: 10vh">
+            <h1 class="bg-text" style="color: #9e9e9e; font-size: 3rem">No tienes eventos con ese filtro</h1>
+        </div>
+        <%  } else {
+        %>
         <div class="container">
             <table class="center table table-striped align-middle m-t-30" id="tabla-custom">
                 <thead>
@@ -118,14 +126,14 @@
                         <td><%= e.getCiudad()%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha())%></td>
                         <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFechacompra())%></td>
-                        <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio()) %>€ </td>
+                        <td>  <%= new DecimalFormat("#0.00").format(e.getPrecio())%>€ </td>
                         <td><%= e.getAforo()%></td>
                         <td><%= e.getMaxentradasusuario()%></td>
-                        <td><%= (e.getNumfilas()==null?"-":e.getNumfilas()) %></td>
-                        <td><%= (e.getAsientosfila()==null?"-":e.getAsientosfila()) %></td>
-                        <td> <% for(Etiqueta etiqueta: e.getEtiquetaList()) { %>
-                            <%= etiqueta.getNombre() %><br/>
-                     <%   }
+                        <td><%= (e.getNumfilas() == null ? "-" : e.getNumfilas())%></td>
+                        <td><%= (e.getAsientosfila() == null ? "-" : e.getAsientosfila())%></td>
+                        <td> <% for (Etiqueta etiqueta : e.getEtiquetaList()) {%>
+                            <%= etiqueta.getNombre()%><br/>
+                            <%   }
                             %></td>
                         <td><a class="btn  btn-primary" style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>">EDITAR</a></td>
                         <td><a class="btn  btn-primary" style="color: white" href="ServletCRUDEvento?id=<%= e.getId()%>&borrar=<%= borrado%>">BORRAR</a></td>
@@ -135,6 +143,7 @@
                     %>
                 </tbody>
             </table>
+            <% } %>
         </div>
 
         <%  } else { %>
@@ -146,6 +155,6 @@
 
     <% }
     %>
-<div class="container p-b-100"></div>
+    <div class="container p-b-100"></div>
 </body>
 </html>

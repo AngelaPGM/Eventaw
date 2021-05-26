@@ -82,6 +82,7 @@ public class ServletLogin extends HttpServlet {
                         session.setAttribute("user", usuario);
                         List<Evento> listaEventos = usuario.getEventoList();
                         request.setAttribute("eventos", listaEventos);
+                        request.setAttribute("todosEventos", this.eventoFacade.findAll());
                         break;
                     case 4://teleoperador
                         jsp = "ServletTeleoperador";
