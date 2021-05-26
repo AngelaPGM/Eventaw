@@ -89,16 +89,7 @@
                             <div class="row" style="padding-top: 10px"> <%= application.getAttribute("messages")%> </div>                      
                             <% }%>
                         </div>
-                        <div class="section" style="padding: 10px;">
-                            <%
-                                for (Mensaje m : mensajes) {
-                            %>
-                            <div class="row" style="padding-top: 20px"><%= m.getEmisor().getCorreo()%> </b><%= new SimpleDateFormat("dd/MM/yyyy hh:mm").format(m.getFecha())%></div>
-                            <div class="row"> <%= m.getContenido()%></div>
-                            <%
-                                }
-                            %>
-                        </div>
+
                         <script>
                             function postMessage() {
                                 var xmlhttp = new XMLHttpRequest();
